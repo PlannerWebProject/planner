@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='../js/index.global.js'></script>
+    <title>Document</title>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                headerToolbar: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'dayGridMonth,dayGridWeek,dayGridDay'
+                },
+                initialDate: '2024-03-26',
+                navLinks: true,
+                editable: true,
+                dayMaxEvents: true,
+                events: [
+                    {
+                        title: 'All Day Event',
+                        start: '2024-03-01',
+                        end: '2024-03-03',
+                        color : "#A8D8EA", 
+                        textColor : "#FFF"
+                    },
+                    {
+                        title: 'All Day Event',
+                        start: '2024-03-06',
+                        color : "#FCBAD3", 
+                        textColor : "#FFF"
+                    },
+                    {
+                        title: 'All Day Event',
+                        start: '2024-03-10T10:30:00',
+                        color : "#AA96DA" 
+                    }
+
+                ]
+            });
+            calendar.render();
+        });
+
+    </script>
+    <style>
+        body {
+            margin: 40px 10px;
+            padding: 0;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        #calendar {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /*요일*/
+        .fc-col-header-cell-cushion {
+            color: #000;
+        }
+        
+        .fc-col-header-cell-cushion:hover {
+            text-decoration: none;
+            color: #000;
+        }
+        
+        /*일자*/
+        .fc-daygrid-day-number {
+            color: #000;
+            font-size: 1em;
+        }
+        
+        /*종일제목*/
+        .fc-event-title.fc-sticky {
+            
+        }
+        
+        /*more버튼*/
+        .fc-daygrid-more-link.fc-more-link {
+            color: #000;
+        }
+        
+        /*일정시간*/
+        .fc-daygrid-event>.fc-event-time {
+            color: #000;
+        }
+        
+        /*시간제목*/
+        .fc-daygrid-dot-event>.fc-event-title {
+            color: #000 !important;
+        }
+        
+        /*가로 줄 - 월달력 종일 or 복수일자*/
+        .fc-h-event {
+            
+        }
+        
+        /*세로 줄 - 주달력, 일달력*/
+        .fc-v-event {
+            
+        }
+        
+        /*title 옆에 점*/
+        .fc-daygrid-event-dot {
+            
+        }
+        
+        /*month/week/day*/
+        .fc-button-active {
+            border-color: #7cbaec !important;
+            background-color: #7cbaec !important;
+            color: #000 !important;
+            font-weight: bold !important;
+        }
+        
+        /*노란버튼*/
+        .btn-warning {
+            font-weight: bold;
+        }
+        
+        /*모달 푸터*/
+        .modal-footer {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='calendar'></div>
+</body>
+
+</html>
