@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../source/styles/smart.default.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <script type="module" src="../source/modules/smart.element.js"></script>
+    <script type="module" src="../source/modules/smart.tabs.js"></script>
+    <script type="module" src="../source/modules/smart.table.js"></script>
+    <script type="module" src="../source/modules/smart.menu.js"></script>
+    <script type="module" src="../source/modules/smart.tree.js"></script>
+    <script type="module" src="../js/smart.js"></script>
+    <script src='../js/index.global.js'></script>
+    <title>Document</title>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                headerToolbar: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'dayGridMonth,dayGridWeek,dayGridDay'
+                },
+                initialDate: '2024-03-26',
+                navLinks: true,
+                editable: true,
+                dayMaxEvents: true,
+                events: [
+                    {
+                        title: 'All Day Event',
+                        start: '2024-03-01',
+                        end: '2024-03-03',
+                        color : "#A8D8EA", 
+                        textColor : "#FFF",
+
+                    },
+                    {
+                        title: 'All Day Event',
+                        start: '2024-03-06',
+                        color : "#FCBAD3", 
+                        textColor : "#FFF"
+                    },
+                    {
+                        title: 'All Day Event',
+                        start: '2024-03-10T10:30:00',
+                        color : "#AA96DA",
+                        class: 'event'
+                    }
+
+                ]
+            });
+            calendar.render();
+        });
+
+    </script>
+    <style>
+
+        /* body {
+            margin: 40px 10px;
+            padding: 0;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 16px;
+            font-weight: bold;
+        }
+*/
+        #calendar {
+            max-width: 1200px;
+        } 
+
+        /*요일*/
+        .fc-col-header-cell-cushion {
+            color: #000;
+        }
+        
+        .fc-col-header-cell-cushion:hover {
+            text-decoration: none;
+            color: #000;
+        }
+        
+        /*일자*/
+        .fc-daygrid-day-number {
+            color: #000;
+            font-size: 1em;
+        }
+        
+        /*종일제목*/
+        .fc-event-title.fc-sticky {
+            
+        }
+        
+        /*more버튼*/
+        .fc-daygrid-more-link.fc-more-link {
+            color: #000;
+        }
+        
+        /*일정시간*/
+        .fc-daygrid-event>.fc-event-time {
+            color: #000;
+        }
+        
+        /*시간제목*/
+        .fc-daygrid-dot-event>.fc-event-title {
+            color: #000 !important;
+        }
+        
+        /*가로 줄 - 월달력 종일 or 복수일자*/
+        .fc-h-event {
+            
+        }
+        
+        /*세로 줄 - 주달력, 일달력*/
+        .fc-v-event {
+            
+        }
+        
+        /*title 옆에 점*/
+        .fc-daygrid-event-dot {
+            
+        }
+        
+        /*month/week/day*/
+        .fc-button-active {
+            border-color: #7cbaec !important;
+            background-color: #7cbaec !important;
+            color: #000 !important;
+            font-weight: bold !important;
+        }
+        
+        /*노란버튼*/
+        .btn-warning {
+            font-weight: bold;
+        }
+        
+        /*모달 푸터*/
+        .modal-footer {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+    <body class="viewport">
+        <div id="primaryContainer">
+            <div id="header">
+                <smart-button id="toggleButton"></smart-button>
+                <div id="title">우리들의 Plnner</div>
+                <!-- <smart-button id="addNew" class="floating"><span>Create</span></smart-button> -->
+            </div>
+            <div class="content">
+                <section id="sideA">
+                    <div class="button-container">
+                        <smart-input id="searchBar" class="underlined" placeholder="Search for people"></smart-input>
+                    </div>
+                    <div class="controls-container">
+                        <!-- <smart-calendar id="calendar"></smart-calendar> -->
+                        <smart-tree id="tree" selection-mode="checkBox" toggle-element-position="far">
+                            <smart-tree-items-group expanded>
+                                My calendars
+                                <smart-tree-item value="birthday" selected>Birthdays</smart-tree-item>
+                                <smart-tree-item value="holiday" selected>Holidays</smart-tree-item>
+                                <smart-tree-item value="event" selected>Events</smart-tree-item>
+                            </smart-tree-items-group>
+                        </smart-tree>
+                    </div>
+                </section>
+                <section id="sideB">
+                    <!-- <smart-scheduler id="scheduler"></smart-scheduler> -->
+                    <div id='calendar'></div>
+                </section>
+            </div>
+        </div>
+    </body>
+
+</html>
