@@ -5,1039 +5,177 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="../source/styles/smart.default.css">
+    <link rel="stylesheet" type="text/css" href="../source/styles/smart.custom.css" />
     <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../source/styles/smart.default.css">
 
-    <!-- <script type="module" src="../source/styles/components/smart.calendar.css"></script> -->
-    <!-- <script type="module" src="../source/styles/components/smart.accordion.css"></script> -->
-    <!-- <script type="module" src="index.js"></script> -->
-    <script type="module" src="../source/modules/smart.element.js"></script>
-    <script type="module" src="../source/modules/smart.tabs.js"></script>
-    <script type="module" src="../source/modules/smart.table.js"></script>
-    <script type="module" src="../source/modules/smart.menu.js"></script>
+    <!-- <script type="module" src="../source/modules/smart.element.js"></script> -->
+    <!-- <script type="module" src="../source/modules/smart.tabs.js"></script> -->
+    <script type="module" src="../source/modules/smart.scheduler.js"></script>
+    <script type="module" src="../source/modules/smart.accordion.js"></script>
     <script type="module" src="../source/modules/smart.tree.js"></script>
-    <!-- <script type="module" src="../js/smart.js"></script> -->
-    <script>
-const today = new Date(), currentDate = today.getDate(), currentYear = today.getFullYear(), currentMonth = today.getMonth(), thanksgiving = (() => {
-    const tempDate = new Date(currentYear, 10, 1);
-    //4th Thursday of November
-    tempDate.setDate(tempDate.getDate() - tempDate.getDay() + 25);
-    return tempDate;
-})(), data = [
-    {
-        label: 'Brochure Design Review',
-        dateStart: new Date(currentYear, currentMonth, 10, 13, 15),
-        dateEnd: new Date(currentYear, currentMonth, 12, 16, 15),
-        status: 'tentative',
-        class: 'event'
-    }, {
-        label: 'Website Re-Design Plan',
-        dateStart: new Date(currentYear, currentMonth, 16, 16, 45),
-        dateEnd: new Date(currentYear, currentMonth, 18, 11, 15),
-        class: 'event'
-    }, {
-        label: 'Update Sales Strategy Documents',
-        dateStart: new Date(currentYear, currentMonth, 2, 12, 0),
-        dateEnd: new Date(currentYear, currentMonth, 2, 13, 45),
-        class: 'event',
-        repeat: {
-            repeatFreq: 'daily',
-            repeatInterval: 2,
-            repeatEnd: 5,
-            exceptions: [
-                {
-                    date: new Date(currentYear, currentMonth, 4, 12, 0),
-                    label: 'Employee on sick leave. Reschedule for next day',
-                    dateStart: new Date(currentYear, currentMonth, 5),
-                    dateEnd: new Date(currentYear, currentMonth, 6),
-                    status: 'outOfOffice',
-                    backgroundColor: '#F06292'
-                },
-                {
-                    date: new Date(currentYear, currentMonth, 8, 12, 0),
-                    label: 'Employee on sick leave. Reschedule for next day',
-                    dateStart: new Date(currentYear, currentMonth, 9),
-                    dateEnd: new Date(currentYear, currentMonth, 10),
-                    status: 'outOfOffice',
-                    backgroundColor: '#FFA000'
-                }
-            ]
-        }
-    }, {
-        label: 'Non-Compete Agreements',
-        dateStart: new Date(currentYear, currentMonth, currentDate - 1, 8, 15),
-        dateEnd: new Date(currentYear, currentMonth, currentDate - 1, 9, 0),
-        status: 'outOfOffice',
-        class: 'event'
-    }, {
-        label: 'Approve Hiring of John Jeffers',
-        dateStart: new Date(currentYear, currentMonth, currentDate + 1, 10, 0),
-        dateEnd: new Date(currentYear, currentMonth, currentDate + 1, 11, 15),
-        notifications: [
-            {
-                interval: 1,
-                type: 'days',
-                time: [today.getHours(), today.getMinutes()],
-                message: 'Approve Hiring of John Jeffers tomorrow',
-                iconType: 'success'
-            }
-        ],
-        status: 'busy',
-        class: 'event'
-    }, {
-        label: 'Update NDA Agreement',
-        dateStart: new Date(currentYear, currentMonth, currentDate - 2, 11, 45),
-        dateEnd: new Date(currentYear, currentMonth, currentDate - 2, 13, 45),
-        class: 'event'
-    }, {
-        label: 'Update Employee Files with New NDA',
-        dateStart: new Date(currentYear, currentMonth, currentDate + 2, 14, 0),
-        dateEnd: new Date(currentYear, currentMonth, currentDate + 2, 16, 45),
-        class: 'event'
-    }, {
-        label: 'Compete Agreements',
-        dateStart: new Date(currentYear, currentMonth, currentDate, today.getHours(), today.getMinutes() + 15),
-        dateEnd: new Date(currentYear, currentMonth, currentDate, today.getHours() + 1, 45),
-        notifications: [
-            {
-                interval: 0,
-                type: 'days',
-                time: [today.getHours(), today.getMinutes() + 1],
-                message: 'Compete Agreements in 15 minutes',
-                iconType: 'time'
-            },
-            {
-                interval: 0,
-                type: 'days',
-                time: [today.getHours(), today.getMinutes() + 2],
-                message: 'Compete Agreements in 14 minutes',
-                iconType: 'warning'
-            }
-        ],
-        status: 'outOfOffice',
-        class: 'event'
-    }, {
-        label: 'Approve Hiring of Mark Waterberg',
-        dateStart: new Date(currentYear, currentMonth, currentDate + 3, 10, 0),
-        dateEnd: new Date(currentYear, currentMonth, currentDate + 3, 11, 15),
-        status: 'busy',
-        class: 'event'
-    }, {
-        label: 'Update Employees Information',
-        dateStart: new Date(currentYear, currentMonth, currentDate, 14, 0),
-        dateEnd: new Date(currentYear, currentMonth, currentDate, 16, 45),
-        class: 'event',
-        repeat: {
-            repeatFreq: 'weekly',
-            repeatInterval: 2,
-            repeatOn: [2, 4],
-            repeatEnd: new Date(2021, 5, 24)
-        }
-    },
-    {
-        label: 'Prepare Shipping Cost Analysis Report',
-        dateStart: new Date(currentYear, currentMonth, currentDate + 1, 12, 30),
-        dateEnd: new Date(currentYear, currentMonth, currentDate + 1, 13, 30),
-        class: 'event',
-        repeat: {
-            repeatFreq: 'monthly',
-            repeatInterval: 1,
-            repeatOn: [new Date(currentYear, currentMonth, currentDate + 1)]
-        }
-    }, {
-        label: 'Provide Feedback on Shippers',
-        dateStart: new Date(currentYear, currentMonth, currentDate + 1, 14, 15),
-        dateEnd: new Date(currentYear, currentMonth, currentDate + 1, 16, 0),
-        status: 'tentative',
-        class: 'event'
-    }, {
-        label: 'Complete Shipper Selection Form',
-        dateStart: new Date(currentYear, currentMonth, currentDate + 1, 8, 30),
-        dateEnd: new Date(currentYear, currentMonth, currentDate + 1, 10, 0),
-        class: 'event'
-    }, {
-        label: 'Upgrade Server Hardware',
-        dateStart: new Date(currentYear, currentMonth, currentDate + 1, 12, 0),
-        dateEnd: new Date(currentYear, currentMonth, currentDate + 1, 14, 15),
-        class: 'event'
-    }, {
-        label: 'Upgrade Apps to Windows RT or stay with WinForms',
-        dateStart: new Date(currentYear, currentMonth, currentDate + 2, today.getHours(), today.getMinutes() + 5),
-        dateEnd: new Date(currentYear, currentMonth, currentDate + 2, today.getHours() + 2),
-        status: 'tentative',
-        class: 'event',
-        repeat: {
-            repeatFreq: 'daily',
-            repeatInterval: 1,
-            repeatOn: currentDate + 1,
-            repeatEnd: new Date(currentYear, currentMonth, currentDate + 7),
-            exceptions: [{
-                    date: new Date(currentYear, currentMonth, currentDate + 4, 10, 30),
-                    label: 'A day off work',
-                    status: 'busy',
-                    backgroundColor: '#64DD17'
-                }]
-        },
-        notifications: [
-            {
-                interval: 2,
-                type: 'days',
-                time: [today.getHours(), today.getMinutes()],
-                message: 'Upgrade Apps to Windows RT in 5 minutes',
-                iconType: 'time'
-            }
-        ],
-    },
-    {
-        label: 'Peter\'s Birthday',
-        dateStart: new Date(currentYear, currentMonth, 5),
-        dateEnd: new Date(currentYear, currentMonth, 6),
-        class: 'birthday'
-    },
-    {
-        label: 'Michael\'s Brithday',
-        dateStart: new Date(currentYear, currentMonth, 10),
-        dateEnd: new Date(currentYear, currentMonth, 11),
-        class: 'birthday'
-    },
-    {
-        label: 'Christina\'s Birthday',
-        dateStart: new Date(currentYear, currentMonth, 20),
-        dateEnd: new Date(currentYear, currentMonth, 21),
-        class: 'birthday'
-    }, {
-        label: 'Halloween',
-        dateStart: new Date(currentYear, 9, 31),
-        dateEnd: new Date(currentYear, 9, 32),
-        class: 'holiday'
-    }, {
-        label: 'Marry Christmas',
-        dateStart: new Date(currentYear, 11, 24),
-        dateEnd: new Date(currentYear, 11, 26, 23, 59, 59),
-        class: 'holiday'
-    },
-    {
-        label: 'Thanksgiving',
-        dateStart: thanksgiving,
-        dateEnd: new Date(currentYear, 10, thanksgiving.getDate() + 1),
-        class: 'holiday'
-    },
-    {
-        label: 'Day after Thanksgiving',
-        dateStart: new Date(currentYear, 10, thanksgiving.getDate() + 1),
-        dateEnd: new Date(currentYear, 10, thanksgiving.getDate() + 2),
-        class: 'holiday'
-    },
-    {
-        label: 'Indipendence Day',
-        dateStart: new Date(currentYear, 6, 4),
-        dateEnd: new Date(currentYear, 6, 5),
-        class: 'holiday'
-    },
-    {
-        label: 'New Year\'s Eve',
-        dateStart: new Date(currentYear, 11, 31),
-        dateEnd: new Date(currentYear + 1, 0, 1),
-        class: 'holiday'
-    }
-];
-window.Smart('#scheduler', class {
-    get properties() {
-        return {
-            //Properties
-            view: 'month',
-            views: ['day',
-                {
-                    type: 'week',
-                    hideWeekend: true,
-                },
-                {
-                    type: 'month',
-                    hideWeekend: true,
-                }, 'agenda',
-                {
-                    label: '4 days',
-                    value: 'workWeek',
-                    type: 'week',
-                    shortcutKey: 'X',
-                    hideWeekend: false,
-                    hideNonworkingWeekdays: true,
-                }],
-            nonworkingDays: getPastThreeWeekdays(today.getDay()),
-            dateCurrent: new Date(),
-            dataSource: data,
-            firstDayOfWeek: 1,
-            disableDateMenu: true,
-            currentTimeIndicator: true
-        };
-    }
-});
-window.Smart('#calendar', class {
-    get properties() {
-        return {
-            //Properties
-            scrollButtonsPosition: 'far'
-        };
-    }
-});
-window.onload = function () {
-    const primaryContainer = document.getElementById('primaryContainer'), calendar = document.getElementById('calendar'), scheduler = document.querySelector('smart-scheduler');
-    document.getElementById('toggleButton').addEventListener('click', function () {
-        primaryContainer.classList.toggle('collapse');
-        scheduler.disableDateMenu = !primaryContainer.classList.contains('collapse');
-    });
-    document.getElementById('addNew').addEventListener('click', function () {
-        scheduler.openWindow({ class: 'event' });
-    });
-    document.getElementById('calendar').addEventListener('change', function (event) {
-        scheduler.dateCurrent = event.detail.value;
-    });
-    document.getElementById('tree').addEventListener('change', function (event) {
-        const tree = event.target, types = tree.selectedIndexes.map((i) => tree.getItem(i).value);
-        scheduler.dataSource = data.filter(d => types.indexOf(d.class) > -1);
-    });
-    scheduler.addEventListener('dragEnd', updateData);
-    scheduler.addEventListener('resizeEnd', updateData);
-    scheduler.addEventListener('itemUpdate', updateData);
-    scheduler.addEventListener('itemRemove', updateData);
-    //Update the Calendar date
-    scheduler.addEventListener('dateChange', function (event) {
-        calendar.selectedDates = [event.detail.value];
-    });
-};
-function updateData(event) {
-    const item = event.detail.item;
-    for (let i = 0; i < data.length; i++) {
-        const dataItem = data[i];
-        if (dataItem.label === item.label && dataItem.class === item.class) {
-            event.type === 'itemRemove' ? data.splice(i, 1) : data.splice(i, 1, item);
-            return;
-        }
-    }
-}
-function getPastThreeWeekdays(weekday) {
-    let weekdays = [];
-    for (let i = 0; i < 3; i++) {
-        weekdays.push((weekday - i + 7) % 7);
-    }
-    return weekdays;
-}
-export {};
+    <script type="module" src='../js/smart.js'></script>
 
-    </script>
+    <style>
+        .viewport .options smart-drop-down-list {
+            width: 100%;
+        }
+
+        html,
+        body {
+            font-family: Roboto, "Helvetica Neue", sans-serif;
+            font-display: auto;
+        }
+
+        .dark-mode {
+            background: #242424 !important;
+            color: #8E8E8E;
+        }
+
+        .dark-mode h1 {
+            color: #8E8E8E;
+        }
+
+        ::-webkit-scrollbar {
+            width: 13px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #EEEEEE;
+        }
+
+        ::-webkit-scrollbar-track-piece {
+            background-color: #EEEEEE;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            height: 50px;
+            background-color: #BEBEBE;
+            border-radius: 0px;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background-color: #EEEEEE;
+        }
+
+        ::-webkit-resizer {
+            background-color: #EEEEEE;
+        }
+
+        .dark-mode.viewport .options .options,
+        .dark-mode.viewport .options .option,
+        .dark-mode.viewport .options .caption {
+            color: #f0f0f0 !important;
+        }
+
+        .dark-mode.viewport .options smart-check-box {
+            --smart-check-box-color: #f0f0f0;
+        }
+
+        .demo-description h1 {
+            font-size: 14px;
+        }
+
+        .demo-description p {
+            font-size: 13px;
+        }
+
+        .demo-description {
+            max-width: 65%;
+            font-size: 13px;
+            margin-bottom: 30px
+        }
+
+        .viewport .options {
+            padding: 20px;
+            background-color: rgba(191, 191, 191, .15);
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 260px
+        }
+
+        @media (max-width:750px) {
+            .demo-description {
+                max-width: 60%;
+            }
+
+            .viewport .options {
+                position: relative;
+                top: 30px;
+                width: 240px;
+                margin: 0 auto
+            }
+        }
+
+        .viewport .options .option {
+            margin-top: 10px
+        }
+
+        .viewport .options .caption {
+            color: #333
+        }
+
+        .viewport .options .text-input {
+            font-family: Montserrat, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            border-color: #ddd;
+            border-radius: 4px;
+            height: 30px;
+            width: 150px;
+            border-style: solid;
+            border-width: 1px;
+            box-sizing: border-box;
+            padding: 5px
+        }
+
+        .viewport .options .text-input:focus {
+            border-color: var(--smart-primary)
+        }
+
+        .viewport .options .text-input::selection {
+            background: var(--smart-primary);
+            color: var(--smart-primary-color);
+        }
+
+        #buttonMonth .smart-button, smart-unselectable, smart-container {
+            font-size: 2rem;
+        }
+    </style>
 </head>
 
-<body>
 
-    <body class="viewport">
-        <div id="primaryContainer">
-            <div id="header">
-                <smart-button id="toggleButton"></smart-button>
-                <div id="title">Scheduler</div>
-                <smart-button id="addNew" class="floating"><span>Create</span></smart-button>
-            </div>
-            <div class="content">
-                <section id="sideA">
-                    <div class="button-container">
-                        <div id="logo"></div>
-                    </div>
-                    <div class="controls-container">
-                        <smart-calendar id="calendar"></smart-calendar>
-                        <smart-input id="searchBar" class="underlined" placeholder="Search for people"></smart-input>
-                        <smart-tree id="tree" selection-mode="checkBox" toggle-element-position="far">
-                            <smart-tree-items-group expanded>
-                                My calendars
-                                <smart-tree-item value="birthday" selected>Birthdays</smart-tree-item>
-                                <smart-tree-item value="holiday" selected>Holidays</smart-tree-item>
-                                <smart-tree-item value="event" selected>Events</smart-tree-item>
-                            </smart-tree-items-group>
-                        </smart-tree>
-                    </div>
-                </section>
-                <section id="sideB">
-                    <!-- <smart-scheduler id="scheduler"></smart-scheduler> -->
-                    <smart-scheduler id="scheduler" class="smart-element smart-scheduler" view-type="month" view="month"
-                        views="[&quot;day&quot;,{&quot;type&quot;:&quot;week&quot;,&quot;hideWeekend&quot;:true,&quot;value&quot;:&quot;week&quot;,&quot;label&quot;:&quot;Week&quot;},{&quot;type&quot;:&quot;month&quot;,&quot;hideWeekend&quot;:true,&quot;value&quot;:&quot;month&quot;,&quot;label&quot;:&quot;Month&quot;},&quot;agenda&quot;,{&quot;label&quot;:&quot;4 days&quot;,&quot;value&quot;:&quot;workWeek&quot;,&quot;type&quot;:&quot;week&quot;,&quot;shortcutKey&quot;:&quot;X&quot;,&quot;hideWeekend&quot;:false,&quot;hideNonworkingWeekdays&quot;:true}]"
-                        nonworking-days="[3,2,1]" date-current="Wed Mar 27 2024 10:56:33 GMT+0900 (GMT+09:00)"
-                        first-day-of-week="1" disable-date-menu="" current-time-indicator="" role="grid" tabindex="0">
-                        <div role="presentation" smart-id="container" class="smart-container">
-                            <div class="smart-scheduler-header" role="heading" aria-level="1" smart-id="header">
-                                <div class="smart-scheduler-date-nav" role="presentation"
-                                    smart-id="dateSelectorContainer">
-                                    <smart-button today="" class="smart-scheduler-nav smart-element smart-button"
-                                        smart-id="todayDate" id="button60e0" role="button"><button
-                                            class="smart-button smart-unselectable smart-container" type="button"
-                                            role="presentation" smart-id="button"
-                                            tabindex="0"><span>Today</span></button></smart-button>
-                                    <smart-repeat-button prev="" initial-delay="0" delay="80" aria-label="Previous date"
-                                        class="smart-scheduler-nav smart-element smart-repeat-button"
-                                        smart-id="previousDate" id="repeatButtone811" role="button"><button
-                                            class="smart-button smart-unselectable smart-container" type="button"
-                                            role="presentation" smart-id="button"
-                                            tabindex="0"></button></smart-repeat-button>
-                                    <smart-repeat-button next="" initial-delay="0" delay="80" aria-label="Next date"
-                                        class="smart-scheduler-nav smart-element smart-repeat-button"
-                                        smart-id="nextDate" id="repeatButtoncfed" role="button"><button
-                                            class="smart-button smart-unselectable smart-container" type="button"
-                                            role="presentation" smart-id="button"
-                                            tabindex="0"></button></smart-repeat-button>
-                                    <smart-button current="" class="smart-scheduler-nav smart-element smart-button"
-                                        smart-id="currentDate" id="buttonb3eb" role="button"
-                                        aria-haspopup="true"><button
-                                            class="smart-button smart-unselectable smart-container" type="button"
-                                            role="presentation" smart-id="button" tabindex="0"> March
-                                            2024</button></smart-button>
-                                </div>
-                                <div class="smart-scheduler-view-nav" role="presentation"
-                                    smart-id="viewSelectorContainer" show-menu="">
-
-                                    <smart-button class="smart-scheduler-view-items-button smart-element smart-button"
-                                        aria-label="View Selector DropDown" smart-id="viewItemsButton" id="button7672"
-                                        role="button" aria-controls="tooltipbb46" aria-haspopup="true"><button
-                                            class="smart-button smart-unselectable smart-container" type="button"
-                                            role="presentation" smart-id="button"
-                                            tabindex="0"><span>Month</span></button></smart-button>
-                                </div>
-                            </div>
-                            <div class="smart-scheduler-view-container" role="presentation" smart-id="viewContent">
-                                <div class="smart-scheduler-view" smart-id="timeline" tabindex="0">
-                                    <div class="smart-scheduler-view-header-horizontal" role="rowgroup"
-                                        smart-id="timelineHeaderHorizontal">
-                                        <div class="smart-scheduler-view-time-container" role="row"
-                                            smart-id="timelineViewCellsContainer">
-                                            <div class="smart-scheduler-view-label-container" role="presentation"
-                                                smart-id="timelineViewCellsLabelContainer"></div>
-                                            <div class="smart-scheduler-view-header-horizontal-content"
-                                                role="presentation" smart-id="timelineHeaderHorizontalContent">
-                                                <div class="smart-scheduler-view-details" role="row"></div>
-                                                <div class="smart-scheduler-view-time" role="row">
-                                                    <div class="smart-scheduler-cells" role="presentation">
-                                                        <div class="smart-scheduler-cell" role="gridcell" nonworking=""
-                                                            style="width: 115px; left: 0px;">
-                                                            <div>Mon</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell" nonworking=""
-                                                            style="width: 115px; left: 115px;">
-                                                            <div>Tue</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell" nonworking=""
-                                                            current="" style="width: 115px; left: 230px;">
-                                                            <div>Wed</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            style="width: 115px; left: 345px;">
-                                                            <div>Thu</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            style="width: 115px; left: 460px;">
-                                                            <div>Fri</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="smart-scheduler-view-all-day" role="row"
-                                            smart-id="timelineViewAllDay">
-                                            <div class="smart-scheduler-view-all-day-label-container"
-                                                role="presentation" smart-id="timelineAllDayLabelContainer">
-                                                <div class="smart-scheduler-view-all-day-label" role="presentation"
-                                                    smart-id="timelineViewAllDaylabel"></div>
-
-                                            </div>
-                                            <div class="smart-scheduler-view-all-day-content" role="presentation"
-                                                smart-id="timelineViewAllDayContent">
-                                                <div class="smart-scheduler-cells-container" role="row"
-                                                    smart-id="timelineViewAllDayCellsContainer"></div>
-                                                <div class="smart-scheduler-events-container" role="menu"
-                                                    smart-id="allDayEventsContainer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="smart-scheduler-view-header-vertical" role="rowgroup"
-                                        smart-id="timelineHeaderVertical" style="">
-                                        <div class="smart-scheduler-view-header-vertical-content" role="presentation"
-                                            smart-id="timelineHeaderVerticalContent">
-                                            <div class="smart-scheduler-view-time" role="row">
-                                                <div class="smart-scheduler-cells" role="presentation">
-                                                    <div class="smart-scheduler-cell" role="gridcell"
-                                                        style="height: 142.83px; top: 0px;">
-                                                        <div></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-cell" role="gridcell"
-                                                        style="height: 142.83px; top: 142.83px;">
-                                                        <div></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-cell" role="gridcell"
-                                                        style="height: 142.83px; top: 285.66px;">
-                                                        <div></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-cell" role="gridcell"
-                                                        style="height: 142.83px; top: 428.49px;">
-                                                        <div></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-cell" role="gridcell"
-                                                        style="height: 142.83px; top: 571.32px;">
-                                                        <div></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-cell" role="gridcell"
-                                                        style="height: 142.83px; top: 714.15px;">
-                                                        <div></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="smart-scheduler-scrollable-container" role="rowgroup"
-                                        smart-id="timelineContainer">
-                                        <div class="smart-scheduler-content" role="presentation"
-                                            smart-id="timelineContent" style="">
-
-                                            <div class="smart-scheduler-cells-container" role="presentation"
-                                                smart-id="timelineCellsContainer">
-                                                <div class="smart-scheduler-cell-container" role="row"
-                                                    style="height: 142.83px; top: 0px;">
-                                                    <div class="smart-scheduler-cell scale" role="presentation"
-                                                        style="height: 100%;">
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true"
-                                                            date="Mon Feb 26 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 0px;" nonworking=""
-                                                            other-month="">
-                                                            <div>26</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell" nonworking=""
-                                                            aria-haspopup="true" other-month=""
-                                                            date="Tue Feb 27 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 115px;">
-                                                            <div>27</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell" nonworking=""
-                                                            aria-haspopup="true" other-month=""
-                                                            date="Wed Feb 28 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 230px;">
-                                                            <div>28</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true" other-month=""
-                                                            date="Thu Feb 29 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 345px;">
-                                                            <div>29</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true"
-                                                            date="Fri Mar 01 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 460px;">
-                                                            <div>Mar 1</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="smart-scheduler-cell-container" role="row"
-                                                    style="height: 142.83px; top: 142.83px;">
-                                                    <div class="smart-scheduler-cell scale" role="presentation"
-                                                        style="height: 100%;">
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true"
-                                                            date="Mon Mar 04 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 0px;" nonworking="">
-                                                            <div>4</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell" nonworking=""
-                                                            aria-haspopup="true"
-                                                            date="Tue Mar 05 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 115px;">
-                                                            <div>5</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell" nonworking=""
-                                                            aria-haspopup="true"
-                                                            date="Wed Mar 06 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 230px;">
-                                                            <div>6</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true"
-                                                            date="Thu Mar 07 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 345px;">
-                                                            <div>7</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true"
-                                                            date="Fri Mar 08 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 460px;">
-                                                            <div>8</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="smart-scheduler-cell-container" role="row"
-                                                    style="height: 142.83px; top: 285.66px;">
-                                                    <div class="smart-scheduler-cell scale" role="presentation"
-                                                        style="height: 100%;">
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true"
-                                                            date="Mon Mar 11 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 0px;" nonworking="">
-                                                            <div>11</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell" nonworking=""
-                                                            aria-haspopup="true"
-                                                            date="Tue Mar 12 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 115px;">
-                                                            <div>12</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell" nonworking=""
-                                                            aria-haspopup="true"
-                                                            date="Wed Mar 13 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 230px;">
-                                                            <div>13</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true"
-                                                            date="Thu Mar 14 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 345px;">
-                                                            <div>14</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true"
-                                                            date="Fri Mar 15 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 460px;">
-                                                            <div>15</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="smart-scheduler-cell-container" role="row"
-                                                    style="height: 142.83px; top: 428.49px;">
-                                                    <div class="smart-scheduler-cell scale" role="presentation"
-                                                        style="height: 100%;">
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true"
-                                                            date="Mon Mar 18 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 0px;" nonworking="">
-                                                            <div>18</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell" nonworking=""
-                                                            aria-haspopup="true"
-                                                            date="Tue Mar 19 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 115px;">
-                                                            <div>19</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell" nonworking=""
-                                                            aria-haspopup="true"
-                                                            date="Wed Mar 20 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 230px;">
-                                                            <div>20</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true"
-                                                            date="Thu Mar 21 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 345px;">
-                                                            <div>21</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true"
-                                                            date="Fri Mar 22 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 460px;">
-                                                            <div>22</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="smart-scheduler-cell-container" role="row"
-                                                    style="height: 142.83px; top: 571.32px;">
-                                                    <div class="smart-scheduler-cell scale" role="presentation"
-                                                        style="height: 100%;">
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true"
-                                                            date="Mon Mar 25 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 0px;" nonworking="">
-                                                            <div>25</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell" nonworking=""
-                                                            aria-haspopup="true"
-                                                            date="Tue Mar 26 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 115px;">
-                                                            <div>26</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell" nonworking=""
-                                                            today="" aria-haspopup="true"
-                                                            date="Wed Mar 27 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 230px;">
-                                                            <div>27</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true"
-                                                            date="Thu Mar 28 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 345px;">
-                                                            <div>28</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true"
-                                                            date="Fri Mar 29 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 460px;">
-                                                            <div>29</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="smart-scheduler-cell-container" role="row"
-                                                    style="height: 142.83px; top: 714.15px;">
-                                                    <div class="smart-scheduler-cell scale" role="presentation"
-                                                        style="height: 100%;">
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true" other-month=""
-                                                            date="Mon Apr 01 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 0px;" nonworking="">
-                                                            <div>Apr 1</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell" nonworking=""
-                                                            aria-haspopup="true" other-month=""
-                                                            date="Tue Apr 02 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 115px;">
-                                                            <div>2</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell" nonworking=""
-                                                            aria-haspopup="true" other-month=""
-                                                            date="Wed Apr 03 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 230px;">
-                                                            <div>3</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true" other-month=""
-                                                            date="Thu Apr 04 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 345px;">
-                                                            <div>4</div>
-                                                        </div>
-                                                        <div class="smart-scheduler-cell" role="gridcell"
-                                                            aria-haspopup="true" other-month=""
-                                                            date="Fri Apr 05 2024 00:00:00 GMT+0900 (GMT+09:00)"
-                                                            style="width: 115px; left: 460px;">
-                                                            <div>5</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="smart-scheduler-events-container" role="menu"
-                                                smart-id="timelineEventsContainer">
-                                                <div class="smart-scheduler-event event" role="menuitem"
-                                                    aria-haspopup="true" status="tentative" tabindex="0"
-                                                    title="Brochure Design Review"
-                                                    style="height: 30px; width: 230px; left: 0px; top: 309.66px;">
-                                                    <div class="smart-scheduler-event-content" single-line="">
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-label">Brochure Design
-                                                                Review</label></div>
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-time">Mar 10 - Mar
-                                                                12</label></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-event-button" tabindex="0"></div>
-                                                </div>
-                                                <div class="smart-scheduler-event event" role="menuitem"
-                                                    aria-haspopup="true" tabindex="0" title="Update NDA Agreement"
-                                                    style="height: 30px; width: 115px; left: 0px; top: 595.32px;">
-                                                    <div class="smart-scheduler-event-content" single-line="">
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-label">Update NDA
-                                                                Agreement</label></div>
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-time">Mar 25</label></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-event-button" tabindex="0"></div>
-                                                </div>
-                                                <div class="smart-scheduler-event" role="menuitem" aria-haspopup="true"
-                                                    status="outOfOffice" repeating="" exception="" tabindex="0"
-                                                    title="Employee on sick leave. Reschedule for next day"
-                                                    style="--smart-scheduler-event-background: rgba(240,98,146,1); --smart-scheduler-event-focus: rgba(240,98,146,0.9); --smart-scheduler-event-hover: rgba(240,98,146,0.8); height: 30px; width: 115px; left: 115px; top: 166.83px;">
-                                                    <div class="smart-scheduler-event-content" single-line="">
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-label">Employee on sick
-                                                                leave. Reschedule for next day</label></div>
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-time">Mar 5 - Mar 6</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="smart-scheduler-event-button" tabindex="0"></div>
-                                                </div>
-                                                <div class="smart-scheduler-event birthday" role="menuitem"
-                                                    aria-haspopup="true" tabindex="0" title="Peter's Birthday"
-                                                    style="height: 30px; width: 115px; left: 115px; top: 196.83px;">
-                                                    <div class="smart-scheduler-event-content" single-line="">
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-label">Peter's
-                                                                Birthday</label></div>
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-time">Mar 5 - Mar 6</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="smart-scheduler-event-button" tabindex="0"></div>
-                                                </div>
-                                                <div class="smart-scheduler-event event" role="menuitem"
-                                                    aria-haspopup="true" status="outOfOffice" tabindex="0"
-                                                    title="Non-Compete Agreements"
-                                                    style="height: 30px; width: 115px; left: 115px; top: 595.32px;">
-                                                    <div class="smart-scheduler-event-content" single-line="">
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-label">Non-Compete
-                                                                Agreements</label></div>
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-time">Mar 26</label></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-event-button" tabindex="0"></div>
-                                                </div>
-                                                <div class="smart-scheduler-event birthday" role="menuitem"
-                                                    aria-haspopup="true" tabindex="0" title="Christina's Birthday"
-                                                    style="height: 30px; width: 115px; left: 230px; top: 452.49px;">
-                                                    <div class="smart-scheduler-event-content" single-line="">
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-label">Christina's
-                                                                Birthday</label></div>
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-time">Mar 20 - Mar
-                                                                21</label></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-event-button" tabindex="0"></div>
-                                                </div>
-                                                <div class="smart-scheduler-event event" role="menuitem"
-                                                    aria-haspopup="true" status="outOfOffice" tabindex="0"
-                                                    title="Compete Agreements"
-                                                    style="height: 30px; width: 115px; left: 230px; top: 595.32px;">
-                                                    <div class="smart-scheduler-event-content" single-line="">
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-label">Compete
-                                                                Agreements</label></div>
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-time">Mar 27</label></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-event-button" tabindex="0"></div>
-                                                </div>
-                                                <div class="smart-scheduler-event event" role="menuitem"
-                                                    aria-haspopup="true" tabindex="0"
-                                                    title="Complete Shipper Selection Form"
-                                                    style="height: 30px; width: 115px; left: 345px; top: 595.32px;">
-                                                    <div class="smart-scheduler-event-content" single-line="">
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-label">Complete Shipper
-                                                                Selection Form</label></div>
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-time">Mar 28</label></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-event-button" tabindex="0"></div>
-                                                </div>
-                                                <div class="smart-scheduler-event event" role="menuitem"
-                                                    aria-haspopup="true" status="busy" tabindex="0"
-                                                    title="Approve Hiring of John Jeffers"
-                                                    style="height: 30px; width: 115px; left: 345px; top: 625.32px;">
-                                                    <div class="smart-scheduler-event-content" single-line="">
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-label">Approve Hiring of
-                                                                John Jeffers</label></div>
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-time">Mar 28</label></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-event-button" tabindex="0"></div>
-                                                </div>
-                                                <div class="smart-scheduler-event event" role="menuitem"
-                                                    aria-haspopup="true" tabindex="0" title="Upgrade Server Hardware"
-                                                    style="height: 30px; width: 115px; left: 345px; top: 655.32px;">
-                                                    <div class="smart-scheduler-event-content" single-line="">
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-label">Upgrade Server
-                                                                Hardware</label></div>
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-time">Mar 28</label></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-event-button" tabindex="0"></div>
-                                                </div>
-                                                <div class="smart-scheduler-event event" role="menuitem"
-                                                    aria-haspopup="true" tabindex="0"
-                                                    title="Update Employee Files with New NDA"
-                                                    style="height: 30px; width: 115px; left: 460px; top: 625.32px;">
-                                                    <div class="smart-scheduler-event-content" single-line="">
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-label">Update Employee
-                                                                Files with New NDA</label></div>
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-time">Mar 29</label></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-event-button" tabindex="0"></div>
-                                                </div>
-                                                <div class="smart-scheduler-event event" role="menuitem"
-                                                    aria-haspopup="true" repeating="" tabindex="0"
-                                                    title="Update Sales Strategy Documents"
-                                                    style="height: 30px; width: 115px; left: 230px; top: 166.83px;">
-                                                    <div class="smart-scheduler-event-content" single-line="">
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-label">Update Sales
-                                                                Strategy Documents</label></div>
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-time">Mar 6</label></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-event-button" tabindex="0"></div>
-                                                </div>
-                                                <div class="smart-scheduler-event" collector="" role="menuitem"
-                                                    aria-haspopup="true" tabindex="0"
-                                                    style="top: 571.32px; height: 24px; left: 345px; width: 115px;">
-                                                    <div class="smart-scheduler-event-content">
-                                                        <div>2 more</div>
-                                                    </div>
-                                                </div>
-                                                <div class="smart-scheduler-event event" role="menuitem"
-                                                    aria-haspopup="true" status="tentative" repeating="" tabindex="0"
-                                                    title="Upgrade Apps to Windows RT or stay with WinForms"
-                                                    style="height: 30px; width: 115px; left: 460px; top: 595.32px;">
-                                                    <div class="smart-scheduler-event-content" single-line="">
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-label">Upgrade Apps to
-                                                                Windows RT or stay with WinForms</label></div>
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-time">Mar 29</label></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-event-button" tabindex="0"></div>
-                                                </div>
-                                                <div class="smart-scheduler-event event" role="menuitem"
-                                                    aria-haspopup="true" status="tentative" repeating="" tabindex="0"
-                                                    title="Upgrade Apps to Windows RT or stay with WinForms"
-                                                    style="height: 30px; width: 115px; left: 0px; top: 738.15px;">
-                                                    <div class="smart-scheduler-event-content" single-line="">
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-label">Upgrade Apps to
-                                                                Windows RT or stay with WinForms</label></div>
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-time">Apr 1</label></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-event-button" tabindex="0"></div>
-                                                </div>
-                                                <div class="smart-scheduler-event event" role="menuitem"
-                                                    aria-haspopup="true" status="tentative" repeating="" tabindex="0"
-                                                    title="Upgrade Apps to Windows RT or stay with WinForms"
-                                                    style="height: 30px; width: 115px; left: 115px; top: 738.15px;">
-                                                    <div class="smart-scheduler-event-content" single-line="">
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-label">Upgrade Apps to
-                                                                Windows RT or stay with WinForms</label></div>
-                                                        <div role="presentation"><label
-                                                                class="smart-scheduler-event-time">Apr 2</label></div>
-                                                    </div>
-                                                    <div class="smart-scheduler-event-button" tabindex="0"></div>
-                                                </div>
-                                            </div>
-                                            <div class="smart-scheduler-indicators-container" role="presentation"
-                                                smart-id="timelineIndicatorsContainer">
-                                                <div class="smart-scheduler-current-time" role="presentation">
-                                                    <div class="smart-scheduler-current-time-indicator" role="gridcell"
-                                                        aria-label="Current Time Indicator"
-                                                        style="width: 115px; left: 230px; top: 652.852px;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div smart-id="toastContainerCustom"
-                                        class="smart-toast-container smart-toast-container-custom"><smart-toast-item
-                                            item-class="smart-scheduler-event-notification" show-close-button=""
-                                            class="smart-element smart-toast-item smart-scheduler-event-notification success"
-                                            id="toastItema4d3" role="alert" opened="">
-                                            <div role="presentation" smart-id="container" class="smart-container">
-                                                <div class="smart-toast-item-header">
-                                                    <span class="smart-toast-item-close-button" role="button"
-                                                        aria-label="Close"></span>
-                                                </div>
-                                                <div class="smart-toast-item-container" smart-id="itemContainer">
-                                                    <span class="smart-toast-item-icon default" role="presentation"
-                                                        aria-label="success icon"></span>
-                                                    <span class="smart-toast-item-content"
-                                                        smart-id="itemContent">Approve Hiring of John Jeffers
-                                                        tomorrow</span>
-                                                </div>
-                                            </div>
-                                        </smart-toast-item><smart-toast-item
-                                            item-class="smart-scheduler-event-notification" show-close-button=""
-                                            class="smart-element smart-toast-item smart-scheduler-event-notification time"
-                                            id="toastItemeeae" role="alert" opened="">
-                                            <div role="presentation" smart-id="container" class="smart-container">
-                                                <div class="smart-toast-item-header">
-                                                    <span class="smart-toast-item-close-button" role="button"
-                                                        aria-label="Close"></span>
-                                                </div>
-                                                <div class="smart-toast-item-container" smart-id="itemContainer">
-                                                    <span class="smart-toast-item-icon default" role="presentation"
-                                                        aria-label="time icon"></span>
-                                                    <span class="smart-toast-item-content"
-                                                        smart-id="itemContent">Upgrade Apps to Windows RT in 5
-                                                        minutes</span>
-                                                </div>
-                                            </div>
-                                        </smart-toast-item><smart-toast-item
-                                            item-class="smart-scheduler-event-notification" show-close-button=""
-                                            class="smart-element smart-toast-item smart-scheduler-event-notification time"
-                                            id="toastItem5638" role="alert" opened="">
-                                            <div role="presentation" smart-id="container" class="smart-container">
-                                                <div class="smart-toast-item-header">
-                                                    <span class="smart-toast-item-close-button" role="button"
-                                                        aria-label="Close"></span>
-                                                </div>
-                                                <div class="smart-toast-item-container" smart-id="itemContainer">
-                                                    <span class="smart-toast-item-icon default" role="presentation"
-                                                        aria-label="time icon"></span>
-                                                    <span class="smart-toast-item-content"
-                                                        smart-id="itemContent">Compete Agreements in 15 minutes</span>
-                                                </div>
-                                            </div>
-                                        </smart-toast-item></div>
-                                </div>
-                                <smart-scroll-bar
-                                    class="smart-scheduler-view-scroll-bar smart-element smart-scroll-bar smart-hidden"
-                                    orientation="vertical" aria-controls="scheduler" animation="advanced"
-                                    smart-id="verticalScrollBar" show-buttons="" id="scrollBar774c" role="scrollbar"
-                                    aria-orientation="vertical" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"
-                                    max="0">
-                                    <div class="smart-container" role="presentation" smart-id="container">
-                                        <div class="smart-scroll-button smart-arrow-up" role="presentation"
-                                            aria-hidden="true" smart-id="nearButton"></div>
-                                        <div class="smart-track" role="presentation" smart-id="track">
-                                            <div class="smart-thumb smart-hidden" role="presentation" smart-id="thumb"
-                                                style="height: 10px; top: 0px;"></div>
-                                        </div>
-                                        <div class="smart-scroll-button smart-arrow-down" role="presentation"
-                                            aria-hidden="true" smart-id="farButton"></div>
-                                    </div>
-                                </smart-scroll-bar>
-                                <smart-scroll-bar
-                                    class="smart-scheduler-view-scroll-bar smart-element smart-scroll-bar smart-hidden"
-                                    aria-controls="scheduler" animation="advanced" smart-id="horizontalScrollBar"
-                                    show-buttons="" id="scrollBar7888" role="scrollbar" aria-orientation="horizontal"
-                                    aria-valuemin="0" aria-valuemax="0" aria-valuenow="0" max="0">
-                                    <div class="smart-container" role="presentation" smart-id="container">
-                                        <div class="smart-scroll-button smart-arrow-left" role="presentation"
-                                            aria-hidden="true" smart-id="nearButton"></div>
-                                        <div class="smart-track" role="presentation" smart-id="track">
-                                            <div class="smart-thumb smart-hidden" role="presentation" smart-id="thumb"
-                                                style="width: 10px; left: 0px;"></div>
-                                        </div>
-                                        <div class="smart-scroll-button smart-arrow-right" role="presentation"
-                                            aria-hidden="true" smart-id="farButton"></div>
-                                    </div>
-                                </smart-scroll-bar>
-                            </div>
-                            <div class="smart-scheduler-footer" smart-id="footer"></div>
-                            <smart-tooltip class="smart-scheduler-tooltip smart-element smart-tooltip"
-                                role="presentation" position="auto" arrow="" open-mode="manual" delay="0"
-                                smart-id="tooltip" id="tooltipbb46" tabindex="0">
-                                <div role="presentation" smart-id="container" class="smart-container">
-                                    <div class="smart-tooltip-content" role="presentation" smart-id="content"></div>
-                                </div>
-                            </smart-tooltip>
-                            <smart-toast append-to="[object HTMLDivElement]" show-close-button=""
-                                item-class="smart-scheduler-event-notification" class="smart-element smart-toast"
-                                id="toast6fbc"></smart-toast>
-                        </div>
-                        <div class="smart-resize-trigger-container" aria-hidden="true" style="">
-                            <div class="smart-resize-trigger-container">
-                                <div class="smart-resize-trigger" style="width: 100000px; height: 100000px;"></div>
-                            </div>
-                            <div class="smart-resize-trigger-container">
-                                <div class="smart-resize-trigger-shrink"></div>
-                            </div>
-                        </div>
-                    </smart-scheduler>
-                </section>
-            </div>
+<body class="viewport">
+    <div id="primaryContainer">
+        <div id="header">
+            <smart-button id="toggleButton"></smart-button>
+            <div id="title">Scheduler</div>
+            <smart-button id="addNew" class="floating"><span>Create</span></smart-button>
         </div>
-    </body>
+        <div class="content">
+            <section id="sideA">
+                <div class="button-container">
+                    <div id="logo"></div>
+                </div>
+                <div class="controls-container">
+                    <smart-calendar id="calendar"></smart-calendar>
+                    <smart-input id="searchBar" class="underlined" placeholder="Search for people"></smart-input>
+                    <smart-tree id="tree" selection-mode="checkBox" toggle-element-position="far">
+                        <smart-tree-items-group expanded>
+                            My calendars
+                            <smart-tree-item value="birthday" selected>Birthdays</smart-tree-item>
+                            <smart-tree-item value="holiday" selected>Holidays</smart-tree-item>
+                            <smart-tree-item value="event" selected>Events</smart-tree-item>
+                        </smart-tree-items-group>
+                    </smart-tree>
+                </div>
+            </section>
+            <section id="sideB">
+                <smart-scheduler id="scheduler"></smart-scheduler>
+            </section>
+        </div>
+    </div>
+</body>
 
 </html>

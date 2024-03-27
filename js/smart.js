@@ -229,20 +229,12 @@ window.Smart('#scheduler', class {
             views: ['day',
                 {
                     type: 'week',
-                    hideWeekend: true,
+                    hideWeekend: false,
                 },
                 {
                     type: 'month',
-                    hideWeekend: true,
-                }, 'agenda',
-                {
-                    label: '4 days',
-                    value: 'workWeek',
-                    type: 'week',
-                    shortcutKey: 'X',
                     hideWeekend: false,
-                    hideNonworkingWeekdays: true,
-                }],
+                }, 'agenda' ],
             nonworkingDays: getPastThreeWeekdays(today.getDay()),
             dateCurrent: new Date(),
             dataSource: data,
