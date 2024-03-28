@@ -11,7 +11,7 @@
 
     <!-- <script type="module" src="../source/modules/smart.element.js"></script> -->
     <!-- <script type="module" src="../source/modules/smart.tabs.js"></script> -->
-    <script type="module" src="../source/modules/smart.scheduler.js"></script>
+    <script type="module" src="../source/modules/scheduler.js"></script>
     <script type="module" src="../source/modules/smart.accordion.js"></script>
     <script type="module" src="../source/modules/smart.tree.js"></script>
     <script type="module" src='../js/smart.js'></script>
@@ -139,7 +139,9 @@
             color: var(--smart-primary-color);
         }
 
-        #buttonMonth .smart-button, smart-unselectable, smart-container {
+        #buttonMonth .smart-button,
+        smart-unselectable,
+        smart-container {
             font-size: 2rem;
         }
     </style>
@@ -150,13 +152,13 @@
     <div id="primaryContainer">
         <div id="header">
             <smart-button id="toggleButton"></smart-button>
-            <div id="title">Scheduler</div>
-            <smart-button id="addNew" class="floating"><span>Create</span></smart-button>
+            <div id="title">Plannnnnnnnnnner</div>
+            <smart-button id="addNew" class="floating"><span>일정 추가</span></smart-button>
         </div>
         <div class="content">
             <section id="sideA">
                 <div class="button-container">
-                    <div id="logo"></div>
+                    <!-- <div id="logo"></div> -->
                 </div>
                 <div class="controls-container">
                     <smart-calendar id="calendar"></smart-calendar>
@@ -165,8 +167,8 @@
                         <smart-tree-items-group expanded>
                             My calendars
                             <smart-tree-item value="birthday" selected>Birthdays</smart-tree-item>
-                            <smart-tree-item value="holiday" selected>Holidays</smart-tree-item>
-                            <smart-tree-item value="event" selected>Events</smart-tree-item>
+                            <smart-tree-item value="holiday" selected>공휴일</smart-tree-item>
+                            <smart-tree-item value="event" selected>개인 일정</smart-tree-item>
                         </smart-tree-items-group>
                     </smart-tree>
                 </div>

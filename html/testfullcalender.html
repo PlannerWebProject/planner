@@ -11,6 +11,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
+                locale: 'ko',
                 headerToolbar: {
                     left: 'prev,next',
                     center: 'title',
@@ -50,7 +51,7 @@
         body {
             margin: 40px 10px;
             padding: 0;
-            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-family: '맑은 고딕';
             font-size: 16px;
             font-weight: bold;
         }
