@@ -59,10 +59,23 @@
 			border: 1px solid red;
 		}
 
-		#popover {
-			border: 1px solid red;
-			width: 200px;
-			height: 200px;
+		.popover {}
+
+		.popover-header {
+			/* background-color: #73AD21;
+			color: #FFFFFF;
+			font-size: 28px;
+			text-align: center; */
+		}
+
+		.popover-body {
+			/* background-color: coral;
+			color: #FFFFFF;
+			padding: 25px; */
+		}
+
+		.popover-arrow {
+			border: red;
 		}
 	</style>
 
@@ -230,16 +243,6 @@
 
 		</section><!-- #content end -->
 
-	</div>
-
-	<div id="popover">
-
-		<div class="btn btn-secondary" data-bs-toggle="popover" title="test"
-			data-bs-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">Popover on top</div>
-
-		<button class="btn btn-secondary" data-bs-toggle="popover" title="Popover title"
-			data-bs-content="Popover body content is set in this attribute.">button</button>
-
 	</div><!-- #wrapper end -->
 
 	<!-- Go To Top
@@ -255,30 +258,6 @@
 	<script src='dist/index.global.js'></script>
 
 	<script>
-		// $(function () {
-
-		// 	$('#calendar').popover({
-		// 		container: '.container'
-		// 	});
-		// });
-		// 	$('#popover_btn').popover({
-		// 		// fade 효과 설정        
-		// 		animation: true,
-		// 		// 팝오버을 표시할 컨테이너 설정        
-		// 		container: "#popover_area",
-		// 		// 팝오버 표시 틸레이        
-		// 		delay: { show: 50, hide: 10 },
-		// 		// template 사용한다.        
-		// 		html: true,
-		// 		// 팝오버 template 제목은 popover-title, 내용은 popover-content에 들어간다.        
-		// 		template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
-		// 		// 팝오버 제목        
-		// 		title: '팝 오버',
-		// 		// 팝오버 내용		
-		// 		content: '내용',
-		// 		// 팝오버 이벤트는 수동.        
-		// 		trigger: 'hover'
-		// 	});
 
 		window.addEventListener('load', function () {
 			var swiperThumb = new Swiper(".swiper-thumb", {
@@ -310,9 +289,28 @@
 
 		document.addEventListener('DOMContentLoaded', function () {
 			var calendarEl = document.getElementById('calendar');
-
 			var calendar = new FullCalendar.Calendar(calendarEl, {
-
+				eventMouseEnter: function (info) {
+					// alert(info.event.backgroundColor);
+					var popover = new bootstrap.Popover(info.el, {
+						title: $('<div />', {
+							text: info.event.title
+						}).css({
+							'color': info.event.backgroundColor,
+							'font-weight': 'bold',
+							'font-size': '20px'
+						}),
+						content: moment(info.event.start).format('HH:mm') + ' - ' + moment(info.event.end).format('HH:mm'),
+						trigger: 'hover',
+						delay: { show: 500, hide: 100 },
+						placement: 'top',
+						html: true,
+						container: 'body'
+					});
+					setTimeout(function () {
+						popover.dispose();
+					}, 3000);
+				},
 				locale: 'ko',
 				headerToolbar: {
 					left: 'prev,next today',
@@ -324,7 +322,7 @@
 				businessHours: true, // display business hours
 				editable: true,
 				selectable: true,
-				
+
 				events: [
 					{
 						title: 'Business Lunch',
@@ -378,22 +376,6 @@
 					}
 
 
-						// function (mouseLeaveInfo) {
-
-						// 	//일정에 hover시 요약
-						// 	mouseLeaveInfo.el.popover({
-						// 		title: mouseLeaveInfo.event.textColor,
-						// 		content: mouseLeaveInfo.event.start + ' - ' + mouseLeaveInfo.event.end,
-						// 		delay: {
-						// 			show: "800",
-						// 			hide: "50"
-						// 		},
-						// 		trigger: 'hover',
-						// 		placement: 'top',
-						// 		html: true,
-						// 		container: 'body'
-						// 	});
-						// }
 				]
 			});
 

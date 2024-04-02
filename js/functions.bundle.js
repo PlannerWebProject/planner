@@ -8700,14 +8700,7 @@ if( typeof jQuery !== 'undefined' ) {
 						var popovers = [].slice.call(__core.getVars.baseEl.querySelectorAll('[data-bs-toggle="popover"]'));
 						var popoverList = popovers.map( function(popoverEl) {
 							return new bootstrap.Popover(popoverEl, {
-								container: 'body',
-								trigger: 'hover',
-								placement: 'top',
-		  						html: true,
-								delay: {
-									show: "600",
-									hide: "50"
-								},
+								container: 'body'
 							});
 						});
 
