@@ -25,6 +25,9 @@
 	<!-- Custom CSS -->
 	<link rel="stylesheet" href="css/custom.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+  
+	<!-- Air Datepicker -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.1.0/css/datepicker.min.css">
 
 	<!-- Document Title
 	============================================= -->
@@ -107,6 +110,7 @@
 						<!-- Logo
 						============================================= -->
 						<div id="logo" class="me-lg-0">
+							<div><button name="sidebarFoldingBtn" id="sidebarFoldingBtn">접기</button></div>
 							<a href="index.html">canvas<span class="color">.</span></a>
 						</div><!-- #logo end -->
 
@@ -180,7 +184,27 @@
 		<!--Hero
 		============================================= -->
 		<section id="slider" class="slider-element">
-			<div class="sidebar">사이드바</div>
+			<div id="sidebarMain" class="sidebar">
+				<div id="addSchedule" class="sidebar">
+					<button id="addScheduleBtn" class="sidebar">일정생성</button>
+				</div>
+				<div id="datepickerDiv" class="sidebar">
+					<div id="datepicker"></div>
+				</div>
+				<div id="scheduleSearchBox" class="sidebar">
+					<input type="text" placeholder="일정 검색">
+				</div>
+				<div id="scheduleAcc" class="sidebar">
+					<button type="button" class="collapsible">내 달력</button>
+					<div class="content">
+						<p>내용</p>
+					</div>
+					<button type="button" class="collapsible">공유받은 달력</button>
+					<div class="content">
+						<p>내용</p>
+					</div>
+				</div>
+			</div>
 			<div id='calendar'></div>
 		</section>
 
@@ -206,6 +230,31 @@
 	<script src='dist/index.global.js'></script>
 
 	<script>
+		
+		// Accordian
+		var coll = document.getElementsByClassName("collapsible");
+		var i;
+
+		for (i = 0; i < coll.length; i++) {
+			coll[i].addEventListener("click", function () {
+				this.classList.toggle("active");
+				var content = this.nextElementSibling;
+				if (content.style.display === "block") {
+					content.style.display = "none";
+				} else {
+					content.style.display = "block";
+				}
+			});
+		}
+
+		// datepicker
+		document.addEventListener('DOMContentLoaded', function () {
+			// air-datepicker를 input 요소에 연결
+			$('#datepicker').datepicker({
+				inline: true
+			});
+		});
+    
 		window.addEventListener( 'load', function() {
 			var swiperThumb = new Swiper(".swiper-thumb", {
 				spaceBetween: 10,
@@ -328,4 +377,3 @@
 	</script>
 
 </body>
-</html>
