@@ -53,11 +53,29 @@
 		justify-content: center;
 		display: flex;
 	}
+	#sidebarMain {
+		position: relative;
+		width: 300px;
+	}
+
+	#addScheduleBtn {
+		position: relative;
+	}
+
+	/* #datepickerDiv {
+		margin: 0 auto;
+	} */
+
+	#datepicker {
+		margin: 0 auto;
+		padding-left: 0;
+		padding-right: 0;
+	}
+
 	.sidebar {
 		display: flex;
 		flex-direction: column;
-		width: 330px;
-		border: 1px solid red;
+		width: 100%;
 	}
 	</style>
 
@@ -196,12 +214,28 @@
 				</div>
 				<div id="scheduleAcc" class="sidebar">
 					<button type="button" class="collapsible">내 달력</button>
-					<div class="content">
-						<p>내용</p>
+					<div class="calendarGroup">
+						<div class="calendarItem">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력1</label>
+						</div>
+						<div class="calendarItem">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력2</label>
+						</div>
+						<div class="calendarItem">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력3</label>
+						</div>
 					</div>
 					<button type="button" class="collapsible">공유받은 달력</button>
-					<div class="content">
-						<p>내용</p>
+					<div class="calendarGroup">
+						<div class="calendarItem">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력1</label>
+						</div>
+						<div class="calendarItem">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력2</label>
+						</div>
+						<div class="calendarItem">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력3</label>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -233,9 +267,16 @@
 		
 		// Accordian
 		var coll = document.getElementsByClassName("collapsible");
+		var sidebar = document.getElementsByClassName("sidebar");
+		var addScheduleBtn = document.getElementById("addScheduleBtn");
 		var i;
 
-		for (i = 0; i < coll.length; i++) {
+		for (var i = 0; i < coll.length; i++) {
+			var initialContent = coll[i].nextElementSibling;
+			initialContent.style.display = "block";
+		}
+
+		for (var i = 0; i < coll.length; i++) {
 			coll[i].addEventListener("click", function () {
 				this.classList.toggle("active");
 				var content = this.nextElementSibling;
@@ -281,6 +322,20 @@
 			var container = document.getElementById("speakerModal");
 			var modal = new bootstrap.Modal(container);
 			modal.show();
+			var sidebarStatus = true;
+			sidebarFoldingBtn.onclick = function () {
+				var sidebarMain = document.getElementById("sidebarMain");
+				var addSchedule = document.getElementById("addSchedule");
+
+				Array.from(sidebarMain.children).forEach(child => {
+					if (child !== addSchedule) {
+						child.style.display = sidebarStatus ? "none" : "block";
+					}
+				});
+
+				sidebarMain.style.width = sidebarStatus ? "0" : "300px";
+				sidebarStatus = !sidebarStatus;
+			};
 		};
 		
 		document.addEventListener('DOMContentLoaded', function() {
@@ -375,5 +430,3 @@
     calendar.render();
   });
 	</script>
-
-</body>
