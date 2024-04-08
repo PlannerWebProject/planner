@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+
+<head>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta http-equiv="x-ua-compatible" content="IE=edge">
+	<meta name="author" content="SemiColonWeb">
+	<meta name="description"
+		content="Create Speaker &amp; Bluetooth Devices Websites with Canvas Template. Get Canvas to build powerful websites easily with the Highly Customizable &amp; Best Selling Bootstrap Template, today.">
+
+	<!-- Font Imports -->
+	<link rel="stylesheet" href="https://use.typekit.net/gmv6nzn.css">
+
+	<!-- Core Style -->
+	<link rel="stylesheet" href="style.css">
+
+	<!-- Font Icons -->
+	<link rel="stylesheet" href="css/font-icons.css">
+
+	<!-- Plugins/Components CSS -->
+	<link rel="stylesheet" href="css/swiper.css">
+
+	<!-- Niche Demos -->
+	<link rel="stylesheet" href="demos/speaker/speaker.css">
+
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="css/custom.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Air Datepicker -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.1.0/css/datepicker.min.css">
+
+	<!-- Document Title
+	============================================= -->
+	<title>Demo Planner</title>
+
+	<style>
+		html,
+		body {
+			width: 100%;
+			height: 100vh;
+		}
+
+		#calendar {
+			width: 100%;
+		}
+
+		#slider {
+			height: calc(100vh - 70px);
+			margin: 0 auto;
+			margin-top: 0;
+			justify-content: center;
+			display: flex;
+		}
+
+		#sidebarMain {
+			display: flex;
+			flex-direction: column;
+			position: relative;
+			width: 300px;
+		}
+
+		#addScheduleBtn {
+			position: relative;
+		}
+
+		/* #datepickerDiv {
+			margin: 0 auto;
+		} */
+
+		#datepicker {
+			margin: 0 auto;
+			padding-left: 0;
+			padding-right: 0;
+		}
+
+		.sidebar {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+		}
+	</style>
+
+</head>
+
+<body class="stretched scroll-detect">
+
+	<!-- Document Wrapper
+	============================================= -->
+	<div id="wrapper">
+
+		<!-- Modal -->
+		<div class="modal d-none animated fadeInUpSmall faster" id="speakerModal" tabindex="-1" role="dialog"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered ms-md-4 me-md-auto align-items-end"
+				style="max-width: 48rem;">
+
+			</div>
+		</div>
+
+
+		<!-- Header
+		============================================= -->
+		<header id="header" class="header-size-sm" data-sticky-shrink="false">
+			<div id="header-wrap" class="border-bottom-0">
+				<div class="container">
+					<div class="header-row justify-content-lg-between">
+
+						<!-- Logo
+						============================================= -->
+						<div id="logo" class="me-lg-0">
+							<div><button name="sidebarFoldingBtn" id="sidebarFoldingBtn">접기</button></div>
+							<a href="index.html">canvas<span class="color">.</span></a>
+						</div><!-- #logo end -->
+
+
+					</div>
+				</div>
+			</div>
+			<div class="header-wrap-clone"></div>
+		</header><!-- #header end -->
+
+
+		<!--Hero
+		============================================= -->
+		<section id="slider" class="slider-element">
+			<div id="sidebarMain" class="sidebarMain">
+				<div id="addSchedule" class="sidebar">
+					<button id="addScheduleBtn" class="sidebar">일정생성</button>
+				</div>
+				<div id="datepickerDiv" class="sidebar">
+					<div id="datepicker"></div>
+				</div>
+				<div id="scheduleSearchBox" class="sidebar">
+					<input type="text" placeholder="일정 검색" class="sidebar">
+				</div>
+				<div id="scheduleAcc" class="sidebar">
+					<button type="button" class="collapsible sidebar">내 달력</button>
+					<div class="calendarGroup sidebar">
+						<div class="calendarItem sidebar">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연"
+									checked>달력1</label>
+						</div>
+						<div class="calendarItem sidebar">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연"
+									checked>달력2</label>
+						</div>
+						<div class="calendarItem sidebar">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연"
+									checked>달력3</label>
+						</div>
+					</div>
+					<button type="button" class="collapsible sidebar">공유받은 달력</button>
+					<div class="calendarGroup sidebar">
+						<div class="calendarItem sidebar">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연"
+									checked>달력1</label>
+						</div>
+						<div class="calendarItem sidebar">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연"
+									checked>달력2</label>
+						</div>
+						<div class="calendarItem sidebar">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연"
+									checked>달력3</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id='calendar' class="sidebar"></div>
+		</section>
+
+
+		<!-- Content
+		============================================= -->
+		<section id="content">
+
+		</section><!-- #content end -->
+
+	</div><!-- #wrapper end -->
+
+	<!-- Go To Top
+	============================================= -->
+	<div id="gotoTop" data-mobile="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+			<circle cx="50" cy="50" r="40"></circle>
+		</svg></div>
+
+	<!-- JavaScripts
+	============================================= -->
+	<script src="js/plugins.min.js"></script>
+	<script src="js/functions.bundle.js"></script>
+	<script src='dist/index.global.js'></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.1.0/js/datepicker.min.js"></script>
+	<script>
+
+		var coll = document.getElementsByClassName("collapsible");
+		var sidebar = document.getElementsByClassName("sidebar");
+		var addScheduleBtn = document.getElementById("addScheduleBtn");
+		var i;
+
+		// Accordian
+		for (var i = 0; i < coll.length; i++) {
+			var initialContent = coll[i].nextElementSibling;
+			initialContent.style.display = "block";
+		}
+
+		for (var i = 0; i < coll.length; i++) {
+			coll[i].addEventListener("click", function () {
+				this.classList.toggle("active");
+				var content = this.nextElementSibling;
+				if (content.style.display === "block") {
+					content.style.display = "none";
+				} else {
+					content.style.display = "block";
+				}
+			});
+		}
+
+		// datepicker
+		document.addEventListener('DOMContentLoaded', function () {
+			$('#datepicker').datepicker({
+				inline: true
+			});
+		});
+
+		window.addEventListener('load', function () {
+			var swiperThumb = new Swiper(".swiper-thumb", {
+				spaceBetween: 10,
+				slidesPerView: 4,
+				allowTouchMove: true,
+				freeMode: true,
+				watchSlidesProgress: true,
+			});
+
+			var swiperContainer = new Swiper(".swiper", {
+				spaceBetween: 10,
+				allowTouchMove: true,
+				navigation: {
+					nextEl: ".swiper-button-next",
+					prevEl: ".swiper-button-prev",
+				},
+				thumbs: {
+					swiper: swiperThumb,
+				},
+			});
+		});
+
+		window.onload = function () {
+			var sidebarStatus = true;
+			sidebarFoldingBtn.onclick = function () {
+				var sidebarMain = document.getElementById("sidebarMain");
+				var addSchedule = document.getElementById("addSchedule");
+
+				sidebarMain.style.width = sidebarStatus ? "0" : "300px";
+				Array.from(sidebarMain.children).forEach(child => {
+					if (child !== addSchedule) {
+						child.style.display = sidebarStatus ? "none" : "block";
+						child.style.width = sidebarStatus ? "0" : "100%";
+					}
+				});
+
+				sidebarStatus = !sidebarStatus;
+			};
+		};
+
+		document.addEventListener('DOMContentLoaded', function () {
+			var calendarEl = document.getElementById('calendar');
+
+			var calendar = new FullCalendar.Calendar(calendarEl, {
+				locale: 'ko',
+				headerToolbar: {
+					left: 'prev,next today',
+					center: 'title',
+					right: 'dayGridMonth,timeGridWeek,timeGridDay'
+				},
+				initialDate: '2023-01-12',
+				navLinks: true, // can click day/week names to navigate views
+				businessHours: true, // display business hours
+				editable: true,
+				selectable: true,
+				events: [
+					{
+						title: 'Business Lunch',
+						start: '2023-01-03T13:00:00',
+						constraint: 'businessHours'
+					},
+					{
+						title: 'Meeting',
+						start: '2023-01-13T11:00:00',
+						constraint: 'availableForMeeting', // defined below
+						color: '#257e4a'
+					},
+					{
+						title: 'Conference',
+						start: '2023-01-18',
+						end: '2023-01-20'
+					},
+					{
+						title: 'Party',
+						start: '2023-01-29T20:00:00'
+					},
+
+					// areas where "Meeting" must be dropped
+					{
+						groupId: 'availableForMeeting',
+						start: '2023-01-11T10:00:00',
+						end: '2023-01-11T16:00:00',
+						display: 'background'
+					},
+					{
+						groupId: 'availableForMeeting',
+						start: '2023-01-13T10:00:00',
+						end: '2023-01-13T16:00:00',
+						display: 'background'
+					},
+
+					// red areas where no events can be dropped
+					{
+						start: '2023-01-24',
+						end: '2023-01-28',
+						overlap: false,
+						display: 'background',
+						color: '#ff9f89'
+					},
+					{
+						start: '2023-01-06',
+						end: '2023-01-08',
+						overlap: false,
+						display: 'background',
+						color: '#ff9f89'
+					}
+				]
+			});
+
+			calendar.render();
+		});
+	</script>
+
+</body>
+
+</html>
