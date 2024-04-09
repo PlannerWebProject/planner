@@ -53,30 +53,33 @@
 		justify-content: center;
 		display: flex;
 	}
+
 	#sidebarMain {
-			position: relative;
-			width: 300px;
-		}
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		width: 300px;
+	}
 
-		#addScheduleBtn {
-			position: relative;
-		}
+	#addScheduleBtn {
+		position: relative;
+	}
 
-		/* #datepickerDiv {
-			margin: 0 auto;
-		} */
+	/* #datepickerDiv {
+		margin: 0 auto;
+	} */
 
-		#datepicker {
-			margin: 0 auto;
-			padding-left: 0;
-			padding-right: 0;
-		}
+	#datepicker {
+		margin: 0 auto;
+		padding-left: 0;
+		padding-right: 0;
+	}
 
-		.sidebar {
-			display: flex;
-			flex-direction: column;
-			width: 100%;
-		}
+	.sidebar {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
 	</style>
 
 </head>
@@ -224,6 +227,7 @@
 						<div class="calendarItem">
 							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력3</label>
 						</div>
+					</div>
 					<button type="button" class="collapsible">공유받은 달력</button>
 					<div class="calendarGroup">
 						<div class="calendarItem">
@@ -235,6 +239,7 @@
 						<div class="calendarItem">
 							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력3</label>
 						</div>
+					</div>
 				</div>
 			</div>
 			<div id='calendar'></div>
@@ -257,6 +262,7 @@
 	============================================= -->
 	
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.1.0/js/datepicker.min.js"></script>
 	<script src="js/plugins.min.js"></script>
 	<script src="js/functions.bundle.js"></script>
 	<script src='dist/index.global.js'></script>
@@ -292,6 +298,34 @@
 				inline: true
 			});
 		});
+		
+		$('#datepicker').datepicker({
+        language: {
+            daysMin: ['일', '월', '화', '수', '목', '금', '토'],
+            months: [
+                '1월', '2월', '3월', '4월', '5월', '6월',
+                '7월', '8월', '9월', '10월', '11월', '12월'
+            ],
+            today: '오늘',
+            clear: '지우기',
+            dateFormat: 'yyyy-mm-dd',
+            firstDay: 0
+        },
+        minDate: new Date(),  // 최소 선택 가능한 날짜를 현재 날짜로 설정
+        dateFormat: 'yyyy-mm-dd',  // 날짜 형식 설정 (년-월-일)
+		onSelect: function (formattedDate, date, picker) {
+			if (date) {
+				$('#selected-date').text('선택한 날짜: ' + formattedDate);
+
+				var dayOfWeek = date.getDay();
+				var days = ['일', '월', '화', '수', '목', '금', '토'];
+				$('#day-of-week').text('요일: ' + days[dayOfWeek]);
+			} else {
+				$('#selected-date').text('');
+				$('#day-of-week').text('');
+			}
+		}
+    });
     
 		window.addEventListener( 'load', function() {
 			var swiperThumb = new Swiper(".swiper-thumb", {
@@ -315,19 +349,23 @@
 			});
 		});
 
-		window.onload = function () {
+		window.onload = function() {
+			var container = document.getElementById("speakerModal");
+			var modal = new bootstrap.Modal(container);
+			modal.show();
 			var sidebarStatus = true;
 			sidebarFoldingBtn.onclick = function () {
 				var sidebarMain = document.getElementById("sidebarMain");
 				var addSchedule = document.getElementById("addSchedule");
 
+				sidebarMain.style.width = sidebarStatus ? "0" : "300px";
 				Array.from(sidebarMain.children).forEach(child => {
 					if (child !== addSchedule) {
 						child.style.display = sidebarStatus ? "none" : "block";
+						child.style.width = sidebarStatus ? "0" : "100%";
 					}
 				});
 
-				sidebarMain.style.width = sidebarStatus ? "0" : "300px";
 				sidebarStatus = !sidebarStatus;
 			};
 		};
@@ -424,5 +462,3 @@
     calendar.render();
   });
 	</script>
-
-</body>
