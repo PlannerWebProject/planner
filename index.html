@@ -357,6 +357,34 @@
 				inline: true
 			});
 		});
+		
+		$('#datepicker').datepicker({
+        language: {
+            daysMin: ['일', '월', '화', '수', '목', '금', '토'],
+            months: [
+                '1월', '2월', '3월', '4월', '5월', '6월',
+                '7월', '8월', '9월', '10월', '11월', '12월'
+            ],
+            today: '오늘',
+            clear: '지우기',
+            dateFormat: 'yyyy-mm-dd',
+            firstDay: 0
+        },
+        minDate: new Date(),  // 최소 선택 가능한 날짜를 현재 날짜로 설정
+        dateFormat: 'yyyy-mm-dd',  // 날짜 형식 설정 (년-월-일)
+		onSelect: function (formattedDate, date, picker) {
+			if (date) {
+				$('#selected-date').text('선택한 날짜: ' + formattedDate);
+
+				var dayOfWeek = date.getDay();
+				var days = ['일', '월', '화', '수', '목', '금', '토'];
+				$('#day-of-week').text('요일: ' + days[dayOfWeek]);
+			} else {
+				$('#selected-date').text('');
+				$('#day-of-week').text('');
+			}
+		}
+    });
     
 		window.addEventListener( 'load', function() {
 			var swiperThumb = new Swiper(".swiper-thumb", {
