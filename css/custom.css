@@ -23,6 +23,10 @@
 	border: red;
 }
 
+/* .popoverInfoCalendar {
+	padding: 0;
+	margin: 0;
+} */
 /*요일 배경색*/
 .fc-col-header-cell {
 	background-color: #eeeeee;
