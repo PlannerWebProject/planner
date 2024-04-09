@@ -313,6 +313,60 @@
 		  </div>
 	  </div>
 
+		<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			  <div class="modalBackground">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <h5 class="modal-title" id="editModalLabel">일정 수정</h5>
+				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+				  <form>
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">제목</label>
+					  <input type="text" class="form-control" id="editModal-title">
+					</div>
+					<div class="mb-3">
+						<input type="color" class="form-control" id="recipient-name">
+					  </div>
+					
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">일정 시작</label>
+					  <input type="datetime-local"id="startDate" class="form-control" placeholder="datetime-local input"> 
+					</div>
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">일정 종료</label>
+					  <input type="datetime-local" id="endDate" class="form-control" placeholder="datetime-local input">  
+					</div>
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">카테고리</label>
+					  <select class="form-select" aria-label="Default select example">
+						  <option selected>카테고리</option>
+						  <option value="1">개인일정</option>
+						  <option value="2">공유일정</option>
+						</select>
+					</div>
+					<div class="mb-3">
+						<label for="recipient-name" class="col-form-label">장소</label>
+						<input type="text" class="form-control" id="recipient-name">
+					  </div>
+					<div class="mb-3">
+					  <label for="message-text" class="col-form-label">내용:</label>
+					  <textarea class="form-control" id="message-text"></textarea>
+					</div>
+				  </form>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				  <button type="button" class="btn btn-primary">일정 삭제</button>
+				  <button type="button" class="btn btn-primary">일정 수정</button>
+				</div>
+			  </div>
+			</div>
+		  </div>
+	  </div>
+
 	<!-- Go To Top
 	============================================= -->
 	<div id="gotoTop" data-mobile="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="40"></circle></svg></div>
@@ -434,16 +488,27 @@
     var calendarEl = document.getElementById('calendar');
 	var addScheduleBtn = document.getElementById('addScheduleBtn');
     	
-		var exampleModal = document.getElementById('exampleModal');
+	var exampleModal = document.getElementById('exampleModal');
 	 
-	 addScheduleBtn.addEventListener('click', function() {
-			
-			 var modal = new bootstrap.Modal(exampleModal);
-			 modal.show();
-		 });
+	addScheduleBtn.addEventListener('click', function() {
+		 var modal = new bootstrap.Modal(exampleModal);
+		 modal.show();
+	});
+
+	var editModal = document.getElementById('editModal');
+	 
+	addScheduleBtn.addEventListener('click', function() {
+		 var modal = new bootstrap.Modal(editModal);
+		 modal.show();
+	});
 	 
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
+		eventClick: function(info) {
+			var container = document.getElementById("editModal");
+        	var modal = new bootstrap.Modal(container);
+        	modal.show();
+		},
 		eventMouseEnter: function (info) {
 			var popover = new bootstrap.Popover(info.el, {
 				title: $('<div />', {
@@ -540,3 +605,5 @@
     calendar.render();
   });
 	</script>
+</body>
+</html>
