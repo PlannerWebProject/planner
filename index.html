@@ -84,6 +84,14 @@
         background-color: rgba(0,0,0,0.4);
 
     }
+	.color-circle {
+		width: 20px;
+		height: 20px;
+		margin: 2px;
+		display: inline-block;
+		cursor: pointer;
+		border-radius: 50%; /* Make it a circle */
+	  }
 	</style>
 
 </head>
@@ -271,13 +279,20 @@
 				<div class="modal-body">
 				  <form>
 					<div class="mb-3">
+						<div class="container">
+							<div id="color-selector">
+							  <div class="color-circle" style="background-color: #FF8080"></div>
+							  <div class="color-circle" style="background-color: #FFCF96"></div>
+							  <div class="color-circle" style="background-color: #F6FDC3"></div>
+							  <div class="color-circle" style="background-color: #CDFAD5"></div>
+							</div>
+							<p>선택한 색: <span id="selected-color"></span></p>
+						  </div>
+					  </div>
+					<div class="mb-3">
 					  <label for="recipient-name" class="col-form-label">제목</label>
 					  <input type="text" class="form-control" id="recipient-name">
-					</div>
-					<div class="mb-3">
-						<input type="color" class="form-control" id="recipient-name">
-					  </div>
-					
+					</div>			
 					<div class="mb-3">
 					  <label for="recipient-name" class="col-form-label">일정 시작</label>
 					  <input type="datetime-local"id="startDate" class="form-control" placeholder="datetime-local input"> 
@@ -408,6 +423,13 @@
 				inline: true
 			});
 		});
+		var colorCircles = document.querySelectorAll(".color-circle");
+        colorCircles.forEach(function (circle) {
+        circle.addEventListener("click", function () {
+          var selectedColor = circle.style.backgroundColor;
+          document.getElementById("selected-color").innerText = selectedColor;
+        });
+      });
 		
 		$('#datepicker').datepicker({
         language: {
