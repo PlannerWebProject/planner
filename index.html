@@ -25,6 +25,9 @@
 	<!-- Custom CSS -->
 	<link rel="stylesheet" href="css/custom.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+  
+	<!-- Air Datepicker -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.1.0/css/datepicker.min.css">
 
 	<!-- Document Title
 	============================================= -->
@@ -39,6 +42,10 @@
 	#calendar {
 		width: 100%;
 	}
+	#calendar table {
+			margin-bottom: 0;
+	}
+
 	#slider {
 		height: calc(100vh - 70px);
 		margin: 0 auto;
@@ -46,11 +53,45 @@
 		justify-content: center;
 		display: flex;
 	}
+
+	#sidebarMain {
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		width: 300px;
+	}
+
+	#addScheduleBtn {
+		position: relative;
+	}
+
+	/* #datepickerDiv {
+		margin: 0 auto;
+	} */
+
+	#datepicker {
+		margin: 0 auto;
+		padding-left: 0;
+		padding-right: 0;
+	}
+
 	.sidebar {
 		display: flex;
 		flex-direction: column;
-		width: 330px;
-		border: 1px solid red;
+		width: 100%;
+	}
+	#exampleModal{
+        background-color: rgba(0,0,0,0.4);
+
+    }
+
+	#loginModal{
+        background-color: rgba(0,0,0,0.4);
+
+    }
+
+	#signupModal{
+		background-color: rgba(0,0,0,0.4);
 	}
 	</style>
 
@@ -103,14 +144,15 @@
 						<!-- Logo
 						============================================= -->
 						<div id="logo" class="me-lg-0">
-							<a href="index.html">canvas<span class="color">.</span></a>
+							<div><button name="sidebarFoldingBtn" id="sidebarFoldingBtn">접기</button></div>
+							<a href="index.html"><img src="plannerLogo.webp" alt=""></a>
 						</div><!-- #logo end -->
 
 						<div class="header-misc">
 
 							<!-- Top Cart
 							============================================= -->
-							<div id="top-cart" class="header-misc-icon me-3">
+							<!-- <div id="top-cart" class="header-misc-icon me-3">
 								<a href="#" id="top-cart-trigger"><i class="bi-basket3"></i></a>
 								<div class="top-cart-content">
 									<div class="top-cart-title">
@@ -124,14 +166,14 @@
 										<span class="top-checkout-price">$0.00</span>
 									</div>
 								</div>
-							</div><!-- #top-cart end -->
+							</div>#top-cart end -->
 
 							<!-- Top Account
 							============================================= -->
 							<div class="header-misc-icon top-account">
 								<a href="#" data-bs-toggle="dropdown" data-bs-offset="0,20" data-bs-auto-close="true" aria-haspopup="true" aria-expanded="false"><i class="bi-person-circle"></i></a>
 								<div class="dropdown-menu dropdown-menu-end px-2 m-0">
-									<a class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary" href="#"><i class="bi-bag-check me-2"></i>Your Orders</a>
+									<a class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary" href="#" id="login-action"><i class="bi-bag-check me-2"></i>Login</a>
 									<a class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary" href="#"><i class="bi-person me-2"></i>Your Profile</a>
 									<a class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary" href="#"><i class="bi-box-arrow-right me-2"></i>Log Out</a>
 								</div>
@@ -145,7 +187,7 @@
 							</button>
 						</div>
 
-						<nav class="primary-menu">
+						<!-- <nav class="primary-menu">
 
 							<ul class="menu-container">
 								<li class="menu-item current"><a class="menu-link" href="#"><div>Home</div></a></li>
@@ -160,7 +202,7 @@
 								<li class="menu-item"><a class="menu-link" href="#"><div>Contact</div></a></li>
 							</ul>
 
-						</nav><!-- #primary-menu end -->
+						</nav>#primary-menu end -->
 
 						<form class="top-search-form" action="search.html" method="get">
 							<input type="text" name="q" class="form-control" value="" placeholder="Type &amp; Hit Enter.." autocomplete="off">
@@ -170,13 +212,49 @@
 				</div>
 			</div>
 			<div class="header-wrap-clone"></div>
-		</header><!-- #header end -->
+		</header>#header end
 
 
 		<!--Hero
 		============================================= -->
 		<section id="slider" class="slider-element">
-			<div class="sidebar">사이드바</div>
+			<div id="sidebarMain" class="sidebar">
+				<div id="addSchedule" class="sidebar">
+					<button id="addScheduleBtn" class="sidebar">일정생성</button>
+				</div>
+				<div id="datepickerDiv" class="sidebar">
+					<div id="datepicker"></div>
+				</div>
+				<div id="scheduleSearchBox" class="sidebar">
+					<input type="text" placeholder="일정 검색">
+				</div>
+				<div id="scheduleAcc" class="sidebar">
+					<button type="button" class="collapsible">내 달력</button>
+					<div class="calendarGroup">
+						<div class="calendarItem">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력1</label>
+						</div>
+						<div class="calendarItem">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력2</label>
+						</div>
+						<div class="calendarItem">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력3</label>
+						</div>
+					</div>
+					<button type="button" class="collapsible">공유받은 달력</button>
+					<div class="calendarGroup">
+						<div class="calendarItem">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력1</label>
+						</div>
+						<div class="calendarItem">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력2</label>
+						</div>
+						<div class="calendarItem">
+							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력3</label>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div id='calendar'></div>
 		</section>
 
@@ -188,6 +266,237 @@
 		</section><!-- #content end -->
 
 	</div><!-- #wrapper end -->
+	
+		<!-- Content
+		============================================= -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			  <div class="modalBackground">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <h5 class="modal-title" id="exampleModalLabel">일정 추가</h5>
+				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+				  <form>
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">제목</label>
+					  <input type="text" class="form-control" id="recipient-name">
+					</div>
+					<div class="mb-3">
+						<input type="color" class="form-control" id="recipient-name">
+					  </div>
+					
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">일정 시작</label>
+					  <input type="datetime-local"id="startDate" class="form-control" placeholder="datetime-local input"> 
+					</div>
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">일정 종료</label>
+					  <input type="datetime-local" id="endDate" class="form-control" placeholder="datetime-local input">  
+					</div>
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">카테고리</label>
+					  <select class="form-select" aria-label="Default select example">
+						  <option selected>카테고리</option>
+						  <option value="1">개인일정</option>
+						  <option value="2">공유일정</option>
+						</select>
+					</div>
+					<div class="mb-3">
+						<label for="recipient-name" class="col-form-label">장소</label>
+						<input type="text" class="form-control" id="recipient-name">
+					  </div>
+					<div class="mb-3">
+					  <label for="message-text" class="col-form-label">내용:</label>
+					  <textarea class="form-control" id="message-text"></textarea>
+					</div>
+				  </form>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				  <button type="button" class="btn btn-primary">일정 생성</button>
+				</div>
+			  </div>
+			</div>
+		  </div>
+	  </div>
+
+	  <!-- loginSTart -->
+
+	  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modalBackground">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <div></div>
+			</div>
+			<div class="modal-body">
+				<div class="card-body p-5">
+					<form id="login-form" name="login-form" class="mb-0" action="#" method="post">
+						<h1 class="fs-4 fw-semibold text-center mb-0">Sign In to Canvas Account</h1>
+						<h2 class="fs-5 text-center fw-medium mb-5 mt-1"><span class="op-06 nocolor">New?</span> <a href="#" id="signup-action">Create Account</a></h2>
+
+						<div class="row">
+							<div class="col-12 form-group mb-4">
+								<label for="login-form-username">Email</label>
+								<input type="text" id="login-form-username" name="login-form-username" value="" class="form-control not-dark">
+							</div>
+
+							<div class="col-12 form-group mb-4">
+								<div class="d-flex justify-content-between">
+									<label for="login-form-password">Password</label>
+									<a href="#" class="fw-semibold text-smaller">Forgot Password?</a>
+								</div>
+								<input type="password" id="login-form-password" name="login-form-password" value="" class="form-control not-dark">
+							</div>
+
+							<div class="col-12 form-group mb-0">
+								<button class="btn btn-lg text-white bg-black h-bg-color d-block w-100 m-0" id="login-form-submit" name="login-form-submit" value="login">Continue</button>
+							</div>
+						</div>
+					</form>
+
+					<div class="divider divider-center">
+						<div class="divider-text text-dark lh-base">or Login with</div>
+					</div>
+
+					<div class="text-center">
+						<a href="#" class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img src="https://cdn.cdnlogo.com/logos/g/35/google-icon.svg" alt="Google Logo" class="d-inline-block me-2 square square-xs">Sign In with Google</a>
+						<a href="#" class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img src="https://cdn.cdnlogo.com/logos/f/91/facebook-icon.svg" alt="Facebook Logo" class="d-inline-block me-2 square square-xs">Sign In with Facebook</a>
+						<a href="#" class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img src="https://cdn.cdnlogo.com/logos/t/39/twitter.svg" alt="Twitter Logo" class="d-inline-block me-2 square square-xs">Sign In with Twitter</a>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+			  <button type="button" class="btn btn-primary">일정 생성</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+  </div>
+
+	  <!-- login end -->
+	  <!-- registerStart -->
+
+	  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modalBackground">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <div></div>
+			</div>
+			<div class="modal-body">
+				<div class="tab-pane" id="tab-register" role="tabpanel" aria-labelledby="canvas-tab-register-tab"
+								tabindex="0">
+								<div class="card mb-0">
+									<div class="card-body" style="padding: 40px;">
+										<h3>Register for an Account</h3>
+
+										<form id="register-form" name="register-form" class="row mb-0" action="#" method="post">
+
+											<div class="col-12 form-group">
+												<label for="register-form-name">Name:</label>
+												<input type="text" id="register-form-name" name="register-form-name" value="" class="form-control">
+											</div>
+
+											<div class="col-12 form-group">
+												<label for="register-form-email">Email Address:</label>
+												<input type="text" id="register-form-email" name="register-form-email" value="" class="form-control">
+											</div>
+
+											<div class="col-12 form-group">
+												<label for="register-form-username">Choose a Username:</label>
+												<input type="text" id="register-form-username" name="register-form-username" value="" class="form-control">
+											</div>
+
+											<div class="col-12 form-group">
+												<label for="register-form-phone">Phone:</label>
+												<input type="text" id="register-form-phone" name="register-form-phone" value="" class="form-control">
+											</div>
+
+											<div class="col-12 form-group">
+												<label for="register-form-password">Choose Password:</label>
+												<input type="password" id="register-form-password" name="register-form-password" value="" class="form-control">
+											</div>
+
+											<div class="col-12 form-group">
+												<label for="register-form-repassword">Re-enter Password:</label>
+												<input type="password" id="register-form-repassword" name="register-form-repassword" value="" class="form-control">
+											</div>
+
+											<div class="col-12 form-group">
+												<button class="button button-3d button-black m-0" id="register-form-submit" name="register-form-submit" value="register">Register Now</button>
+											</div>
+
+										</form>
+									</div>
+								</div>
+							</div>
+				
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+			  <button type="button" class="btn btn-primary">일정 생성</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+  </div>
+
+	  <!-- registerEnd -->
+
+		<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			  <div class="modalBackground">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <h5 class="modal-title" id="editModalLabel">일정 수정</h5>
+				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+				  <form>
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">제목</label>
+					  <input type="text" class="form-control" id="editModal-title">
+					</div>
+					
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">일정 시작</label>
+					  <input type="datetime-local" id="editModal-startDate" class="form-control" placeholder="datetime-local input"> 
+					</div>
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">일정 종료</label>
+					  <input type="datetime-local" id="editModal-endDate" class="form-control" placeholder="datetime-local input">  
+					</div>
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">카테고리</label>
+					  <select class="form-select" aria-label="Default select example">
+						  <option selected>카테고리</option>
+						  <option value="1">개인일정</option>
+						  <option value="2">공유일정</option>
+						</select>
+					</div>
+					<div class="mb-3">
+						<label for="recipient-name" class="col-form-label">장소</label>
+						<input type="text" class="form-control" id="editModal-place">
+					  </div>
+					<div class="mb-3">
+					  <label for="message-text" class="col-form-label">내용:</label>
+					  <textarea class="form-control" id="editModal-text"></textarea>
+					</div>
+				  </form>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				  <button type="button" class="btn btn-primary" id="btnDelete">일정 삭제</button>
+				  <button type="button" class="btn btn-primary" id="btnEdit">일정 수정</button>
+				</div>
+			  </div>
+			</div>
+		  </div>
+	  </div>
 
 	<!-- Go To Top
 	============================================= -->
@@ -195,11 +504,73 @@
 
 	<!-- JavaScripts
 	============================================= -->
+	
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.1.0/js/datepicker.min.js"></script>
 	<script src="js/plugins.min.js"></script>
 	<script src="js/functions.bundle.js"></script>
 	<script src='dist/index.global.js'></script>
 
 	<script>
+		
+		// Accordian
+		var coll = document.getElementsByClassName("collapsible");
+		var sidebar = document.getElementsByClassName("sidebar");
+		var addScheduleBtn = document.getElementById("addScheduleBtn");
+		var i;
+
+		for (var i = 0; i < coll.length; i++) {
+			var initialContent = coll[i].nextElementSibling;
+			initialContent.style.display = "block";
+		}
+
+		for (var i = 0; i < coll.length; i++) {
+			coll[i].addEventListener("click", function () {
+				this.classList.toggle("active");
+				var content = this.nextElementSibling;
+				if (content.style.display === "block") {
+					content.style.display = "none";
+				} else {
+					content.style.display = "block";
+				}
+			});
+		}
+
+		// datepicker
+		document.addEventListener('DOMContentLoaded', function () {
+			$('#datepicker').datepicker({
+				inline: true
+			});
+		});
+		
+		$('#datepicker').datepicker({
+        language: {
+            daysMin: ['일', '월', '화', '수', '목', '금', '토'],
+            months: [
+                '1월', '2월', '3월', '4월', '5월', '6월',
+                '7월', '8월', '9월', '10월', '11월', '12월'
+            ],
+            today: '오늘',
+            clear: '지우기',
+            dateFormat: 'yyyy-mm-dd',
+            firstDay: 0
+        },
+        minDate: new Date(),  // 최소 선택 가능한 날짜를 현재 날짜로 설정
+        dateFormat: 'yyyy-mm-dd',  // 날짜 형식 설정 (년-월-일)
+		onSelect: function (formattedDate, date, picker) {
+			if (date) {
+				$('#selected-date').text('선택한 날짜: ' + formattedDate);
+
+				var dayOfWeek = date.getDay();
+				var days = ['일', '월', '화', '수', '목', '금', '토'];
+				$('#day-of-week').text('요일: ' + days[dayOfWeek]);
+			} else {
+				$('#selected-date').text('');
+				$('#day-of-week').text('');
+			}
+		}
+    });
+    
 		window.addEventListener( 'load', function() {
 			var swiperThumb = new Swiper(".swiper-thumb", {
 				spaceBetween: 10,
@@ -226,12 +597,107 @@
 			var container = document.getElementById("speakerModal");
 			var modal = new bootstrap.Modal(container);
 			modal.show();
+			var sidebarStatus = true;
+			sidebarFoldingBtn.onclick = function () {
+				var sidebarMain = document.getElementById("sidebarMain");
+				var addSchedule = document.getElementById("addSchedule");
+
+				sidebarMain.style.width = sidebarStatus ? "0" : "300px";
+				Array.from(sidebarMain.children).forEach(child => {
+					if (child !== addSchedule) {
+						child.style.display = sidebarStatus ? "none" : "block";
+						child.style.width = sidebarStatus ? "0" : "100%";
+					}
+				});
+
+				sidebarStatus = !sidebarStatus;
+			};
 		};
 		
-		document.addEventListener('DOMContentLoaded', function() {
+		
+	document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
+	var addScheduleBtn = document.getElementById('addScheduleBtn');
+	var loginBtn = document.getElementById('login-action');
+	var signupBtn = document.getElementById('signup-action');
+    	
+	var exampleModal = document.getElementById('exampleModal');
+	addScheduleBtn.addEventListener('click', function() {
+		 var modal = new bootstrap.Modal(exampleModal);
+		 modal.show();
+	});
+
+	var editModal = document.getElementById('editModal');
+	addScheduleBtn.addEventListener('click', function() {
+		 var modal = new bootstrap.Modal(editModal);
+		 modal.show();
+	});
+
+	var loginModal = document.getElementById('loginModal');
+	loginBtn.addEventListener('click',function(){
+		var modal = new bootstrap.Modal(loginModal);
+		modal.show();
+		var signupModal = document.getElementById('signupModal');
+		signupBtn.addEventListener('click',function(){
+			modal.hide();
+			var modal1 = new bootstrap.Modal(signupModal);
+			modal1.show();
+		})
+	})
+
+
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
+		eventClick: function(info) {
+			var container = document.getElementById("editModal");
+			var modal = new bootstrap.Modal(container);
+			$('#editModal-title').val(info.event.title);
+			$('#editModal-startDate').val(moment(info.event.start).format('YYYY-MM-DDTHH:mm'));
+			$('#editModal-endDate').val(moment(info.event.end).format('YYYY-MM-DDTHH:mm'));
+			$('#editModal-color').val(info.event.backgroundColor);
+			$('#editModal-place').val(info.event.extendedProps.place);
+			$('#editModal-content').val(info.event.extendedProps.content);
+        	modal.show();
+
+			$('#btnDelete').on('click', function() {
+				if(window.confirm('일정을 삭제하시겠습니까?'))
+				info.event.remove();
+				modal.hide();
+			});
+		},
+		
+		eventMouseEnter: function (info) {
+			var popover = new bootstrap.Popover(info.el, {
+				title: $('<div />', {
+					text: info.event.title
+				}).css({
+					'color': info.event.backgroundColor != '' ? info.event.backgroundColor : '#3788D8',
+					'font-weight': 'bold',
+					'font-size': '20px'
+				}),
+			content: $('<div />', {
+				class: 'popoverInfoCalendar'
+        		}).append('<strong>카테고리:</strong> ' + '<br>')
+        .append('<strong>시간:</strong> ' + getDisplayEventDate(info.event) + '<br>')
+        .append('<strong>설명:</strong> ' + info.event.description),
+			trigger: 'hover',
+			delay: { show: 400, hide: 300 },
+			placement: 'top',
+			html: true,
+			container: 'body'
+			});
+			setTimeout(function () {
+			popover.dispose();
+			}, 1500); 
+		},
+		dateClick: function(info) {
+        var container = document.getElementById("exampleModal");
+        var modal = new bootstrap.Modal(container);
+        modal.show();
+      },
+      select: function(info) {
+        
+      },
 	  locale: 'ko',
       headerToolbar: {
         left: 'prev,next today',
@@ -240,7 +706,7 @@
       },
       initialDate: '2023-01-12',
       navLinks: true, // can click day/week names to navigate views
-      businessHours: true, // display business hours
+    //   businessHours: true, // display business hours
       editable: true,
       selectable: true,
       events: [
@@ -299,7 +765,26 @@
 
     calendar.render();
   });
-	</script>
+function getDisplayEventDate(event) {
 
+var displayEventDate;
+
+if(event.end == null) {
+	displayEventDate = moment(event.start).format('HH:mm');
+} else if (moment(event.start).format('MM-DD')!=moment(event.end).format('MM-DD')) {
+  var startTimeEventInfo = moment(event.start).format('MM/DD');
+  var endTimeEventInfo = moment(event.end).format('MM/DD');
+  displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
+} else if (moment(event.start).format('MM-DD')==moment(event.end).format('MM-DD')) {
+  var startTimeEventInfo = moment(event.start).format('HH:mm');
+  var endTimeEventInfo = moment(event.end).format('HH:mm');
+  displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
+} else {	
+  displayEventDate = "하루종일";
+}
+
+return displayEventDate;
+}
+	</script>
 </body>
 </html>
