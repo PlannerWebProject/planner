@@ -65,6 +65,7 @@
 		position: relative;
 	}
 
+
 	#datepickerDiv {
 		margin: 0 auto;
 	}
@@ -81,10 +82,25 @@
 		width: 100%;
 		padding: 0;
 		border: 0;
+
 	}
 	#exampleModal{
         background-color: rgba(0,0,0,0.4);
 
+    }
+   
+  #exampleModal{
+        background-color: rgba(0,0,0,0.4);
+
+    }
+
+	#loginModal{
+        background-color: rgba(0,0,0,0.4);
+
+    }
+
+	#signupModal{
+		background-color: rgba(0,0,0,0.4);
     }
 	</style>
 
@@ -138,35 +154,20 @@
 						============================================= -->
 						<div id="logo" class="me-lg-0">
 							<div><button name="sidebarFoldingBtn" id="sidebarFoldingBtn">접기</button></div>
-							<a href="index.html">canvas<span class="color">.</span></a>
+
+							<a href="index.html"><img src="plannerLogo.webp" alt=""></a>
+
 						</div><!-- #logo end -->
 
 						<div class="header-misc">
 
-							<!-- Top Cart
-							============================================= -->
-							<div id="top-cart" class="header-misc-icon me-3">
-								<a href="#" id="top-cart-trigger"><i class="bi-basket3"></i></a>
-								<div class="top-cart-content">
-									<div class="top-cart-title">
-										<h4 class="fw-normal">Shopping Cart</h4>
-									</div>
-									<div class="top-cart-items py-4">
-										<p class="mb-0">Ohh! Your Basket is empty.</p>
-									</div>
-									<div class="top-cart-action">
-										<a href="#" class="button button-small bg-color color bg-opacity-10 m-0">Go to Shop</a>
-										<span class="top-checkout-price">$0.00</span>
-									</div>
-								</div>
-							</div><!-- #top-cart end -->
 
 							<!-- Top Account
 							============================================= -->
 							<div class="header-misc-icon top-account">
 								<a href="#" data-bs-toggle="dropdown" data-bs-offset="0,20" data-bs-auto-close="true" aria-haspopup="true" aria-expanded="false"><i class="bi-person-circle"></i></a>
 								<div class="dropdown-menu dropdown-menu-end px-2 m-0">
-									<a class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary" href="#"><i class="bi-bag-check me-2"></i>Your Orders</a>
+									<a class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary" href="#" id="login-action"><i class="bi-bag-check me-2"></i>Login</a>
 									<a class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary" href="#"><i class="bi-person me-2"></i>Your Profile</a>
 									<a class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary" href="#"><i class="bi-box-arrow-right me-2"></i>Log Out</a>
 								</div>
@@ -180,23 +181,6 @@
 							</button>
 						</div>
 
-						<nav class="primary-menu">
-
-							<ul class="menu-container">
-								<li class="menu-item current"><a class="menu-link" href="#"><div>Home</div></a></li>
-								<li class="menu-item"><a class="menu-link" href="#"><div>Shop</div></a>
-									<ul class="sub-menu-container">
-										<li class="menu-item"><a class="menu-link" href="#"><div>Canvas Pod</div></a></li>
-										<li class="menu-item"><a class="menu-link" href="#"><div>Canvas Pod Mini</div></a></li>
-										<li class="menu-item"><a class="menu-link" href="#"><div>Canvas EarPod</div></a></li>
-									</ul>
-								</li>
-								<li class="menu-item"><a class="menu-link" href="#"><div>Reviews</div></a></li>
-								<li class="menu-item"><a class="menu-link" href="#"><div>Contact</div></a></li>
-							</ul>
-
-						</nav><!-- #primary-menu end -->
-
 						<form class="top-search-form" action="search.html" method="get">
 							<input type="text" name="q" class="form-control" value="" placeholder="Type &amp; Hit Enter.." autocomplete="off">
 						</form>
@@ -205,7 +189,7 @@
 				</div>
 			</div>
 			<div class="header-wrap-clone"></div>
-		</header><!-- #header end -->
+		</header>#header end
 
 
 		<!--Hero
@@ -219,11 +203,13 @@
 					<div id="datepicker"></div>
 				</div>
 				<div id="scheduleSearchBox" class="sidebar">
+
 					<input type="text" placeholder="일정 검색" class="sidebar">
 				</div>
 				<div id="scheduleAcc" class="sidebar">
 					<button type="button" class="collapsible sidebar">내 달력</button>
 					<div class="calendarGroup" class="sidebar">
+
 						<div class="calendarItem">
 							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력1</label>
 						</div>
@@ -234,8 +220,10 @@
 							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력3</label>
 						</div>
 					</div>
+
 					<button type="button" class="collapsible sidebar">공유받은 달력</button>
 					<div class="calendarGroup" class="sidebar">
+
 						<div class="calendarItem">
 							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력1</label>
 						</div>
@@ -315,6 +303,133 @@
 		  </div>
 	  </div>
 
+
+	  <!-- loginSTart -->
+
+	  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modalBackground">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <div></div>
+			</div>
+			<div class="modal-body">
+				<div class="card-body p-5">
+					<form id="login-form" name="login-form" class="mb-0" action="#" method="post">
+						<h1 class="fs-4 fw-semibold text-center mb-0">Sign In to Canvas Account</h1>
+						<h2 class="fs-5 text-center fw-medium mb-5 mt-1"><span class="op-06 nocolor">New?</span> <a href="#" id="signup-action">Create Account</a></h2>
+
+						<div class="row">
+							<div class="col-12 form-group mb-4">
+								<label for="login-form-username">Email</label>
+								<input type="text" id="login-form-username" name="login-form-username" value="" class="form-control not-dark">
+							</div>
+
+							<div class="col-12 form-group mb-4">
+								<div class="d-flex justify-content-between">
+									<label for="login-form-password">Password</label>
+									<a href="#" class="fw-semibold text-smaller">Forgot Password?</a>
+								</div>
+								<input type="password" id="login-form-password" name="login-form-password" value="" class="form-control not-dark">
+							</div>
+
+							<div class="col-12 form-group mb-0">
+								<button class="btn btn-lg text-white bg-black h-bg-color d-block w-100 m-0" id="login-form-submit" name="login-form-submit" value="login">Continue</button>
+							</div>
+						</div>
+					</form>
+
+					<div class="divider divider-center">
+						<div class="divider-text text-dark lh-base">or Login with</div>
+					</div>
+
+					<div class="text-center">
+						<a href="#" class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img src="https://cdn.cdnlogo.com/logos/g/35/google-icon.svg" alt="Google Logo" class="d-inline-block me-2 square square-xs">Sign In with Google</a>
+						<a href="#" class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img src="https://cdn.cdnlogo.com/logos/f/91/facebook-icon.svg" alt="Facebook Logo" class="d-inline-block me-2 square square-xs">Sign In with Facebook</a>
+						<a href="#" class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img src="https://cdn.cdnlogo.com/logos/t/39/twitter.svg" alt="Twitter Logo" class="d-inline-block me-2 square square-xs">Sign In with Twitter</a>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+			  <button type="button" class="btn btn-primary">일정 생성</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+  </div>
+
+	  <!-- login end -->
+	  <!-- registerStart -->
+
+	  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modalBackground">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <div></div>
+			</div>
+			<div class="modal-body">
+				<div class="tab-pane" id="tab-register" role="tabpanel" aria-labelledby="canvas-tab-register-tab"
+								tabindex="0">
+								<div class="card mb-0">
+									<div class="card-body" style="padding: 40px;">
+										<h3>Register for an Account</h3>
+
+										<form id="register-form" name="register-form" class="row mb-0" action="#" method="post">
+
+											<div class="col-12 form-group">
+												<label for="register-form-name">Name:</label>
+												<input type="text" id="register-form-name" name="register-form-name" value="" class="form-control">
+											</div>
+
+											<div class="col-12 form-group">
+												<label for="register-form-email">Email Address:</label>
+												<input type="text" id="register-form-email" name="register-form-email" value="" class="form-control">
+											</div>
+
+											<div class="col-12 form-group">
+												<label for="register-form-username">Choose a Username:</label>
+												<input type="text" id="register-form-username" name="register-form-username" value="" class="form-control">
+											</div>
+
+											<div class="col-12 form-group">
+												<label for="register-form-phone">Phone:</label>
+												<input type="text" id="register-form-phone" name="register-form-phone" value="" class="form-control">
+											</div>
+
+											<div class="col-12 form-group">
+												<label for="register-form-password">Choose Password:</label>
+												<input type="password" id="register-form-password" name="register-form-password" value="" class="form-control">
+											</div>
+
+											<div class="col-12 form-group">
+												<label for="register-form-repassword">Re-enter Password:</label>
+												<input type="password" id="register-form-repassword" name="register-form-repassword" value="" class="form-control">
+											</div>
+
+											<div class="col-12 form-group">
+												<button class="button button-3d button-black m-0" id="register-form-submit" name="register-form-submit" value="register">Register Now</button>
+											</div>
+
+										</form>
+									</div>
+								</div>
+							</div>
+				
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+			  <button type="button" class="btn btn-primary">일정 생성</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+  </div>
+
+	  <!-- registerEnd -->
+
+
 		<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 			  <div class="modalBackground">
@@ -381,10 +496,13 @@
 
 	<script>
 		
+
+
 		var coll = document.getElementsByClassName("collapsible");
 		var sidebar = document.getElementsByClassName("sidebar");
 		var addScheduleBtn = document.getElementById("addScheduleBtn");
 		var i;
+
 		
 		// Accordian
 		for (var i = 0; i < coll.length; i++) {
@@ -470,6 +588,7 @@
 				var sidebarMain = document.getElementById("sidebarMain");
 				var addSchedule = document.getElementById("addSchedule");
 
+
 				sidebarMain.style.width = sidebarStatus ? "0" : "250px";
 				Array.from(sidebarMain.children).forEach(child => {
 					if (child !== addSchedule) {
@@ -486,6 +605,10 @@
 	document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 	var addScheduleBtn = document.getElementById('addScheduleBtn');
+
+	var loginBtn = document.getElementById('login-action');
+	var signupBtn = document.getElementById('signup-action');
+
     	
 	var exampleModal = document.getElementById('exampleModal');
 	addScheduleBtn.addEventListener('click', function() {
@@ -498,6 +621,21 @@
 		 var modal = new bootstrap.Modal(editModal);
 		 modal.show();
 	});
+
+
+	var loginModal = document.getElementById('loginModal');
+	loginBtn.addEventListener('click',function(){
+		var modal = new bootstrap.Modal(loginModal);
+		modal.show();
+		var signupModal = document.getElementById('signupModal');
+		signupBtn.addEventListener('click',function(){
+			modal.hide();
+			var modal1 = new bootstrap.Modal(signupModal);
+			modal1.show();
+		})
+	})
+
+
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
 		eventClick: function(info) {
