@@ -80,6 +80,10 @@
 		flex-direction: column;
 		width: 100%;
 	}
+	#exampleModal{
+        background-color: rgba(0,0,0,0.4);
+
+    }
 	</style>
 
 </head>
@@ -253,6 +257,112 @@
 		</section><!-- #content end -->
 
 	</div><!-- #wrapper end -->
+	
+		<!-- Content
+		============================================= -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			  <div class="modalBackground">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <h5 class="modal-title" id="exampleModalLabel">일정 추가</h5>
+				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+				  <form>
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">제목</label>
+					  <input type="text" class="form-control" id="recipient-name">
+					</div>
+					<div class="mb-3">
+						<input type="color" class="form-control" id="recipient-name">
+					  </div>
+					
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">일정 시작</label>
+					  <input type="datetime-local"id="startDate" class="form-control" placeholder="datetime-local input"> 
+					</div>
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">일정 종료</label>
+					  <input type="datetime-local" id="endDate" class="form-control" placeholder="datetime-local input">  
+					</div>
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">카테고리</label>
+					  <select class="form-select" aria-label="Default select example">
+						  <option selected>카테고리</option>
+						  <option value="1">개인일정</option>
+						  <option value="2">공유일정</option>
+						</select>
+					</div>
+					<div class="mb-3">
+						<label for="recipient-name" class="col-form-label">장소</label>
+						<input type="text" class="form-control" id="recipient-name">
+					  </div>
+					<div class="mb-3">
+					  <label for="message-text" class="col-form-label">내용:</label>
+					  <textarea class="form-control" id="message-text"></textarea>
+					</div>
+				  </form>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				  <button type="button" class="btn btn-primary">일정 생성</button>
+				</div>
+			  </div>
+			</div>
+		  </div>
+	  </div>
+
+		<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			  <div class="modalBackground">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <h5 class="modal-title" id="editModalLabel">일정 수정</h5>
+				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+				  <form>
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">제목</label>
+					  <input type="text" class="form-control" id="editModal-title">
+					</div>
+					
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">일정 시작</label>
+					  <input type="datetime-local" id="editModal-startDate" class="form-control" placeholder="datetime-local input"> 
+					</div>
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">일정 종료</label>
+					  <input type="datetime-local" id="editModal-endDate" class="form-control" placeholder="datetime-local input">  
+					</div>
+					<div class="mb-3">
+					  <label for="recipient-name" class="col-form-label">카테고리</label>
+					  <select class="form-select" aria-label="Default select example">
+						  <option selected>카테고리</option>
+						  <option value="1">개인일정</option>
+						  <option value="2">공유일정</option>
+						</select>
+					</div>
+					<div class="mb-3">
+						<label for="recipient-name" class="col-form-label">장소</label>
+						<input type="text" class="form-control" id="editModal-place">
+					  </div>
+					<div class="mb-3">
+					  <label for="message-text" class="col-form-label">내용:</label>
+					  <textarea class="form-control" id="editModal-text"></textarea>
+					</div>
+				  </form>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				  <button type="button" class="btn btn-primary" id="btnDelete">일정 삭제</button>
+				  <button type="button" class="btn btn-primary" id="btnEdit">일정 수정</button>
+				</div>
+			  </div>
+			</div>
+		  </div>
+	  </div>
 
 	<!-- Go To Top
 	============================================= -->
@@ -370,10 +480,42 @@
 			};
 		};
 		
-		document.addEventListener('DOMContentLoaded', function() {
+		
+	document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
+	var addScheduleBtn = document.getElementById('addScheduleBtn');
+    	
+	var exampleModal = document.getElementById('exampleModal');
+	addScheduleBtn.addEventListener('click', function() {
+		 var modal = new bootstrap.Modal(exampleModal);
+		 modal.show();
+	});
+
+	var editModal = document.getElementById('editModal');
+	addScheduleBtn.addEventListener('click', function() {
+		 var modal = new bootstrap.Modal(editModal);
+		 modal.show();
+	});
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
+		eventClick: function(info) {
+			var container = document.getElementById("editModal");
+			var modal = new bootstrap.Modal(container);
+			$('#editModal-title').val(info.event.title);
+			$('#editModal-startDate').val(moment(info.event.start).format('YYYY-MM-DDTHH:mm'));
+			$('#editModal-endDate').val(moment(info.event.end).format('YYYY-MM-DDTHH:mm'));
+			$('#editModal-color').val(info.event.backgroundColor);
+			$('#editModal-place').val(info.event.extendedProps.place);
+			$('#editModal-content').val(info.event.extendedProps.content);
+        	modal.show();
+
+			$('#btnDelete').on('click', function() {
+				if(window.confirm('일정을 삭제하시겠습니까?'))
+				info.event.remove();
+				modal.hide();
+			});
+		},
+		
 		eventMouseEnter: function (info) {
 			var popover = new bootstrap.Popover(info.el, {
 				title: $('<div />', {
@@ -383,17 +525,29 @@
 					'font-weight': 'bold',
 					'font-size': '20px'
 				}),
-			content: moment(info.event.start).format('HH:mm') + ' - ' + moment(info.event.end).format('HH:mm'),
+			content: $('<div />', {
+				class: 'popoverInfoCalendar'
+        		}).append('<strong>카테고리:</strong> ' + '<br>')
+        .append('<strong>시간:</strong> ' + getDisplayEventDate(info.event) + '<br>')
+        .append('<strong>설명:</strong> ' + info.event.description),
 			trigger: 'hover',
-			delay: { show: 500, hide: 100 },
+			delay: { show: 400, hide: 300 },
 			placement: 'top',
 			html: true,
 			container: 'body'
 			});
 			setTimeout(function () {
 			popover.dispose();
-			}, 3000);
+			}, 1500); 
 		},
+		dateClick: function(info) {
+        var container = document.getElementById("exampleModal");
+        var modal = new bootstrap.Modal(container);
+        modal.show();
+      },
+      select: function(info) {
+        
+      },
 	  locale: 'ko',
       headerToolbar: {
         left: 'prev,next today',
@@ -461,4 +615,26 @@
 
     calendar.render();
   });
+function getDisplayEventDate(event) {
+
+var displayEventDate;
+
+if(event.end == null) {
+	displayEventDate = moment(event.start).format('HH:mm');
+} else if (moment(event.start).format('MM-DD')!=moment(event.end).format('MM-DD')) {
+  var startTimeEventInfo = moment(event.start).format('MM/DD');
+  var endTimeEventInfo = moment(event.end).format('MM/DD');
+  displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
+} else if (moment(event.start).format('MM-DD')==moment(event.end).format('MM-DD')) {
+  var startTimeEventInfo = moment(event.start).format('HH:mm');
+  var endTimeEventInfo = moment(event.end).format('HH:mm');
+  displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
+} else {	
+  displayEventDate = "하루종일";
+}
+
+return displayEventDate;
+}
 	</script>
+</body>
+</html>
