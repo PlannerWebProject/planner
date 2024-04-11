@@ -389,29 +389,29 @@
 
 	  <!-- registerEnd -->
 
-
-		<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  	<!-- editModal -->
+		<div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 			  <div class="modalBackground">
 			  <div class="modal-content">
 				<div class="modal-header">
-				  <h5 class="modal-title" id="editModalLabel">일정 수정</h5>
+				  <h5 class="modal-title" id="editEventModalHeader">일정 수정</h5>
 				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 				  <form>
 					<div class="mb-3">
 					  <label for="recipient-name" class="col-form-label">제목</label>
-					  <input type="text" class="form-control" id="editModal-title">
+					  <input type="text" class="form-control" id="editEventModalTitle">
 					</div>
 					
 					<div class="mb-3">
 					  <label for="recipient-name" class="col-form-label">일정 시작</label>
-					  <input type="datetime-local" id="editModal-startDate" class="form-control" placeholder="datetime-local input"> 
+					  <input type="datetime-local" id="editEventModalStart" class="form-control" placeholder="datetime-local input"> 
 					</div>
 					<div class="mb-3">
 					  <label for="recipient-name" class="col-form-label">일정 종료</label>
-					  <input type="datetime-local" id="editModal-endDate" class="form-control" placeholder="datetime-local input">  
+					  <input type="datetime-local" id="editEventModalEnd" class="form-control" placeholder="datetime-local input">  
 					</div>
 					<div class="mb-3">
 					  <label for="recipient-name" class="col-form-label">카테고리</label>
@@ -423,18 +423,18 @@
 					</div>
 					<div class="mb-3">
 						<label for="recipient-name" class="col-form-label">장소</label>
-						<input type="text" class="form-control" id="editModal-place">
+						<input type="text" class="form-control" id="editEventModalLoc">
 					  </div>
 					<div class="mb-3">
 					  <label for="message-text" class="col-form-label">내용:</label>
-					  <textarea class="form-control" id="editModal-text"></textarea>
+					  <textarea class="form-control" id="editEventModalContent"></textarea>
 					</div>
 				  </form>
 				</div>
 				<div class="modal-footer">
 				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				  <button type="button" class="btn btn-primary" id="btnDelete">일정 삭제</button>
-				  <button type="button" class="btn btn-primary" id="btnEdit">일정 수정</button>
+				  <button type="button" class="btn btn-primary" id="deleteEventBtn">일정 삭제</button>
+				  <button type="button" class="btn btn-primary" id="editEventBtn">일정 수정</button>
 				</div>
 			  </div>
 			</div>
@@ -590,17 +590,16 @@
 	})
 
 
-
     var calendar = new FullCalendar.Calendar(calendarEl, {
 		eventClick: function(info) {
-			var container = document.getElementById("editModal");
+			var container = document.getElementById("editEventModal");
 			var modal = new bootstrap.Modal(container);
-			$('#editModal-title').val(info.event.title);
-			$('#editModal-startDate').val(moment(info.event.start).format('YYYY-MM-DDTHH:mm'));
-			$('#editModal-endDate').val(moment(info.event.end).format('YYYY-MM-DDTHH:mm'));
-			$('#editModal-color').val(info.event.backgroundColor);
-			$('#editModal-place').val(info.event.extendedProps.place);
-			$('#editModal-content').val(info.event.extendedProps.content);
+			$('#editEventModalTitle').val(info.event.title);
+			$('#editEventModalStart').val(moment(info.event.start).format('YYYY-MM-DDTHH:mm'));
+			$('#editEventModalEnd').val(moment(info.event.end).format('YYYY-MM-DDTHH:mm'));
+			$('#editEventModalColor').val(info.event.backgroundColor);
+			$('#editEventModalLoc').val(info.event.extendedProps.loc);
+			$('#editEventModalContent').val(info.event.extendedProps.content);
         	modal.show();
 
 			$('#btnDelete').on('click', function() {
