@@ -1,0 +1,128 @@
+/* ----------------------------------------------------------------
+	Custom CSS
+
+	Add all your Custom Styled CSS here for New Styles or
+	Overwriting Default Theme Styles for Better Handling Updates
+-----------------------------------------------------------------*/
+.popover {}
+
+.popover-header {
+	/* background-color: #73AD21;
+			color: #FFFFFF;
+			font-size: 28px;
+			text-align: center; */
+}
+
+.popover-body {
+	/* background-color: coral;
+			color: #FFFFFF;
+			padding: 25px; */
+}
+
+.popover-arrow {
+	border: red;
+}
+
+/*요일 배경색*/
+.fc-col-header-cell {
+	background-color: #eeeeee;
+}
+
+/* 주말 배경색 */
+.fc-day.fc-day-sun.fc-day-past.fc-daygrid-day {
+	background-color: #f3f3f371;
+}
+
+.fc-day.fc-day-sat.fc-day-past.fc-daygrid-day {
+	background-color: #f3f3f371;
+}
+
+/* 일요일 날짜 빨간색 */
+.fc-day-sun a {
+	color: rgb(250, 88, 88) !important;
+}
+
+/* 토요일 날짜 파란색 */
+.fc-day-sat a {
+	color: rgb(99, 125, 241) !important;
+}
+
+/*요일 글자색*/
+.fc-col-header-cell-cushion {
+	color: #000;
+	font-size: 1.1em;
+}
+
+.fc-col-header-cell-cushion:hover {
+	text-decoration: none;
+	color: #000;
+}
+
+/* 일자 왼쪽 정렬 */
+.fc .fc-daygrid-day-top {
+	flex-direction: row;
+}
+
+/*일자*/
+.fc .fc-daygrid-day-number {
+	padding: 5px 10px;
+	color: #383737;
+	font-size: 1em;
+}
+
+/*종일제목*/
+.fc-event-title.fc-sticky {
+	font-size: 1.1em;
+}
+
+/*more버튼*/
+.fc-daygrid-more-link.fc-more-link {
+	color: #000;
+}
+
+/*일정시간*/
+.fc-daygrid-event>.fc-event-time {
+	color: #000;
+	font-size: 1.1em;
+}
+
+/*시간제목*/
+.fc-daygrid-dot-event>.fc-event-title {
+	color: #000 !important;
+	font-size: 1.1em;
+}
+
+/*가로 줄 - 월달력 종일 or 복수일자*/
+.fc-h-event {}
+
+/*세로 줄 - 주달력, 일달력*/
+.fc-v-event {}
+
+/*title 옆에 점*/
+.fc-daygrid-event-dot {}
+
+/*month/week/day*/
+.fc-button {
+	border-color: #DDDDDD !important;
+	background-color: #eeeeee !important;
+	color: #000 !important;
+}
+
+.fc-button-active {
+	border-color: #FD5D3D !important;
+	background-color: #FD5D3Dec !important;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active:focus {
+	box-shadow: none;
+}
+
+.fc .fc-button:focus {
+	box-shadow: rgba(151, 150, 149, 0.25) 0px 0px 0px 0.1rem;
+}
+
+/* 헤더 간격 조정 */
+.fc .fc-toolbar.fc-header-toolbar {
+	padding: 0 30px;
+	margin-bottom: 1em;
+}
