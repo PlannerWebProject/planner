@@ -58,16 +58,16 @@
 		display: flex;
 		flex-direction: column;
 		position: relative;
-		width: 300px;
+		width: 250px;
 	}
 
 	#addScheduleBtn {
 		position: relative;
 	}
 
-	/* #datepickerDiv {
+	#datepickerDiv {
 		margin: 0 auto;
-	} */
+	}
 
 	#datepicker {
 		margin: 0 auto;
@@ -79,6 +79,8 @@
 		display: flex;
 		flex-direction: column;
 		width: 100%;
+		padding: 0;
+		border: 0;
 	}
 	#exampleModal{
         background-color: rgba(0,0,0,0.4);
@@ -225,11 +227,11 @@
 					<div id="datepicker"></div>
 				</div>
 				<div id="scheduleSearchBox" class="sidebar">
-					<input type="text" placeholder="일정 검색">
+					<input type="text" placeholder="일정 검색" class="sidebar">
 				</div>
 				<div id="scheduleAcc" class="sidebar">
-					<button type="button" class="collapsible">내 달력</button>
-					<div class="calendarGroup">
+					<button type="button" class="collapsible sidebar">내 달력</button>
+					<div class="calendarGroup" class="sidebar">
 						<div class="calendarItem">
 							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력1</label>
 						</div>
@@ -240,8 +242,8 @@
 							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력3</label>
 						</div>
 					</div>
-					<button type="button" class="collapsible">공유받은 달력</button>
-					<div class="calendarGroup">
+					<button type="button" class="collapsible sidebar">공유받은 달력</button>
+					<div class="calendarGroup" class="sidebar">
 						<div class="calendarItem">
 							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력1</label>
 						</div>
@@ -394,12 +396,12 @@
 
 	<script>
 		
-		// Accordian
 		var coll = document.getElementsByClassName("collapsible");
 		var sidebar = document.getElementsByClassName("sidebar");
 		var addScheduleBtn = document.getElementById("addScheduleBtn");
 		var i;
-
+		
+		// Accordian
 		for (var i = 0; i < coll.length; i++) {
 			var initialContent = coll[i].nextElementSibling;
 			initialContent.style.display = "block";
@@ -490,7 +492,7 @@
 				var sidebarMain = document.getElementById("sidebarMain");
 				var addSchedule = document.getElementById("addSchedule");
 
-				sidebarMain.style.width = sidebarStatus ? "0" : "300px";
+				sidebarMain.style.width = sidebarStatus ? "0" : "250px";
 				Array.from(sidebarMain.children).forEach(child => {
 					if (child !== addSchedule) {
 						child.style.display = sidebarStatus ? "none" : "block";
