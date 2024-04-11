@@ -115,30 +115,6 @@
 		<!-- Modal -->
 		<div class="modal d-none animated fadeInUpSmall faster" id="speakerModal" tabindex="-1" role="dialog" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered ms-md-4 me-md-auto align-items-end" style="max-width: 48rem;">
-				<div class="modal-content shadow border-0 overflow-hidden" style="border-radius: 20px;">
-					<div class="card border-0">
-						<div class="row justify-content-between g-0">
-							<div class="col-sm-5" style="background: url('demos/speaker/images/modal.jpg') no-repeat center center / cover; min-height: 200px;"></div>
-							<div class="col-sm-6">
-								<div class="card-body p-5">
-									<p class="mb-2 color small">Get 20% off* your first Order</p>
-									<h3 class="card-title lh-sm mb-3">Bring your Music at your home</h3>
-									<p class="fw-normal text-smaller op-06">Professionally evolve intermandated e-business rather than bricks-and-clicks markets.</p>
-									<div class="subscribe-widget" data-loader="button">
-										<div class="widget-subscribe-form-result"></div>
-										<form id="widget-subscribe-form-modal" action="include/subscribe.php" method="post" class="mb-0">
-											<div class="input-group">
-												<input type="email" id="widget-subscribe-form-modal-email" name="widget-subscribe-form-modal-email" class="form-control required email" placeholder="Enter your Email Address">
-												<button class="btn btn-dark h-bg-color border-0" type="submit"><i class="bi-arrow-right"></i></button>
-											</div>
-										</form>
-									</div>
-									<button type="button" class="btn-close p-3 position-absolute top-0 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 
@@ -310,9 +286,6 @@
 		<div class="modal-dialog">
 		  <div class="modalBackground">
 		  <div class="modal-content">
-			<div class="modal-header">
-			  <div></div>
-			</div>
 			<div class="modal-body">
 				<div class="card-body p-5">
 					<form id="login-form" name="login-form" class="mb-0" action="#" method="post">
@@ -350,10 +323,6 @@
 					</div>
 				</div>
 			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-			  <button type="button" class="btn btn-primary">일정 생성</button>
-			</div>
 		  </div>
 		</div>
 	  </div>
@@ -366,13 +335,9 @@
 		<div class="modal-dialog">
 		  <div class="modalBackground">
 		  <div class="modal-content">
-			<div class="modal-header">
-			  <div></div>
-			</div>
 			<div class="modal-body">
 				<div class="tab-pane" id="tab-register" role="tabpanel" aria-labelledby="canvas-tab-register-tab"
 								tabindex="0">
-								<div class="card mb-0">
 									<div class="card-body" style="padding: 40px;">
 										<h3>Register for an Account</h3>
 
@@ -414,13 +379,8 @@
 
 										</form>
 									</div>
-								</div>
 							</div>
 				
-			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-			  <button type="button" class="btn btn-primary">일정 생성</button>
 			</div>
 		  </div>
 		</div>
@@ -613,12 +573,6 @@
 	var exampleModal = document.getElementById('exampleModal');
 	addScheduleBtn.addEventListener('click', function() {
 		 var modal = new bootstrap.Modal(exampleModal);
-		 modal.show();
-	});
-
-	var editModal = document.getElementById('editModal');
-	addScheduleBtn.addEventListener('click', function() {
-		 var modal = new bootstrap.Modal(editModal);
 		 modal.show();
 	});
 
