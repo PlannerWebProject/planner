@@ -92,7 +92,7 @@
 		margin: 2px;
 		display: inline-block;
 		cursor: pointer;
-		border-radius: 50%; /* Make it a circle */
+		border-radius: 50%;
 	  }
 	</style>
 
@@ -313,7 +313,7 @@
 					</div>
 					<div class="mb-3">
 						<label for="recipient-name" class="col-form-label">장소</label>
-						<input type="text" class="form-control" id="recipient-name">
+						<input type="text" class="form-control" id="place">
 					  </div>
 					<div class="mb-3">
 					  <label for="message-text" class="col-form-label">내용:</label>
@@ -323,7 +323,7 @@
 				</div>
 				<div class="modal-footer">
 				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				  <button type="button" class="btn btn-primary">일정 생성</button>
+				  <button type="button" class="btn btn-primary" id="btnEventProduce">일정 생성</button>
 				</div>
 			  </div>
 			</div>
@@ -425,11 +425,13 @@
 				inline: true
 			});
 		});
+
 		var colorCircles = document.querySelectorAll(".color-circle");
         colorCircles.forEach(function (circle) {
         circle.addEventListener("click", function () {
           var selectedColor = circle.style.backgroundColor;
           document.getElementById("selected-color").innerText = selectedColor;
+		  $('#editModal-color').val(info.event.backgroundColor);
         });
       });
 		
@@ -572,6 +574,12 @@
       select: function(info) {
         
       },
+	  modalProduce: function(info){
+		$('#btnEventProduce').on('click', function() {
+				alert();
+			});
+	  },
+
 	  locale: 'ko',
       headerToolbar: {
         left: 'prev,next today',
@@ -659,6 +667,9 @@ if(event.end == null) {
 
 return displayEventDate;
 }
+function startEnd(){
+	
+	}
 	</script>
 </body>
 </html>
