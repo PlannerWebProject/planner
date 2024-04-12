@@ -85,7 +85,20 @@
         background-color: rgba(0,0,0,0.4);
 
     }
-   
+
+	#eventProduceModal{
+        background-color: rgba(0,0,0,0.4);
+
+    }
+	.color-circle {
+		width: 20px;
+		height: 20px;
+		margin: 2px;
+		display: inline-block;
+		cursor: pointer;
+		border-radius: 50%;
+	  }
+
 	#loginModal{
         background-color: rgba(0,0,0,0.4);
 
@@ -202,53 +215,60 @@
 	
 		<!-- Content
 		============================================= -->
-		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="eventProduceModal" tabindex="-1" aria-labelledby="eventProduceModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 			  <div class="modalBackground">
 			  <div class="modal-content">
 				<div class="modal-header">
-				  <h5 class="modal-title" id="exampleModalLabel">일정 추가</h5>
+				  <h5 class="modal-title" id="eventProduceModalLabel">일정 추가</h5>
 				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 				  <form>
 					<div class="mb-3">
-					  <label for="recipient-name" class="col-form-label">제목</label>
-					  <input type="text" class="form-control" id="recipient-name">
-					</div>
-					<div class="mb-3">
-						<input type="color" class="form-control" id="recipient-name">
+						<div class="container">
+							<div id="color-selector">
+							  <div class="color-circle" style="background-color: #FF8080"></div>
+							  <div class="color-circle" style="background-color: #FFCF96"></div>
+							  <div class="color-circle" style="background-color: #F6FDC3"></div>
+							  <div class="color-circle" style="background-color: #CDFAD5"></div>
+							</div>
+							<p>선택한 색: <span id="selected-color"></span></p>
+						  </div>
 					  </div>
-					
 					<div class="mb-3">
-					  <label for="recipient-name" class="col-form-label">일정 시작</label>
-					  <input type="datetime-local"id="startDate" class="form-control" placeholder="datetime-local input"> 
+					  <label for="eventModalTitle" class="col-form-label">제목</label>
+					  <input type="text" class="form-control" id="eventModalTitle">
+					</div>			
+					<div class="mb-3">
+						<label for="eventModalStart" class="col-form-label">일정 시작</label>
+						<input type="datetime-local" id="eventModalStart" class="form-control" placeholder="datetime-local input"> 
 					</div>
 					<div class="mb-3">
-					  <label for="recipient-name" class="col-form-label">일정 종료</label>
-					  <input type="datetime-local" id="endDate" class="form-control" placeholder="datetime-local input">  
+						<label for="eventModalEnd" class="col-form-label">일정 종료</label>
+						<input type="datetime-local" id="eventModalEnd" class="form-control" placeholder="datetime-local input" onchange="validateEndDate()">  
 					</div>
 					<div class="mb-3">
-					  <label for="recipient-name" class="col-form-label">카테고리</label>
-					  <select class="form-select" aria-label="Default select example">
+					  <label for="eventModalSelect" class="col-form-label">카테고리</label>
+					  <select class="form-select" aria-label="Default select example" id="eventModalSelect">
 						  <option selected>카테고리</option>
 						  <option value="1">개인일정</option>
 						  <option value="2">공유일정</option>
 						</select>
 					</div>
 					<div class="mb-3">
-						<label for="recipient-name" class="col-form-label">장소</label>
-						<input type="text" class="form-control" id="recipient-name">
+						<label for="eventModalIoc" class="col-form-label">장소</label>
+						<input type="text" class="form-control" id="eventModalIoc">
 					  </div>
 					<div class="mb-3">
-					  <label for="message-text" class="col-form-label">내용:</label>
-					  <textarea class="form-control" id="message-text"></textarea>
+					  <label for="eventModalContent" class="col-form-label">내용:</label>
+					  <textarea class="form-control" id="eventModalContent"></textarea>
 					</div>
 				  </form>
 				</div>
 				<div class="modal-footer">
 				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				  <button type="button" class="btn btn-primary">일정 생성</button>
+				  <button type="button" class="btn btn-primary" id="btnEventProduce">일정 생성</button>
 				</div>
 			  </div>
 			</div>
@@ -536,10 +556,11 @@
 	var signupBtn = document.getElementById('signup-action');
 
     	
-	var exampleModal = document.getElementById('exampleModal');
+	var exampleModal = document.getElementById('event');
 	addScheduleBtn.addEventListener('click', function() {
-		 var modal = new bootstrap.Modal(exampleModal);
+		 var modal = new bootstrap.Modal(eventProduceModal);
 		 modal.show();
+		 var start = document.getElementById('eventstart')
 	});
 
 	var loginModal = document.getElementById('loginModal');
@@ -571,6 +592,11 @@
 				info.event.remove();
 				modal.hide();
 			});
+			$("#btnEventProduce").on('click', function(event) {
+				var start = $('#eventModalStart').val();
+				var end = $('#eventModalEnd').val();
+				alert();
+			});
 		},
 		
 		eventMouseEnter: function (info) {
@@ -598,7 +624,7 @@
 			}, 1500); 
 		},
 		dateClick: function(info) {
-        var container = document.getElementById("exampleModal");
+        var container = document.getElementById("eventProduceModal");//
         var modal = new bootstrap.Modal(container);
         modal.show();
       },
@@ -694,6 +720,17 @@ if(event.end == null) {
 }
 
 return displayEventDate;
+}
+function validateEndDate() {
+    var startDate = document.getElementById("eventModalStart").value;
+    var endDate = document.getElementById("eventModalEnd").value;
+
+    if (startDate && endDate) {
+        if (startDate > endDate) {
+            alert("일정 종료일은 시작일 이후여야 합니다.");
+            document.getElementById("eventModalEnd").value = startDate;
+        }
+    }
 }
 	</script>
 </body>
