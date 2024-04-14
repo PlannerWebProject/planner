@@ -1,15 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
 <head>
 
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta http-equiv="x-ua-compatible" content="IE=edge">
-<meta name="author" content="SemiColonWeb">
-<meta name="description"
-	content="Create Speaker &amp; Bluetooth Devices Websites with Canvas Template. Get Canvas to build powerful websites easily with the Highly Customizable &amp; Best Selling Bootstrap Template, today.">
 
 <!-- Font Imports -->
 <link rel="stylesheet" href="https://use.typekit.net/gmv6nzn.css">
@@ -64,16 +61,17 @@ html, body {
 	display: flex;
 	flex-direction: column;
 	position: relative;
-	width: 300px;
+	width: 250px;
 }
 
 #addScheduleBtn {
 	position: relative;
 }
 
-/* #datepickerDiv {
-		margin: 0 auto;
-	} */
+#datepickerDiv {
+	margin: 0 auto;
+}
+
 #datepicker {
 	margin: 0 auto;
 	padding-left: 0;
@@ -84,9 +82,32 @@ html, body {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+	padding: 0;
+	border: 0;
 }
 
 #exampleModal {
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+#eventProduceModal {
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.color-circle {
+	width: 20px;
+	height: 20px;
+	margin: 2px;
+	display: inline-block;
+	cursor: pointer;
+	border-radius: 50%;
+}
+
+#loginModal {
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+#signupModal {
 	background-color: rgba(0, 0, 0, 0.4);
 }
 </style>
@@ -104,46 +125,7 @@ html, body {
 			id="speakerModal" tabindex="-1" role="dialog" aria-hidden="true">
 			<div
 				class="modal-dialog modal-dialog-centered ms-md-4 me-md-auto align-items-end"
-				style="max-width: 48rem;">
-				<div class="modal-content shadow border-0 overflow-hidden"
-					style="border-radius: 20px;">
-					<div class="card border-0">
-						<div class="row justify-content-between g-0">
-							<div class="col-sm-5"
-								style="background: url('demos/speaker/images/modal.jpg') no-repeat center center/cover; min-height: 200px;"></div>
-							<div class="col-sm-6">
-								<div class="card-body p-5">
-									<p class="mb-2 color small">Get 20% off* your first Order</p>
-									<h3 class="card-title lh-sm mb-3">Bring your Music at your
-										home</h3>
-									<p class="fw-normal text-smaller op-06">Professionally
-										evolve intermandated e-business rather than bricks-and-clicks
-										markets.</p>
-									<div class="subscribe-widget" data-loader="button">
-										<div class="widget-subscribe-form-result"></div>
-										<form id="widget-subscribe-form-modal"
-											action="include/subscribe.php" method="post" class="mb-0">
-											<div class="input-group">
-												<input type="email" id="widget-subscribe-form-modal-email"
-													name="widget-subscribe-form-modal-email"
-													class="form-control required email"
-													placeholder="Enter your Email Address">
-												<button class="btn btn-dark h-bg-color border-0"
-													type="submit">
-													<i class="bi-arrow-right"></i>
-												</button>
-											</div>
-										</form>
-									</div>
-									<button type="button"
-										class="btn-close p-3 position-absolute top-0 end-0"
-										data-bs-dismiss="modal" aria-label="Close"></button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+				style="max-width: 48rem;"></div>
 		</div>
 
 
@@ -160,31 +142,14 @@ html, body {
 							<div>
 								<button name="sidebarFoldingBtn" id="sidebarFoldingBtn">접기</button>
 							</div>
-							<a href="index.html">canvas<span class="color">.</span></a>
+
+							<a href="index.html"><img
+								src="demos/speaker/images/plannerLogo.webp" alt=""></a>
+
 						</div>
 						<!-- #logo end -->
 
 						<div class="header-misc">
-
-							<!-- Top Cart
-							============================================= -->
-							<div id="top-cart" class="header-misc-icon me-3">
-								<a href="#" id="top-cart-trigger"><i class="bi-basket3"></i></a>
-								<div class="top-cart-content">
-									<div class="top-cart-title">
-										<h4 class="fw-normal">Shopping Cart</h4>
-									</div>
-									<div class="top-cart-items py-4">
-										<p class="mb-0">Ohh! Your Basket is empty.</p>
-									</div>
-									<div class="top-cart-action">
-										<a href="#"
-											class="button button-small bg-color color bg-opacity-10 m-0">Go
-											to Shop</a> <span class="top-checkout-price">$0.00</span>
-									</div>
-								</div>
-							</div>
-							<!-- #top-cart end -->
 
 							<!-- Top Account
 							============================================= -->
@@ -195,7 +160,8 @@ html, body {
 								<div class="dropdown-menu dropdown-menu-end px-2 m-0">
 									<a
 										class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary"
-										href="#"><i class="bi-bag-check me-2"></i>Your Orders</a> <a
+										href="#" id="login-action"><i class="bi-bag-check me-2"></i>Login</a>
+									<a
 										class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary"
 										href="#"><i class="bi-person me-2"></i>Your Profile</a> <a
 										class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary"
@@ -204,46 +170,11 @@ html, body {
 							</div>
 
 						</div>
-
-						<div class="primary-menu-trigger">
-							<button class="cnvs-hamburger" type="button"
-								title="Open Mobile Menu">
-								<span class="cnvs-hamburger-box"><span
-									class="cnvs-hamburger-inner"></span></span>
-							</button>
-						</div>
-
-						<nav class="primary-menu">
-
-							<ul class="menu-container">
-								<li class="menu-item current"><a class="menu-link" href="#"><div>Home</div></a></li>
-								<li class="menu-item"><a class="menu-link" href="#"><div>Shop</div></a>
-									<ul class="sub-menu-container">
-										<li class="menu-item"><a class="menu-link" href="#"><div>Canvas
-													Pod</div></a></li>
-										<li class="menu-item"><a class="menu-link" href="#"><div>Canvas
-													Pod Mini</div></a></li>
-										<li class="menu-item"><a class="menu-link" href="#"><div>Canvas
-													EarPod</div></a></li>
-									</ul></li>
-								<li class="menu-item"><a class="menu-link" href="#"><div>Reviews</div></a></li>
-								<li class="menu-item"><a class="menu-link" href="#"><div>Contact</div></a></li>
-							</ul>
-
-						</nav>
-						<!-- #primary-menu end -->
-
-						<form class="top-search-form" action="search.html" method="get">
-							<input type="text" name="q" class="form-control" value=""
-								placeholder="Type &amp; Hit Enter.." autocomplete="off">
-						</form>
-
 					</div>
 				</div>
 			</div>
 			<div class="header-wrap-clone"></div>
 		</header>
-		<!-- #header end -->
 
 
 		<!--Hero
@@ -257,11 +188,13 @@ html, body {
 					<div id="datepicker"></div>
 				</div>
 				<div id="scheduleSearchBox" class="sidebar">
-					<input type="text" placeholder="일정 검색">
+
+					<input type="text" placeholder="일정 검색" class="sidebar">
 				</div>
 				<div id="scheduleAcc" class="sidebar">
-					<button type="button" class="collapsible">내 달력</button>
-					<div class="calendarGroup">
+					<button type="button" class="collapsible sidebar">내 달력</button>
+					<div class="calendarGroup" class="sidebar">
+
 						<div class="calendarItem">
 							<label class="calendarCheckbox"><input
 								class='calendarFilter' type="checkbox" value="정연" checked>달력1</label>
@@ -275,8 +208,10 @@ html, body {
 								class='calendarFilter' type="checkbox" value="정연" checked>달력3</label>
 						</div>
 					</div>
-					<button type="button" class="collapsible">공유받은 달력</button>
-					<div class="calendarGroup">
+
+					<button type="button" class="collapsible sidebar">공유받은 달력</button>
+					<div class="calendarGroup" class="sidebar">
+
 						<div class="calendarItem">
 							<label class="calendarCheckbox"><input
 								class='calendarFilter' type="checkbox" value="정연" checked>달력1</label>
@@ -292,27 +227,239 @@ html, body {
 					</div>
 				</div>
 			</div>
+
+			<!-- Content
+			============================================= -->
 			<div id='calendar'></div>
 		</section>
-
-
-		<!-- Content
-		============================================= -->
-		<section id="content"></section>
-		<!-- #content end -->
 
 	</div>
 	<!-- #wrapper end -->
 
 	<!-- Content
 		============================================= -->
-	<div class="modal fade" id="exampleModal" tabindex="-1"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="eventProduceModal" tabindex="-1"
+		aria-labelledby="eventProduceModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modalBackground">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">일정 추가</h5>
+						<h5 class="modal-title" id="eventProduceModalLabel">일정 추가</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="mb-3">
+								<div class="container">
+									<div id="color-selector">
+										<div class="color-circle" style="background-color: #FF8080"></div>
+										<div class="color-circle" style="background-color: #FFCF96"></div>
+										<div class="color-circle" style="background-color: #F6FDC3"></div>
+										<div class="color-circle" style="background-color: #CDFAD5"></div>
+									</div>
+									<p>
+										선택한 색: <span id="selected-color"></span>
+									</p>
+								</div>
+							</div>
+							<div class="mb-3">
+								<label for="eventModalTitle" class="col-form-label">제목</label> <input
+									type="text" class="form-control" id="eventModalTitle">
+							</div>
+							<div class="mb-3">
+								<label for="eventModalStart" class="col-form-label">일정
+									시작</label> <input type="datetime-local" id="eventModalStart"
+									class="form-control" placeholder="datetime-local input">
+							</div>
+							<div class="mb-3">
+								<label for="eventModalEnd" class="col-form-label">일정 종료</label>
+								<input type="datetime-local" id="eventModalEnd"
+									class="form-control" placeholder="datetime-local input"
+									onchange="validateEndDate()">
+							</div>
+							<div class="mb-3">
+								<label for="eventModalSelect" class="col-form-label">카테고리</label>
+								<select class="form-select" aria-label="Default select example"
+									id="eventModalSelect">
+									<option selected>카테고리</option>
+									<option value="1">개인일정</option>
+									<option value="2">공유일정</option>
+								</select>
+							</div>
+							<div class="mb-3">
+								<label for="eventModalIoc" class="col-form-label">장소</label> <input
+									type="text" class="form-control" id="eventModalIoc">
+							</div>
+							<div class="mb-3">
+								<label for="eventModalContent" class="col-form-label">내용:</label>
+								<textarea class="form-control" id="eventModalContent"></textarea>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary" id="btnEventProduce">일정
+							생성</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- loginSTart -->
+
+	<div class="modal fade" id="loginModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modalBackground">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="card-body p-5">
+							<form id="login-form" name="login-form" class="mb-0" action="#"
+								method="post">
+								<h1 class="fs-4 fw-semibold text-center mb-0">Sign In to
+									Canvas Account</h1>
+								<h2 class="fs-5 text-center fw-medium mb-5 mt-1">
+									<span class="op-06 nocolor">New?</span> <a href="#"
+										id="signup-action">Create Account</a>
+								</h2>
+
+								<div class="row">
+									<div class="col-12 form-group mb-4">
+										<label for="login-form-username">Email</label> <input
+											type="text" id="login-form-username"
+											name="login-form-username" value=""
+											class="form-control not-dark">
+									</div>
+
+									<div class="col-12 form-group mb-4">
+										<div class="d-flex justify-content-between">
+											<label for="login-form-password">Password</label> <a href="#"
+												class="fw-semibold text-smaller">Forgot Password?</a>
+										</div>
+										<input type="password" id="login-form-password"
+											name="login-form-password" value=""
+											class="form-control not-dark">
+									</div>
+
+									<div class="col-12 form-group mb-0">
+										<button
+											class="btn btn-lg text-white bg-black h-bg-color d-block w-100 m-0"
+											id="login-form-submit" name="login-form-submit" value="login">Continue</button>
+									</div>
+								</div>
+							</form>
+
+							<div class="divider divider-center">
+								<div class="divider-text text-dark lh-base">or Login with</div>
+							</div>
+
+							<div class="text-center">
+								<a href="#"
+									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img
+									src="https://cdn.cdnlogo.com/logos/g/35/google-icon.svg"
+									alt="Google Logo" class="d-inline-block me-2 square square-xs">Sign
+									In with Google</a> <a href="#"
+									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img
+									src="https://cdn.cdnlogo.com/logos/f/91/facebook-icon.svg"
+									alt="Facebook Logo"
+									class="d-inline-block me-2 square square-xs">Sign In with
+									Facebook</a> <a href="#"
+									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img
+									src="https://cdn.cdnlogo.com/logos/t/39/twitter.svg"
+									alt="Twitter Logo" class="d-inline-block me-2 square square-xs">Sign
+									In with Twitter</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- login end -->
+	<!-- registerStart -->
+
+	<div class="modal fade" id="signupModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modalBackground">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="tab-pane" id="tab-register" role="tabpanel"
+							aria-labelledby="canvas-tab-register-tab" tabindex="0">
+							<div class="card-body" style="padding: 40px;">
+								<h3>Register for an Account</h3>
+
+								<form id="register-form" name="register-form" class="row mb-0"
+									action="#" method="post">
+
+									<div class="col-12 form-group">
+										<label for="register-form-name">Name:</label> <input
+											type="text" id="register-form-name" name="register-form-name"
+											value="" class="form-control">
+									</div>
+
+									<div class="col-12 form-group">
+										<label for="register-form-email">Email Address:</label> <input
+											type="text" id="register-form-email"
+											name="register-form-email" value="" class="form-control">
+									</div>
+
+									<div class="col-12 form-group">
+										<label for="register-form-username">Choose a Username:</label>
+										<input type="text" id="register-form-username"
+											name="register-form-username" value="" class="form-control">
+									</div>
+
+									<div class="col-12 form-group">
+										<label for="register-form-phone">Phone:</label> <input
+											type="text" id="register-form-phone"
+											name="register-form-phone" value="" class="form-control">
+									</div>
+
+									<div class="col-12 form-group">
+										<label for="register-form-password">Choose Password:</label> <input
+											type="password" id="register-form-password"
+											name="register-form-password" value="" class="form-control">
+									</div>
+
+									<div class="col-12 form-group">
+										<label for="register-form-repassword">Re-enter
+											Password:</label> <input type="password"
+											id="register-form-repassword" name="register-form-repassword"
+											value="" class="form-control">
+									</div>
+
+									<div class="col-12 form-group">
+										<button class="button button-3d button-black m-0"
+											id="register-form-submit" name="register-form-submit"
+											value="register">Register Now</button>
+									</div>
+
+								</form>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- registerEnd -->
+
+	<!-- editEventModal -->
+	<div class="modal fade" id="editEventModal" tabindex="-1"
+		aria-labelledby="editModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modalBackground">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="editEventModalHeader">일정 수정</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
@@ -320,21 +467,18 @@ html, body {
 						<form>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">제목</label> <input
-									type="text" class="form-control" id="recipient-name">
-							</div>
-							<div class="mb-3">
-								<input type="color" class="form-control" id="recipient-name">
+									type="text" class="form-control" id="editEventModalTitle">
 							</div>
 
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">일정 시작</label>
-								<input type="datetime-local" id="startDate" class="form-control"
-									placeholder="datetime-local input">
+								<input type="datetime-local" id="editEventModalStart"
+									class="form-control" placeholder="datetime-local input">
 							</div>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">일정 종료</label>
-								<input type="datetime-local" id="endDate" class="form-control"
-									placeholder="datetime-local input">
+								<input type="datetime-local" id="editEventModalEnd"
+									class="form-control" placeholder="datetime-local input">
 							</div>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">카테고리</label>
@@ -346,30 +490,25 @@ html, body {
 							</div>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">장소</label> <input
-									type="text" class="form-control" id="recipient-name">
+									type="text" class="form-control" id="editEventModalLoc">
 							</div>
 							<div class="mb-3">
 								<label for="message-text" class="col-form-label">내용:</label>
-								<textarea class="form-control" id="message-text"></textarea>
+								<textarea class="form-control" id="editEventModalContent"></textarea>
 							</div>
 						</form>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal">취소</button>
-						<button type="button" class="btn btn-primary">일정 생성</button>
+						<button type="button" class="btn btn-primary" id="deleteEventBtn">일정
+							삭제</button>
+						<button type="button" class="btn btn-primary" id="editEventBtn">일정
+							수정</button>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-
-	<!-- Go To Top
-	============================================= -->
-	<div id="gotoTop" data-mobile="true">
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
-			fill="none">
-			<circle cx="50" cy="50" r="40"></circle></svg>
 	</div>
 
 	<!-- JavaScripts
@@ -384,12 +523,12 @@ html, body {
 
 	<script>
 		
-		// Accordian
 		var coll = document.getElementsByClassName("collapsible");
 		var sidebar = document.getElementsByClassName("sidebar");
 		var addScheduleBtn = document.getElementById("addScheduleBtn");
 		var i;
-
+		
+		// Accordian
 		for (var i = 0; i < coll.length; i++) {
 			var initialContent = coll[i].nextElementSibling;
 			initialContent.style.display = "block";
@@ -413,6 +552,34 @@ html, body {
 				inline: true
 			});
 		});
+		
+		$('#datepicker').datepicker({
+        language: {
+            daysMin: ['일', '월', '화', '수', '목', '금', '토'],
+            months: [
+                '1월', '2월', '3월', '4월', '5월', '6월',
+                '7월', '8월', '9월', '10월', '11월', '12월'
+            ],
+            today: '오늘',
+            clear: '지우기',
+            dateFormat: 'yyyy-mm-dd',
+            firstDay: 0
+        },
+        minDate: new Date(),  // 최소 선택 가능한 날짜를 현재 날짜로 설정
+        dateFormat: 'yyyy-mm-dd',  // 날짜 형식 설정 (년-월-일)
+		onSelect: function (formattedDate, date, picker) {
+			if (date) {
+				$('#selected-date').text('선택한 날짜: ' + formattedDate);
+
+				var dayOfWeek = date.getDay();
+				var days = ['일', '월', '화', '수', '목', '금', '토'];
+				$('#day-of-week').text('요일: ' + days[dayOfWeek]);
+			} else {
+				$('#selected-date').text('');
+				$('#day-of-week').text('');
+			}
+		}
+    });
     
 		window.addEventListener( 'load', function() {
 			var swiperThumb = new Swiper(".swiper-thumb", {
@@ -437,41 +604,75 @@ html, body {
 		});
 
 		window.onload = function() {
-			var container = document.getElementById("speakerModal");
-			var modal = new bootstrap.Modal(container);
-			modal.show();
 			var sidebarStatus = true;
 			sidebarFoldingBtn.onclick = function () {
 				var sidebarMain = document.getElementById("sidebarMain");
 				var addSchedule = document.getElementById("addSchedule");
 
-				sidebarMain.style.width = sidebarStatus ? "0" : "300px";
+
+				sidebarMain.style.width = sidebarStatus ? "0" : "250px";
 				Array.from(sidebarMain.children).forEach(child => {
 					if (child !== addSchedule) {
 						child.style.display = sidebarStatus ? "none" : "block";
 						child.style.width = sidebarStatus ? "0" : "100%";
 					}
 				});
-
 				sidebarStatus = !sidebarStatus;
 			};
 		};
 		
 		
-		document.addEventListener('DOMContentLoaded', function() {
+	document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 	var addScheduleBtn = document.getElementById('addScheduleBtn');
+
+	var loginBtn = document.getElementById('login-action');
+	var signupBtn = document.getElementById('signup-action');
+
     	
-		var exampleModal = document.getElementById('exampleModal');
-	 
-	 addScheduleBtn.addEventListener('click', function() {
-			
-			 var modal = new bootstrap.Modal(exampleModal);
-			 modal.show();
-		 });
-	 
+	var exampleModal = document.getElementById('event');
+	addScheduleBtn.addEventListener('click', function() {
+		 var modal = new bootstrap.Modal(eventProduceModal);
+		 modal.show();
+		 var start = document.getElementById('eventstart')
+	});
+
+	var loginModal = document.getElementById('loginModal');
+		loginBtn.addEventListener('click',function(){
+		var modal = new bootstrap.Modal(loginModal);
+		modal.show();
+		var signupModal = document.getElementById('signupModal');
+		signupBtn.addEventListener('click',function(){
+			modal.hide();
+			var modal1 = new bootstrap.Modal(signupModal);
+			modal1.show();
+		})
+	})
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
+		eventClick: function(info) {
+			var container = document.getElementById("editEventModal");
+			var modal = new bootstrap.Modal(container);
+			$('#editEventModalTitle').val(info.event.title);
+			$('#editEventModalStart').val(moment(info.event.start).format('YYYY-MM-DDTHH:mm'));
+			$('#editEventModalEnd').val(moment(info.event.end).format('YYYY-MM-DDTHH:mm'));
+			$('#editEventModalColor').val(info.event.backgroundColor);
+			$('#editEventModalLoc').val(info.event.extendedProps.loc);
+			$('#editEventModalContent').val(info.event.extendedProps.content);
+        	modal.show();
+
+			$('#deleteEventBtn').on('click', function() {
+				if(window.confirm('일정을 삭제하시겠습니까?'))
+				info.event.remove();
+				modal.hide();
+			});
+			$("#btnEventProduce").on('click', function(event) {
+				var start = $('#eventModalStart').val();
+				var end = $('#eventModalEnd').val();
+				alert();
+			});
+		},
+		
 		eventMouseEnter: function (info) {
 			var popover = new bootstrap.Popover(info.el, {
 				title: $('<div />', {
@@ -481,19 +682,23 @@ html, body {
 					'font-weight': 'bold',
 					'font-size': '20px'
 				}),
-			content: moment(info.event.start).format('HH:mm') + ' - ' + moment(info.event.end).format('HH:mm'),
+			content: $('<div />', {
+				class: 'popoverInfoEvent'
+        		}).append('<strong>카테고리:</strong> ' + '<br>')
+        .append('<strong>시간:</strong> ' + getDisplayEventDate(info.event) + '<br>')
+        .append('<strong>내용:</strong> ' + info.event.extendedProps.content),
 			trigger: 'hover',
-			delay: { show: 500, hide: 100 },
+			delay: { show: 400, hide: 300 },
 			placement: 'top',
 			html: true,
 			container: 'body'
 			});
 			setTimeout(function () {
 			popover.dispose();
-			}, 3000);
+			}, 1500); 
 		},
 		dateClick: function(info) {
-        var container = document.getElementById("exampleModal");
+        var container = document.getElementById("eventProduceModal");//
         var modal = new bootstrap.Modal(container);
         modal.show();
       },
@@ -512,61 +717,66 @@ html, body {
       editable: true,
       selectable: true,
       events: [
-        {
-          title: 'Business Lunch',
-          start: '2023-01-03T13:00:00',
-          constraint: 'businessHours'
-        },
-        {
-          title: 'Meeting',
-          start: '2023-01-13T11:00:00',
-          constraint: 'availableForMeeting', // defined below
-          color: '#257e4a'
-        },
-        {
-          title: 'Conference',
-          start: '2023-01-18',
-          end: '2023-01-20'
-        },
-        {
-          title: 'Party',
-          start: '2023-01-29T20:00:00'
-        },
-
-        // areas where "Meeting" must be dropped
-        {
-          groupId: 'availableForMeeting',
-          start: '2023-01-11T10:00:00',
-          end: '2023-01-11T16:00:00',
-          display: 'background'
-        },
-        {
-          groupId: 'availableForMeeting',
-          start: '2023-01-13T10:00:00',
-          end: '2023-01-13T16:00:00',
-          display: 'background'
-        },
-
-        // red areas where no events can be dropped
-        {
-          start: '2023-01-24',
-          end: '2023-01-28',
-          overlap: false,
-          display: 'background',
-          color: '#ff9f89'
-        },
-        {
-          start: '2023-01-06',
-          end: '2023-01-08',
-          overlap: false,
-          display: 'background',
-          color: '#ff9f89'
-        }
-      ]
+    	  /* {
+              title: 'Business Lunch',
+              start: '2023-01-03T13:00:00',
+              constraint: 'businessHours'
+            } */
+   		  /* $.ajax({
+   			type: 'get',
+   			url: '/listevent.do',
+   			success: function(result){
+   				result.forEach(obj =>{
+   					calendar.addEvent({
+   						title: obj.title,
+   						start: obj.start,
+   						end: obj.end,
+   						color: obj.colSeq
+   					})
+   				}
+   			},
+   			error: function(a,b,c){
+   				console.log(a,b,c);
+   			}
+   			
+   		  }) */
+   	  ]
+    	  
     });
-
     calendar.render();
+
   });
+		
+	function getDisplayEventDate(event) {
+			var displayEventDate;
+
+			if(event.end == null) {
+				displayEventDate = moment(event.start).format('HH:mm');
+			} else if (moment(event.start).format('MM-DD')!=moment(event.end).format('MM-DD')) {
+			  var startEventInfo = moment(event.start).format('MM/DD');
+			  var endEventInfo = moment(event.end).format('MM/DD');
+			  displayEventDate = startEventInfo + " - " + endEventInfo;
+			} else if (moment(event.start).format('MM-DD')==moment(event.end).format('MM-DD')) {
+			  var startTimeEventInfo = moment(event.start).format('HH:mm');
+			  var endTimeEventInfo = moment(event.end).format('HH:mm');
+			  displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
+			} else {	
+			  displayEventDate = "하루종일";
+			}
+
+			return displayEventDate;
+			}
+			function validateEndDate() {
+			    var startDate = document.getElementById("eventModalStart").value;
+			    var endDate = document.getElementById("eventModalEnd").value;
+
+			    if (startDate && endDate) {
+			        if (startDate > endDate) {
+			            alert("일정 종료일은 시작일 이후여야 합니다.");
+			            document.getElementById("eventModalEnd").value = startDate;
+			        }
+			    }
+			}
 	</script>
 </body>
 </html>
