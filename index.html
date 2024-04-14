@@ -264,12 +264,18 @@
 					  <input type="text" class="form-control" id="eventModalTitle">
 					</div>			
 					<div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="allDayCheck" checked>
+                            <label class="form-check-label" for="allDayCheck">하루종일</label>
+                        </div>
+                    </div>	
+					<div class="mb-3">
 						<label for="eventModalStart" class="col-form-label">일정 시작</label>
-						<input type="datetime-local" id="eventModalStart" class="form-control" placeholder="datetime-local input"> 
+						<input type="datetime-local" id="eventModalStart" class="form-control" placeholder="datetime-local input" disabled> 
 					</div>
 					<div class="mb-3">
 						<label for="eventModalEnd" class="col-form-label">일정 종료</label>
-						<input type="datetime-local" id="eventModalEnd" class="form-control" placeholder="datetime-local input" onchange="validateEndDate()">  
+						<input type="datetime-local" id="eventModalEnd" class="form-control" placeholder="datetime-local input" disabled  onchange="validateEndDate()">  
 					</div>
 					<div class="mb-3">
 					  <label for="eventModalSelect" class="col-form-label">카테고리</label>
@@ -660,10 +666,21 @@
 			}, 1500); 
 		},
 		dateClick: function(info) {
-        var container = document.getElementById("eventProduceModal");//
-        var modal = new bootstrap.Modal(container);
-        modal.show();
-      },
+            var clickedDate = info.date;
+            var momentClickedDate = moment(clickedDate); 
+    
+            var formattedDateTimeStart = momentClickedDate.format('YYYY-MM-DD HH:mm:ss');
+            document.getElementById("eventModalStart").value = formattedDateTimeStart;
+    
+            var formattedDateTimeEnd = momentClickedDate.endOf('day').format('YYYY-MM-DD HH:mm');
+            document.getElementById("eventModalEnd").value = formattedDateTimeEnd;
+    
+            var container = document.getElementById("eventProduceModal");
+            var modal = new bootstrap.Modal(container);
+            var allday = document.getElementById("allDayCheck");
+            modal.show();
+		}
+          ,
       select: function(info) {
         
       },
@@ -754,10 +771,23 @@ if(event.end == null) {
 
 return displayEventDate;
 }
+document.getElementById('allDayCheck').addEventListener('change', function() {
+    
+    if(this.checked){
+        document.getElementById("eventModalStart").disabled = true;
+        document.getElementById("eventModalEnd").disabled = true;
+    }else{
+        document.getElementById("eventModalStart").disabled = false;
+        document.getElementById("eventModalEnd").disabled = false;
+    }
+    
+});
+
+
 function validateEndDate() {
     var startDate = document.getElementById("eventModalStart").value;
     var endDate = document.getElementById("eventModalEnd").value;
-
+  
     if (startDate && endDate) {
         if (startDate > endDate) {
             alert("일정 종료일은 시작일 이후여야 합니다.");
