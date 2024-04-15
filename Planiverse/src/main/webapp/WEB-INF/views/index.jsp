@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="${path}/resources/css/style.css">
 
 <!-- Font Icons -->
-<link rel="stylesheet" href="${path}/resources/css/font-icons.css">
+<link rel="stylesheet" href="/plan/resources/css/font-icons.css">
 
 <!-- Plugins/Components CSS -->
 <link rel="stylesheet" href="${path}/resources/css/swiper.css">
@@ -144,7 +144,7 @@ html, body {
 							</div>
 
 							<a href="index.html"><img
-								src="demos/speaker/images/plannerLogo.webp" alt=""></a>
+								src="/plan/resources/images/plannerLogo.webp" alt=""></a>
 
 						</div>
 						<!-- #logo end -->
@@ -717,31 +717,29 @@ html, body {
       editable: true,
       selectable: true,
       events: [
-    	  /* {
-              title: 'Business Lunch',
-              start: '2023-01-03T13:00:00',
-              constraint: 'businessHours'
-            } */
-   		  /* $.ajax({
+   		   $.ajax({
    			type: 'get',
-   			url: '/listevent.do',
+   			url: '/plan/listevent.do',
+   			dataType: 'json',
    			success: function(result){
    				result.forEach(obj =>{
    					calendar.addEvent({
    						title: obj.title,
    						start: obj.start,
    						end: obj.end,
-   						color: obj.colSeq
+   						color: obj.colSeq,
+   						extendedProps: {
+			   				loc: obj.loc,
+			   				content: obj.content
+   						}
    					})
-   				}
-   			},
+   				})
+  			},
    			error: function(a,b,c){
    				console.log(a,b,c);
    			}
-   			
-   		  }) */
+   		  }) 
    	  ]
-    	  
     });
     calendar.render();
 
