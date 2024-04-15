@@ -29,10 +29,14 @@ create table tblColor(
     colSeq VARCHAR2(10) primary key,
     name VARCHAR2(30)
 );
-insert into tblColor values ('#FFCF96', '주황');
-
+insert into tblColor values ('#F1932E', '주황');
+insert into tblColor values ('#A8D8EA', '하늘');
+insert into tblColor values ('#AA96DA', '보라');
+insert into tblColor values ('#AA96DA', '분홍');
+insert into tblColor values ('#FFFFD2', '노랑');
+delete from tblColor where name='주황';
 --
-
+update tblEvent set colSeq = '#AA96DA' where eventSeq=1;
 create table tblEvent (
     eventSeq number primary key,
     title VARCHAR2(100) not null,
@@ -53,6 +57,9 @@ insert into tblEvent(eventSeq, title, allDay, "start", "end", loc, "content", co
 values (1, 'Party', 'n', '2023-01-29 20:00:00','', '우리집','재밌겠다','#FFCF96',1);
 commit;
 select * from tblEvent;
+update tblEvent set "start"='2023-01-23 20:00',"end"='' where eventSeq = 1;
+rollback;
+
 
 -----------------------------여기까지 정보 넣으면 테스트 가능
 

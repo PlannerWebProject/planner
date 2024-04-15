@@ -17,8 +17,8 @@ import com.planiverse.event.model.EventDTO;
 import com.planiverse.event.repository.EventDAO;
 
 
-@WebServlet("/listevent.do")
-public class ListEvent extends HttpServlet {
+@WebServlet("/event/list.do")
+public class List extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

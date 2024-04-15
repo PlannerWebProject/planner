@@ -649,6 +649,8 @@ html, body {
 		})
 	})
 
+	
+	
     var calendar = new FullCalendar.Calendar(calendarEl, {
 		eventClick: function(info) {
 			var container = document.getElementById("editEventModal");
@@ -666,6 +668,34 @@ html, body {
 				info.event.remove();
 				modal.hide();
 			});
+			
+			$('#editEventBtn').on('click', function() {
+				if(confirm('일정을 수정하시겠습니까?')){
+					$.ajax({
+				  		type: "post",
+				   		url: "/plan/event/change.do",
+				   		data: {
+				   			eventSeq: info.event.extendedProps.eventSeq,
+				   			allDay: info.event.allDay,
+				   			title: $('#editEventModalTitle').val(),
+				   			start: moment($('#editEventModalStart').val()).format('YYYY/MM/DD HH:mm'), 
+				   			end: moment($('#editEventModalEnd').val()).format('YYYY/MM/DD HH:mm'), 
+				   			color: $('#editEventModalColor').val(),
+				   			loc: $('#editEventModalLoc').val(),
+				   			content: $('#editEventModalContent').val()
+				   	    },
+				   	    success: function (response) {
+				   	    	alert('수정 완료');
+				   	    	calendar.refetchEvents();
+				   	    	modal.hide();
+				   	    },
+				   	    error: function(a,b,c){
+				   			console.log(a,b,c);
+				   		}
+				   	});
+				}
+			});
+			
 			$("#btnEventProduce").on('click', function(event) {
 				var start = $('#eventModalStart').val();
 				var end = $('#eventModalEnd').val();
@@ -719,7 +749,7 @@ html, body {
       events: [
    		   $.ajax({
    			type: 'get',
-   			url: '/plan/listevent.do',
+   			url: '/plan/event/list.do',
    			dataType: 'json',
    			success: function(result){
    				result.forEach(obj =>{
@@ -729,6 +759,7 @@ html, body {
    						end: obj.end,
    						color: obj.colSeq,
    						extendedProps: {
+   							eventSeq: obj.eventSeq,
 			   				loc: obj.loc,
 			   				content: obj.content
    						}
@@ -739,7 +770,29 @@ html, body {
    				console.log(a,b,c);
    			}
    		  }) 
-   	  ]
+   	  ],
+   	  eventDrop: function(info){
+   		  if(confirm('일정을 수정하시겠습니까?')){
+   			$.ajax({
+   	      		type: "post",
+   	      		url: "/plan/event/dropchange.do",
+   	      		data: {
+   	      			eventSeq: info.event.extendedProps.eventSeq,
+   	      			allDay: info.event.allDay,
+   	      			start: moment(info.event.start).format('YYYY/MM/DD HH:mm'),
+   	      			end: moment(info.event.end).format('YYYY/MM/DD HH:mm')
+   	      		},
+   	      		success: function (response) {
+   	        		alert('수정 완료');
+   	      		},
+   	      		error: function(a,b,c){
+   					console.log(a,b,c);
+   				}
+   	    	});
+   		  } else {
+   			  info.revert();
+   		  }
+   	  }
     });
     calendar.render();
 

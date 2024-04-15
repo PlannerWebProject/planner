@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.planiverse.event.model.EventDTO;
 import com.test.util.DBUtil;
 
 public class EventDAO {
@@ -62,6 +63,47 @@ public class EventDAO {
 		}
 
 		return null;
+	}
+
+	public int dropchange(EventDTO dto) {
+		try {
+			String sql = "update tblEvent set \"start\"=?,\"end\"=? where eventSeq = ?";
+
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, dto.getStart());
+			pstat.setString(2, dto.getEnd());
+			pstat.setString(3, dto.getEventSeq());
+			
+			return pstat.executeUpdate();
+
+		} catch (Exception e) {
+			System.out.println("EventDAO.dropchange");
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public int change(EventDTO dto) {
+		try {
+			String sql = "update tblEvent set title=?,allDay=?,\"start\"=?,\"end\"=?,loc=?,\"content\"=?, colSeq=? where eventSeq = ?";
+
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, dto.getTitle());
+			pstat.setString(2, dto.getAllDay());
+			pstat.setString(3, dto.getStart());
+			pstat.setString(4, dto.getEnd());
+			pstat.setString(5, dto.getLoc());
+			pstat.setString(6, dto.getContent());
+			pstat.setString(7, dto.getColSeq());
+			pstat.setString(8, dto.getEventSeq());
+			
+			return pstat.executeUpdate();
+
+		} catch (Exception e) {
+			System.out.println("EventDAO.change");
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 }
