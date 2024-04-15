@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
 <head>
-
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
 	<meta http-equiv="x-ua-compatible" content="IE=edge">
-	<meta name="author" content="SemiColonWeb">
-	<meta name="description" content="Create Speaker &amp; Bluetooth Devices Websites with Canvas Template. Get Canvas to build powerful websites easily with the Highly Customizable &amp; Best Selling Bootstrap Template, today.">
 
 	<!-- Font Imports -->
 	<link rel="stylesheet" href="https://use.typekit.net/gmv6nzn.css">
@@ -88,11 +85,7 @@
         background-color: rgba(0,0,0,0.4);
 
     }
-   
-  #exampleModal{
-        background-color: rgba(0,0,0,0.4);
 
-    }
 	#eventProduceModal{
         background-color: rgba(0,0,0,0.4);
 
@@ -149,7 +142,6 @@
 
 						<div class="header-misc">
 
-
 							<!-- Top Account
 							============================================= -->
 							<div class="header-misc-icon top-account">
@@ -162,17 +154,6 @@
 							</div>
 
 						</div>
-
-						<div class="primary-menu-trigger">
-							<button class="cnvs-hamburger" type="button" title="Open Mobile Menu">
-								<span class="cnvs-hamburger-box"><span class="cnvs-hamburger-inner"></span></span>
-							</button>
-						</div>
-
-						<form class="top-search-form" action="search.html" method="get">
-							<input type="text" name="q" class="form-control" value="" placeholder="Type &amp; Hit Enter.." autocomplete="off">
-						</form>
-
 					</div>
 				</div>
 			</div>
@@ -224,15 +205,11 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- Content
+			============================================= -->
 			<div id='calendar'></div>
 		</section>
-
-
-		<!-- Content
-		============================================= -->
-		<section id="content">
-			
-		</section><!-- #content end -->
 
 	</div><!-- #wrapper end -->
 	
@@ -414,29 +391,29 @@
 
 	  <!-- registerEnd -->
 
-
-		<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  	<!-- editEventModal -->
+		<div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 			  <div class="modalBackground">
 			  <div class="modal-content">
 				<div class="modal-header">
-				  <h5 class="modal-title" id="editModalLabel">일정 수정</h5>
+				  <h5 class="modal-title" id="editEventModalHeader">일정 수정</h5>
 				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 				  <form>
 					<div class="mb-3">
 					  <label for="recipient-name" class="col-form-label">제목</label>
-					  <input type="text" class="form-control" id="editModal-title">
+					  <input type="text" class="form-control" id="editEventModalTitle">
 					</div>
 					
 					<div class="mb-3">
 					  <label for="recipient-name" class="col-form-label">일정 시작</label>
-					  <input type="datetime-local" id="editModal-startDate" class="form-control" placeholder="datetime-local input"> 
+					  <input type="datetime-local" id="editEventModalStart" class="form-control" placeholder="datetime-local input"> 
 					</div>
 					<div class="mb-3">
 					  <label for="recipient-name" class="col-form-label">일정 종료</label>
-					  <input type="datetime-local" id="editModal-endDate" class="form-control" placeholder="datetime-local input">  
+					  <input type="datetime-local" id="editEventModalEnd" class="form-control" placeholder="datetime-local input">  
 					</div>
 					<div class="mb-3">
 					  <label for="recipient-name" class="col-form-label">카테고리</label>
@@ -448,27 +425,23 @@
 					</div>
 					<div class="mb-3">
 						<label for="recipient-name" class="col-form-label">장소</label>
-						<input type="text" class="form-control" id="editModal-place">
+						<input type="text" class="form-control" id="editEventModalLoc">
 					  </div>
 					<div class="mb-3">
 					  <label for="message-text" class="col-form-label">내용:</label>
-					  <textarea class="form-control" id="editModal-text"></textarea>
+					  <textarea class="form-control" id="editEventModalContent"></textarea>
 					</div>
 				  </form>
 				</div>
 				<div class="modal-footer">
 				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				  <button type="button" class="btn btn-primary" id="btnDelete">일정 삭제</button>
-				  <button type="button" class="btn btn-primary" id="btnEdit">일정 수정</button>
+				  <button type="button" class="btn btn-primary" id="deleteEventBtn">일정 삭제</button>
+				  <button type="button" class="btn btn-primary" id="editEventBtn">일정 수정</button>
 				</div>
 			  </div>
 			</div>
 		  </div>
 	  </div>
-
-	<!-- Go To Top
-	============================================= -->
-	<div id="gotoTop" data-mobile="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="40"></circle></svg></div>
 
 	<!-- JavaScripts
 	============================================= -->
@@ -480,8 +453,6 @@
 	<script src='dist/index.global.js'></script>
 
 	<script>
-		
-
 
 		var coll = document.getElementsByClassName("collapsible");
 		var sidebar = document.getElementsByClassName("sidebar");
@@ -565,9 +536,6 @@
 		});
 
 		window.onload = function() {
-			var container = document.getElementById("speakerModal");
-			var modal = new bootstrap.Modal(container);
-			modal.show();
 			var sidebarStatus = true;
 			sidebarFoldingBtn.onclick = function () {
 				var sidebarMain = document.getElementById("sidebarMain");
@@ -581,7 +549,6 @@
 						child.style.width = sidebarStatus ? "0" : "100%";
 					}
 				});
-
 				sidebarStatus = !sidebarStatus;
 			};
 		};
@@ -601,10 +568,9 @@
 		 modal.show();
 		 var start = document.getElementById('eventstart')
 	});
-	
 
 	var loginModal = document.getElementById('loginModal');
-	loginBtn.addEventListener('click',function(){
+		loginBtn.addEventListener('click',function(){
 		var modal = new bootstrap.Modal(loginModal);
 		modal.show();
 		var signupModal = document.getElementById('signupModal');
@@ -615,21 +581,19 @@
 		})
 	})
 
-
-
     var calendar = new FullCalendar.Calendar(calendarEl, {
 		eventClick: function(info) {
-			var container = document.getElementById("editModal");
+			var container = document.getElementById("editEventModal");
 			var modal = new bootstrap.Modal(container);
-			$('#editModal-title').val(info.event.title);
-			$('#editModal-startDate').val(moment(info.event.start).format('YYYY-MM-DDTHH:mm'));
-			$('#editModal-endDate').val(moment(info.event.end).format('YYYY-MM-DDTHH:mm'));
-			$('#editModal-color').val(info.event.backgroundColor);
-			$('#editModal-place').val(info.event.extendedProps.place);
-			$('#editModal-content').val(info.event.extendedProps.content);
+			$('#editEventModalTitle').val(info.event.title);
+			$('#editEventModalStart').val(moment(info.event.start).format('YYYY-MM-DDTHH:mm'));
+			$('#editEventModalEnd').val(moment(info.event.end).format('YYYY-MM-DDTHH:mm'));
+			$('#editEventModalColor').val(info.event.backgroundColor);
+			$('#editEventModalLoc').val(info.event.extendedProps.loc);
+			$('#editEventModalContent').val(info.event.extendedProps.content);
         	modal.show();
 
-			$('#btnDelete').on('click', function() {
+			$('#deleteEventBtn').on('click', function() {
 				if(window.confirm('일정을 삭제하시겠습니까?'))
 				info.event.remove();
 				modal.hide();
@@ -651,10 +615,10 @@
 					'font-size': '20px'
 				}),
 			content: $('<div />', {
-				class: 'popoverInfoCalendar'
+				class: 'popoverInfoEvent'
         		}).append('<strong>카테고리:</strong> ' + '<br>')
         .append('<strong>시간:</strong> ' + getDisplayEventDate(info.event) + '<br>')
-        .append('<strong>설명:</strong> ' + info.event.description),
+        .append('<strong>내용:</strong> ' + info.event.extendedProps.content),
 			trigger: 'hover',
 			delay: { show: 400, hide: 300 },
 			placement: 'top',
@@ -714,7 +678,11 @@
         },
         {
           title: 'Party',
-          start: '2023-01-29T20:00:00'
+          start: '2023-01-29T20:00:00',
+		  extendedProps: {
+			loc: '쌍용교육센터',
+        	content: 'planiverse 파티'
+      	  },
         },
 
         // areas where "Meeting" must be dropped
@@ -748,7 +716,6 @@
         }
       ]
     });
-
     calendar.render();
   });
 function getDisplayEventDate(event) {
@@ -758,9 +725,9 @@ var displayEventDate;
 if(event.end == null) {
 	displayEventDate = moment(event.start).format('HH:mm');
 } else if (moment(event.start).format('MM-DD')!=moment(event.end).format('MM-DD')) {
-  var startTimeEventInfo = moment(event.start).format('MM/DD');
-  var endTimeEventInfo = moment(event.end).format('MM/DD');
-  displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
+  var startEventInfo = moment(event.start).format('MM/DD');
+  var endEventInfo = moment(event.end).format('MM/DD');
+  displayEventDate = startEventInfo + " - " + endEventInfo;
 } else if (moment(event.start).format('MM-DD')==moment(event.end).format('MM-DD')) {
   var startTimeEventInfo = moment(event.start).format('HH:mm');
   var endTimeEventInfo = moment(event.end).format('HH:mm');
