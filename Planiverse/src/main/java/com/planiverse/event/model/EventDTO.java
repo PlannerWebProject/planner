@@ -1,4 +1,4 @@
-package com.planiverse.model;
+package com.planiverse.event.model;
 
 import lombok.Data;
 

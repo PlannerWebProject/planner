@@ -1,4 +1,4 @@
-package com.planiverse.data;
+package com.planiverse.event.data;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.planiverse.model.EventDAO;
-import com.planiverse.model.EventDTO;
+import com.planiverse.event.model.EventDTO;
+import com.planiverse.event.repository.EventDAO;
 
 
 @WebServlet("/listevent.do")

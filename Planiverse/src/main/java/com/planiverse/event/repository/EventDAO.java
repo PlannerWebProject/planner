@@ -1,4 +1,4 @@
-package com.planiverse.model;
+package com.planiverse.event.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
