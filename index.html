@@ -599,15 +599,13 @@
 
 	addScheduleBtn.addEventListener('click', function() {
 		 var modal = new bootstrap.Modal(eventProduceModal);
-		 var modalElement = document.getElementById('eventProduceModal');
-		 
-		 var allDayBox = modalElement.querySelector('#allDayBox');
-		 var originalDisplayStyle = allDayBox.style.display;
 		 allDayBox.style.display = 'none';
+		 document.getElementById('eventModalStart').removeAttribute('disabled');
+		 document.getElementById('eventModalEnd').removeAttribute('disabled');  
+		
 
 		 modal.show();
 		 
-
 		 var start = document.getElementById('eventstart')
 	});
 	
@@ -677,14 +675,11 @@
             var clickedDate = info.date;
             var momentClickedDate = moment(clickedDate); 
 
-			var modalElementt = document.getElementById('eventProduceModal');
-			var allDayBoxx = modalElementt.querySelector('#allDayBox');
-			 var originalDisplayStylee = allDayBoxx.style.display;
-		 	allDayBox.style.display = originalDisplayStylee;
-			
+			allDayBox.style.display = 'block'; 
+			document.getElementById('eventModalStart').disabled = true;
+			document.getElementById('eventModalEnd').disabled = true;
 
 
-    
             var formattedDateTimeStart = momentClickedDate.format('YYYY-MM-DD HH:mm:ss');
             document.getElementById("eventModalStart").value = formattedDateTimeStart;
     
@@ -788,6 +783,18 @@ if(event.end == null) {
 
 return displayEventDate;
 }
+document.getElementById('allDayCheck').addEventListener('change', function() {
+    
+    if(this.checked){
+        document.getElementById("eventModalStart").disabled = true;
+        document.getElementById("eventModalEnd").disabled = true;
+    }else{
+        document.getElementById("eventModalStart").disabled = false;
+        document.getElementById("eventModalEnd").disabled = false;
+    }
+    
+});
+
 document.getElementById('allDayCheck').addEventListener('change', function() {
     
     if(this.checked){
