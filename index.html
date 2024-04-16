@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
 <head>
-
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
 	<meta http-equiv="x-ua-compatible" content="IE=edge">
-	<meta name="author" content="SemiColonWeb">
-	<meta name="description" content="Create Speaker &amp; Bluetooth Devices Websites with Canvas Template. Get Canvas to build powerful websites easily with the Highly Customizable &amp; Best Selling Bootstrap Template, today.">
 
 	<!-- Font Imports -->
 	<link rel="stylesheet" href="https://use.typekit.net/gmv6nzn.css">
@@ -88,11 +85,19 @@
         background-color: rgba(0,0,0,0.4);
 
     }
-   
-  #exampleModal{
+
+	#eventProduceModal{
         background-color: rgba(0,0,0,0.4);
 
     }
+	.color-circle {
+		width: 20px;
+		height: 20px;
+		margin: 2px;
+		display: inline-block;
+		cursor: pointer;
+		border-radius: 50%;
+	  }
 
 	#loginModal{
         background-color: rgba(0,0,0,0.4);
@@ -115,30 +120,6 @@
 		<!-- Modal -->
 		<div class="modal d-none animated fadeInUpSmall faster" id="speakerModal" tabindex="-1" role="dialog" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered ms-md-4 me-md-auto align-items-end" style="max-width: 48rem;">
-				<div class="modal-content shadow border-0 overflow-hidden" style="border-radius: 20px;">
-					<div class="card border-0">
-						<div class="row justify-content-between g-0">
-							<div class="col-sm-5" style="background: url('demos/speaker/images/modal.jpg') no-repeat center center / cover; min-height: 200px;"></div>
-							<div class="col-sm-6">
-								<div class="card-body p-5">
-									<p class="mb-2 color small">Get 20% off* your first Order</p>
-									<h3 class="card-title lh-sm mb-3">Bring your Music at your home</h3>
-									<p class="fw-normal text-smaller op-06">Professionally evolve intermandated e-business rather than bricks-and-clicks markets.</p>
-									<div class="subscribe-widget" data-loader="button">
-										<div class="widget-subscribe-form-result"></div>
-										<form id="widget-subscribe-form-modal" action="include/subscribe.php" method="post" class="mb-0">
-											<div class="input-group">
-												<input type="email" id="widget-subscribe-form-modal-email" name="widget-subscribe-form-modal-email" class="form-control required email" placeholder="Enter your Email Address">
-												<button class="btn btn-dark h-bg-color border-0" type="submit"><i class="bi-arrow-right"></i></button>
-											</div>
-										</form>
-									</div>
-									<button type="button" class="btn-close p-3 position-absolute top-0 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 
@@ -161,7 +142,6 @@
 
 						<div class="header-misc">
 
-
 							<!-- Top Account
 							============================================= -->
 							<div class="header-misc-icon top-account">
@@ -174,17 +154,6 @@
 							</div>
 
 						</div>
-
-						<div class="primary-menu-trigger">
-							<button class="cnvs-hamburger" type="button" title="Open Mobile Menu">
-								<span class="cnvs-hamburger-box"><span class="cnvs-hamburger-inner"></span></span>
-							</button>
-						</div>
-
-						<form class="top-search-form" action="search.html" method="get">
-							<input type="text" name="q" class="form-control" value="" placeholder="Type &amp; Hit Enter.." autocomplete="off">
-						</form>
-
 					</div>
 				</div>
 			</div>
@@ -236,67 +205,76 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- Content
+			============================================= -->
 			<div id='calendar'></div>
 		</section>
-
-
-		<!-- Content
-		============================================= -->
-		<section id="content">
-			
-		</section><!-- #content end -->
 
 	</div><!-- #wrapper end -->
 	
 		<!-- Content
 		============================================= -->
-		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="eventProduceModal" tabindex="-1" aria-labelledby="eventProduceModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 			  <div class="modalBackground">
 			  <div class="modal-content">
 				<div class="modal-header">
-				  <h5 class="modal-title" id="exampleModalLabel">일정 추가</h5>
+				  <h5 class="modal-title" id="eventProduceModalLabel">일정 추가</h5>
 				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 				  <form>
 					<div class="mb-3">
-					  <label for="recipient-name" class="col-form-label">제목</label>
-					  <input type="text" class="form-control" id="recipient-name">
-					</div>
-					<div class="mb-3">
-						<input type="color" class="form-control" id="recipient-name">
+						<div class="container">
+							<div id="color-selector">
+							  <div class="color-circle" style="background-color: #FF8080"></div>
+							  <div class="color-circle" style="background-color: #FFCF96"></div>
+							  <div class="color-circle" style="background-color: #F6FDC3"></div>
+							  <div class="color-circle" style="background-color: #CDFAD5"></div>
+							</div>
+							<p>선택한 색: <span id="selected-color"></span></p>
+						  </div>
 					  </div>
-					
 					<div class="mb-3">
-					  <label for="recipient-name" class="col-form-label">일정 시작</label>
-					  <input type="datetime-local"id="startDate" class="form-control" placeholder="datetime-local input"> 
+					  <label for="eventModalTitle" class="col-form-label">제목</label>
+					  <input type="text" class="form-control" id="eventModalTitle">
+					</div>			
+					<div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="allDayCheck" checked>
+                            <label class="form-check-label" for="allDayCheck">하루종일</label>
+                        </div>
+                    </div>	
+					<div class="mb-3">
+						<label for="eventModalStart" class="col-form-label">일정 시작</label>
+						<input type="datetime-local" id="eventModalStart" class="form-control" placeholder="datetime-local input" disabled> 
 					</div>
 					<div class="mb-3">
-					  <label for="recipient-name" class="col-form-label">일정 종료</label>
-					  <input type="datetime-local" id="endDate" class="form-control" placeholder="datetime-local input">  
+						<label for="eventModalEnd" class="col-form-label">일정 종료</label>
+						<input type="datetime-local" id="eventModalEnd" class="form-control" placeholder="datetime-local input" disabled  onchange="validateEndDate()">  
 					</div>
 					<div class="mb-3">
-					  <label for="recipient-name" class="col-form-label">카테고리</label>
-					  <select class="form-select" aria-label="Default select example">
+					  <label for="eventModalSelect" class="col-form-label">카테고리</label>
+					  <select class="form-select" aria-label="Default select example" id="eventModalSelect">
 						  <option selected>카테고리</option>
 						  <option value="1">개인일정</option>
 						  <option value="2">공유일정</option>
 						</select>
 					</div>
 					<div class="mb-3">
-						<label for="recipient-name" class="col-form-label">장소</label>
-						<input type="text" class="form-control" id="recipient-name">
+						<label for="eventModalIoc" class="col-form-label">장소</label>
+						<input type="text" class="form-control" id="eventModalIoc">
 					  </div>
 					<div class="mb-3">
-					  <label for="message-text" class="col-form-label">내용:</label>
-					  <textarea class="form-control" id="message-text"></textarea>
+					  <label for="eventModalContent" class="col-form-label">내용:</label>
+					  <textarea class="form-control" id="eventModalContent"></textarea>
 					</div>
 				  </form>
 				</div>
 				<div class="modal-footer">
 				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				  <button type="button" class="btn btn-primary">일정 생성</button>
+				  <button type="button" class="btn btn-primary" id="btnEventProduce">일정 생성</button>
 				</div>
 			  </div>
 			</div>
@@ -310,9 +288,6 @@
 		<div class="modal-dialog">
 		  <div class="modalBackground">
 		  <div class="modal-content">
-			<div class="modal-header">
-			  <div></div>
-			</div>
 			<div class="modal-body">
 				<div class="card-body p-5">
 					<form id="login-form" name="login-form" class="mb-0" action="#" method="post">
@@ -350,10 +325,6 @@
 					</div>
 				</div>
 			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-			  <button type="button" class="btn btn-primary">일정 생성</button>
-			</div>
 		  </div>
 		</div>
 	  </div>
@@ -366,13 +337,9 @@
 		<div class="modal-dialog">
 		  <div class="modalBackground">
 		  <div class="modal-content">
-			<div class="modal-header">
-			  <div></div>
-			</div>
 			<div class="modal-body">
 				<div class="tab-pane" id="tab-register" role="tabpanel" aria-labelledby="canvas-tab-register-tab"
 								tabindex="0">
-								<div class="card mb-0">
 									<div class="card-body" style="padding: 40px;">
 										<h3>Register for an Account</h3>
 
@@ -414,13 +381,8 @@
 
 										</form>
 									</div>
-								</div>
 							</div>
 				
-			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-			  <button type="button" class="btn btn-primary">일정 생성</button>
 			</div>
 		  </div>
 		</div>
@@ -429,29 +391,29 @@
 
 	  <!-- registerEnd -->
 
-
-		<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  	<!-- editEventModal -->
+		<div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 			  <div class="modalBackground">
 			  <div class="modal-content">
 				<div class="modal-header">
-				  <h5 class="modal-title" id="editModalLabel">일정 수정</h5>
+				  <h5 class="modal-title" id="editEventModalHeader">일정 수정</h5>
 				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 				  <form>
 					<div class="mb-3">
 					  <label for="recipient-name" class="col-form-label">제목</label>
-					  <input type="text" class="form-control" id="editModal-title">
+					  <input type="text" class="form-control" id="editEventModalTitle">
 					</div>
 					
 					<div class="mb-3">
 					  <label for="recipient-name" class="col-form-label">일정 시작</label>
-					  <input type="datetime-local" id="editModal-startDate" class="form-control" placeholder="datetime-local input"> 
+					  <input type="datetime-local" id="editEventModalStart" class="form-control" placeholder="datetime-local input"> 
 					</div>
 					<div class="mb-3">
 					  <label for="recipient-name" class="col-form-label">일정 종료</label>
-					  <input type="datetime-local" id="editModal-endDate" class="form-control" placeholder="datetime-local input">  
+					  <input type="datetime-local" id="editEventModalEnd" class="form-control" placeholder="datetime-local input">  
 					</div>
 					<div class="mb-3">
 					  <label for="recipient-name" class="col-form-label">카테고리</label>
@@ -463,27 +425,23 @@
 					</div>
 					<div class="mb-3">
 						<label for="recipient-name" class="col-form-label">장소</label>
-						<input type="text" class="form-control" id="editModal-place">
+						<input type="text" class="form-control" id="editEventModalLoc">
 					  </div>
 					<div class="mb-3">
 					  <label for="message-text" class="col-form-label">내용:</label>
-					  <textarea class="form-control" id="editModal-text"></textarea>
+					  <textarea class="form-control" id="editEventModalContent"></textarea>
 					</div>
 				  </form>
 				</div>
 				<div class="modal-footer">
 				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				  <button type="button" class="btn btn-primary" id="btnDelete">일정 삭제</button>
-				  <button type="button" class="btn btn-primary" id="btnEdit">일정 수정</button>
+				  <button type="button" class="btn btn-primary" id="deleteEventBtn">일정 삭제</button>
+				  <button type="button" class="btn btn-primary" id="editEventBtn">일정 수정</button>
 				</div>
 			  </div>
 			</div>
 		  </div>
 	  </div>
-
-	<!-- Go To Top
-	============================================= -->
-	<div id="gotoTop" data-mobile="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="40"></circle></svg></div>
 
 	<!-- JavaScripts
 	============================================= -->
@@ -495,8 +453,6 @@
 	<script src='dist/index.global.js'></script>
 
 	<script>
-		
-
 
 		var coll = document.getElementsByClassName("collapsible");
 		var sidebar = document.getElementsByClassName("sidebar");
@@ -580,9 +536,6 @@
 		});
 
 		window.onload = function() {
-			var container = document.getElementById("speakerModal");
-			var modal = new bootstrap.Modal(container);
-			modal.show();
 			var sidebarStatus = true;
 			sidebarFoldingBtn.onclick = function () {
 				var sidebarMain = document.getElementById("sidebarMain");
@@ -596,7 +549,6 @@
 						child.style.width = sidebarStatus ? "0" : "100%";
 					}
 				});
-
 				sidebarStatus = !sidebarStatus;
 			};
 		};
@@ -610,21 +562,15 @@
 	var signupBtn = document.getElementById('signup-action');
 
     	
-	var exampleModal = document.getElementById('exampleModal');
+	var exampleModal = document.getElementById('event');
 	addScheduleBtn.addEventListener('click', function() {
-		 var modal = new bootstrap.Modal(exampleModal);
+		 var modal = new bootstrap.Modal(eventProduceModal);
 		 modal.show();
+		 var start = document.getElementById('eventstart')
 	});
-
-	var editModal = document.getElementById('editModal');
-	addScheduleBtn.addEventListener('click', function() {
-		 var modal = new bootstrap.Modal(editModal);
-		 modal.show();
-	});
-
 
 	var loginModal = document.getElementById('loginModal');
-	loginBtn.addEventListener('click',function(){
+		loginBtn.addEventListener('click',function(){
 		var modal = new bootstrap.Modal(loginModal);
 		modal.show();
 		var signupModal = document.getElementById('signupModal');
@@ -635,24 +581,27 @@
 		})
 	})
 
-
-
     var calendar = new FullCalendar.Calendar(calendarEl, {
 		eventClick: function(info) {
-			var container = document.getElementById("editModal");
+			var container = document.getElementById("editEventModal");
 			var modal = new bootstrap.Modal(container);
-			$('#editModal-title').val(info.event.title);
-			$('#editModal-startDate').val(moment(info.event.start).format('YYYY-MM-DDTHH:mm'));
-			$('#editModal-endDate').val(moment(info.event.end).format('YYYY-MM-DDTHH:mm'));
-			$('#editModal-color').val(info.event.backgroundColor);
-			$('#editModal-place').val(info.event.extendedProps.place);
-			$('#editModal-content').val(info.event.extendedProps.content);
+			$('#editEventModalTitle').val(info.event.title);
+			$('#editEventModalStart').val(moment(info.event.start).format('YYYY-MM-DDTHH:mm'));
+			$('#editEventModalEnd').val(moment(info.event.end).format('YYYY-MM-DDTHH:mm'));
+			$('#editEventModalColor').val(info.event.backgroundColor);
+			$('#editEventModalLoc').val(info.event.extendedProps.loc);
+			$('#editEventModalContent').val(info.event.extendedProps.content);
         	modal.show();
 
-			$('#btnDelete').on('click', function() {
+			$('#deleteEventBtn').on('click', function() {
 				if(window.confirm('일정을 삭제하시겠습니까?'))
 				info.event.remove();
 				modal.hide();
+			});
+			$("#btnEventProduce").on('click', function(event) {
+				var start = $('#eventModalStart').val();
+				var end = $('#eventModalEnd').val();
+				alert();
 			});
 		},
 		
@@ -666,10 +615,10 @@
 					'font-size': '20px'
 				}),
 			content: $('<div />', {
-				class: 'popoverInfoCalendar'
+				class: 'popoverInfoEvent'
         		}).append('<strong>카테고리:</strong> ' + '<br>')
         .append('<strong>시간:</strong> ' + getDisplayEventDate(info.event) + '<br>')
-        .append('<strong>설명:</strong> ' + info.event.description),
+        .append('<strong>내용:</strong> ' + info.event.extendedProps.content),
 			trigger: 'hover',
 			delay: { show: 400, hide: 300 },
 			placement: 'top',
@@ -681,10 +630,21 @@
 			}, 1500); 
 		},
 		dateClick: function(info) {
-        var container = document.getElementById("exampleModal");
-        var modal = new bootstrap.Modal(container);
-        modal.show();
-      },
+            var clickedDate = info.date;
+            var momentClickedDate = moment(clickedDate); 
+    
+            var formattedDateTimeStart = momentClickedDate.format('YYYY-MM-DD HH:mm:ss');
+            document.getElementById("eventModalStart").value = formattedDateTimeStart;
+    
+            var formattedDateTimeEnd = momentClickedDate.endOf('day').format('YYYY-MM-DD HH:mm');
+            document.getElementById("eventModalEnd").value = formattedDateTimeEnd;
+    
+            var container = document.getElementById("eventProduceModal");
+            var modal = new bootstrap.Modal(container);
+            var allday = document.getElementById("allDayCheck");
+            modal.show();
+		}
+          ,
       select: function(info) {
         
       },
@@ -718,7 +678,11 @@
         },
         {
           title: 'Party',
-          start: '2023-01-29T20:00:00'
+          start: '2023-01-29T20:00:00',
+		  extendedProps: {
+			loc: '쌍용교육센터',
+        	content: 'planiverse 파티'
+      	  },
         },
 
         // areas where "Meeting" must be dropped
@@ -752,7 +716,6 @@
         }
       ]
     });
-
     calendar.render();
   });
 function getDisplayEventDate(event) {
@@ -762,9 +725,9 @@ var displayEventDate;
 if(event.end == null) {
 	displayEventDate = moment(event.start).format('HH:mm');
 } else if (moment(event.start).format('MM-DD')!=moment(event.end).format('MM-DD')) {
-  var startTimeEventInfo = moment(event.start).format('MM/DD');
-  var endTimeEventInfo = moment(event.end).format('MM/DD');
-  displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
+  var startEventInfo = moment(event.start).format('MM/DD');
+  var endEventInfo = moment(event.end).format('MM/DD');
+  displayEventDate = startEventInfo + " - " + endEventInfo;
 } else if (moment(event.start).format('MM-DD')==moment(event.end).format('MM-DD')) {
   var startTimeEventInfo = moment(event.start).format('HH:mm');
   var endTimeEventInfo = moment(event.end).format('HH:mm');
@@ -774,6 +737,30 @@ if(event.end == null) {
 }
 
 return displayEventDate;
+}
+document.getElementById('allDayCheck').addEventListener('change', function() {
+    
+    if(this.checked){
+        document.getElementById("eventModalStart").disabled = true;
+        document.getElementById("eventModalEnd").disabled = true;
+    }else{
+        document.getElementById("eventModalStart").disabled = false;
+        document.getElementById("eventModalEnd").disabled = false;
+    }
+    
+});
+
+
+function validateEndDate() {
+    var startDate = document.getElementById("eventModalStart").value;
+    var endDate = document.getElementById("eventModalEnd").value;
+  
+    if (startDate && endDate) {
+        if (startDate > endDate) {
+            alert("일정 종료일은 시작일 이후여야 합니다.");
+            document.getElementById("eventModalEnd").value = startDate;
+        }
+    }
 }
 	</script>
 </body>
