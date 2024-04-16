@@ -86,11 +86,7 @@ html, body {
 	border: 0;
 }
 
-#exampleModal {
-	background-color: rgba(0, 0, 0, 0.4);
-}
-
-#eventProduceModal {
+#exampleModal, #editEventModal, #loginModal, #signupModal, #eventProduceModal {
 	background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -103,13 +99,6 @@ html, body {
 	border-radius: 50%;
 }
 
-#loginModal {
-	background-color: rgba(0, 0, 0, 0.4);
-}
-
-#signupModal {
-	background-color: rgba(0, 0, 0, 0.4);
-}
 </style>
 
 </head>
@@ -685,8 +674,13 @@ html, body {
 				   			content: $('#editEventModalContent').val()
 				   	    },
 				   	    success: function (response) {
-				   	    	alert('수정 완료');
-				   	    	calendar.refetchEvents();
+				   	    	info.event.setProp('title', $('#editEventModalTitle').val());
+				   	    	info.event.setAllDay(false);
+				   	    	info.event.setStart($('#editEventModalStart').val());
+				   	    	info.event.setEnd($('#editEventModalEnd').val());
+				   	    	info.event.setProp('color', $('#editEventModalColor').val());
+				   	    	info.event.setExtendedProp('loc', $('#editEventModalLoc').val());
+				   	    	info.event.setExtendedProp('content', $('#editEventModalContent').val());
 				   	    	modal.hide();
 				   	    },
 				   	    error: function(a,b,c){
@@ -703,12 +697,12 @@ html, body {
 			});
 		},
 		
-		eventMouseEnter: function (info) {
+		eventDidMount: function (info) {
 			var popover = new bootstrap.Popover(info.el, {
 				title: $('<div />', {
 					text: info.event.title
 				}).css({
-					'color': info.event.backgroundColor != '' ? info.event.backgroundColor : '#3788D8',
+					'color': (info.event.backgroundColor != null ? info.event.backgroundColor : '#3788D8'),
 					'font-weight': 'bold',
 					'font-size': '20px'
 				}),
@@ -718,14 +712,10 @@ html, body {
         .append('<strong>시간:</strong> ' + getDisplayEventDate(info.event) + '<br>')
         .append('<strong>내용:</strong> ' + info.event.extendedProps.content),
 			trigger: 'hover',
-			delay: { show: 400, hide: 300 },
 			placement: 'top',
 			html: true,
 			container: 'body'
 			});
-			setTimeout(function () {
-			popover.dispose();
-			}, 1500); 
 		},
 		dateClick: function(info) {
         var container = document.getElementById("eventProduceModal");//
