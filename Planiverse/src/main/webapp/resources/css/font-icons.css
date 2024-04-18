@@ -1,6 +1,6 @@
-@import url("/resources/css/icons/font-awesome.css"); /* Ref: https://fontawesome.com/search?o=r&m=free */
-@import url("/resources/css/icons/bootstrap-icons.css"); /* Ref: https://icons.getbootstrap.com/#icons */
-@import url("/resources/css/icons/unicons.css"); /* Ref: https://iconscout.com/unicons/explore/line */
+@import url("/plan/resources/css/icons/font-awesome.css"); /* Ref: https://fontawesome.com/search?o=r&m=free */
+@import url("/plan/resources/css/icons/bootstrap-icons.css"); /* Ref: https://icons.getbootstrap.com/#icons */
+@import url("/plan/resources/css/icons/unicons.css"); /* Ref: https://iconscout.com/unicons/explore/line */
 
 [class*="fa-"],
 [class*=" fa-"],

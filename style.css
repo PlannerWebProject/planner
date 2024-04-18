@@ -759,27 +759,27 @@ progress {
 
 @media (min-width: 576px) {
   .container-sm, .container {
-    max-width: 540px;
+    max-width: inherit;
   }
 }
 @media (min-width: 768px) {
   .container-md, .container-sm, .container {
-    max-width: 720px;
+    max-width: inherit;
   }
 }
 @media (min-width: 992px) {
   .container-lg, .container-md, .container-sm, .container {
-    max-width: 960px;
+    max-width: inherit;
   }
 }
 @media (min-width: 1200px) {
   .container-xl, .container-lg, .container-md, .container-sm, .container {
-    max-width: 1140px;
+    max-width: inherit;
   }
 }
 @media (min-width: 1400px) {
   .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
-    max-width: 1320px;
+    max-width: inherit;
   }
 }
 :root {
@@ -22993,7 +22993,7 @@ td.actions {
 }
 .button.button-border {
   --cnvs-btn-border-color: var(--cnvs-btn-color-dark);
-  border: var(--cnvs-btn-border-width) solid var(--cnvs-btn-border-color);
+  /*border: var(--cnvs-btn-border-width) solid var(--cnvs-btn-border-color);*/
   background: transparent;
   color: var(--cnvs-btn-border-color);
 }
