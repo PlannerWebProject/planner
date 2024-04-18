@@ -22993,7 +22993,7 @@ td.actions {
 }
 .button.button-border {
   --cnvs-btn-border-color: var(--cnvs-btn-color-dark);
-  border: var(--cnvs-btn-border-width) solid var(--cnvs-btn-border-color);
+  /*border: var(--cnvs-btn-border-width) solid var(--cnvs-btn-border-color);*/
   background: transparent;
   color: var(--cnvs-btn-border-color);
 }
