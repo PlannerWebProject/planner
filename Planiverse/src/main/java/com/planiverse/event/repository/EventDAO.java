@@ -1,13 +1,13 @@
 package com.planiverse.event.repository;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.planiverse.event.model.EventDTO;
-import com.test.util.DBUtil;
 
 public class EventDAO {
 
@@ -17,7 +17,7 @@ public class EventDAO {
 	private ResultSet rs;
 
 	public EventDAO() {
-		this.conn = DBUtil.open("43.202.179.175", "planiverse", "java1234");
+		this.conn = open();
 	}
 
 	public ArrayList<EventDTO> list() {
@@ -47,10 +47,7 @@ public class EventDAO {
 
 				dto.setLoc(rs.getString("loc"));
 				dto.setContent(rs.getString("content"));
-				dto.setEDel(rs.getString("eDel"));
-				dto.setGoogleCalendarId(rs.getString("googleCalendarId"));
-				dto.setClassName(rs.getString("className"));
-				dto.setColSeq(rs.getString("colSeq"));
+				dto.setColor(rs.getString("color"));
 				dto.setCalSeq(rs.getString("calSeq"));
 
 				list.add(dto);
@@ -85,7 +82,7 @@ public class EventDAO {
 	
 	public int change(EventDTO dto) {
 		try {
-			String sql = "update tblEvent set title=?,allDay=?,\"start\"=?,\"end\"=?,loc=?,\"content\"=?, colSeq=? where eventSeq = ?";
+			String sql = "update tblEvent set title=?,allDay=?,\"start\"=?,\"end\"=?,loc=?,\"content\"=?, color=? where eventSeq = ?";
 
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, dto.getTitle());
@@ -94,7 +91,7 @@ public class EventDAO {
 			pstat.setString(4, dto.getEnd());
 			pstat.setString(5, dto.getLoc());
 			pstat.setString(6, dto.getContent());
-			pstat.setString(7, dto.getColSeq());
+			pstat.setString(7, dto.getColor());
 			pstat.setString(8, dto.getEventSeq());
 			
 			return pstat.executeUpdate();
@@ -106,4 +103,24 @@ public class EventDAO {
 		return 0;
 	}
 
+	public static Connection open() {
+		Connection conn = null;
+
+		String url = "jdbc:oracle:thin:@43.202.179.175:1521:xe";
+		String id = "planiverse";
+		String pw = "java1234";
+
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+
+			conn = DriverManager.getConnection(url, id, pw);
+			// conn.setAutoCommit(false);
+
+			return conn;
+		} catch (Exception e) {
+			System.out.println("DB.open");
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

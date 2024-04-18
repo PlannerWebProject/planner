@@ -36,10 +36,7 @@ public class List extends HttpServlet {
 			obj.put("end", dto.getEnd());
 			obj.put("loc", dto.getLoc());
 			obj.put("content", dto.getContent());
-			obj.put("eDel", dto.getEDel());
-			obj.put("googleCalendarId", dto.getGoogleCalendarId());
-			obj.put("className", dto.getClassName());
-			obj.put("colSeq", dto.getColSeq());
+			obj.put("color", dto.getColor());
 			obj.put("calSeq", dto.getCalSeq());
 
 			arr.add(obj);

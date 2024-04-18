@@ -22,7 +22,7 @@ public class Change extends HttpServlet {
 		String title = req.getParameter("title");
 		String start = req.getParameter("start");
 		String end = req.getParameter("end");
-		String colSeq = req.getParameter("color");
+		String color = req.getParameter("color");
 		String loc = req.getParameter("loc");
 		String content = req.getParameter("content");
 		
@@ -31,7 +31,7 @@ public class Change extends HttpServlet {
 		
 		dto.setEventSeq(eventSeq);
 		dto.setTitle(title);
-		dto.setColSeq(colSeq);
+		dto.setColor(color);
 		dto.setLoc(loc);
 		dto.setContent(content);
 		
@@ -50,7 +50,7 @@ public class Change extends HttpServlet {
 			}
 		}
 		
-		System.out.println(dto);
+		System.out.println(dto);//---------------------나중에 지우기
 		
 		int result = dao.change(dto);
 

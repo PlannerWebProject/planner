@@ -11,9 +11,6 @@ public class EventDTO {
 	private String end;
 	private String loc;
 	private String content;
-	private String eDel;
-	private String googleCalendarId;
-	private String className;
-	private String colSeq;
+	private String color;
 	private String calSeq;
 }

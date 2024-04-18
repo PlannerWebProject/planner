@@ -1,20 +1,20 @@
+
+alter session set "_oracle_script" = true;
+grant connect, resource, dba to planiverse;
+create user planiverse identified by java1234;
+
 create table tblUser(
-    userSeq number primary key,
-    id VARCHAR2(100) not null, 
-    pw VARCHAR2(50),
+    id VARCHAR2(100) primary key,
+    pw VARCHAR2(50) not null,
     name VARCHAR2(20) not null
 );
-
-insert into tblUser values (1, 'test', '1111', '테스트');
-
---
+--------------------------------------------------------------유저테이블
 create table tblCalList(
     calListSeq number primary key,
-    userSeq NUMBER references tblUser(userSeq)
+    id VARCHAR2(100) not null references tblUser(id)
 );
-insert into tblCalList values (1, 1);
---
-
+create sequence seqCalList;
+---------------------------------------------------------------달력리스트
 create table tblCal (
     calSeq number primary key,
     shareInfo CHAR(1) default 'n' not null,
@@ -22,21 +22,13 @@ create table tblCal (
     calListSeq NUMBER references tblCalList(calListSeq),
     check (shareInfo in ('y', 'n'))
 );
-insert into tblCal values (1, 'n', 'test', 1);
-
---
+create sequence seqCal;
+----------------------------------------------------------------달력
 create table tblColor(
-    colSeq VARCHAR2(10) primary key,
+    color VARCHAR2(10) primary key,
     name VARCHAR2(30)
 );
-insert into tblColor values ('#F1932E', '주황');
-insert into tblColor values ('#A8D8EA', '하늘');
-insert into tblColor values ('#AA96DA', '보라');
-insert into tblColor values ('#AA96DA', '분홍');
-insert into tblColor values ('#FFFFD2', '노랑');
-delete from tblColor where name='주황';
---
-update tblEvent set colSeq = '#AA96DA' where eventSeq=1;
+----------------------------------------------------------------컬러
 create table tblEvent (
     eventSeq number primary key,
     title VARCHAR2(100) not null,
@@ -45,16 +37,46 @@ create table tblEvent (
     "end" TIMESTAMP,
     loc VARCHAR2(100),
     "content" CLOB,
-    eDel number,
-    googleCalendarId VARCHAR2(200),
-    className VARCHAR2(100),
-    colSeq VARCHAR2(10) references tblColor(colSeq),
+    color VARCHAR2(10) references tblColor(color),
     calSeq NUMBER references tblCal(calSeq) not null,
     check (allDay in ('y', 'n'))
 );
+create sequence seqEvent;
+insert into tblEvent(eventSeq, title, allDay, "start", "end", loc, "content", color, calSeq) 
+values (seqEvent.nextVal, 'Party', 'n', '2023-01-03 20:00:00','', '우리집','재밌겠다','#A8D8EA',1);
+----------------------------------------------------------------일정
+create table tblShare (
+    id VARCHAR2(100) not null references tblUser(id),
+    calSeq NUMBER references tblCal(calSeq) not null,
+    shareTk VARCHAR2(1000)
+);
+----------------------------------------------------------------공유여부
 
-insert into tblEvent(eventSeq, title, allDay, "start", "end", loc, "content", colSeq, calSeq) 
-values (1, 'Party', 'n', '2023-01-29 20:00:00','', '우리집','재밌겠다','#FFCF96',1);
+
+insert into tblUser values ('test', '1111', '테스트');
+
+--
+
+insert into tblCalList values (1, 'test');
+--
+
+
+insert into tblCal values (1, 'n', 'test', 1);
+
+--
+
+insert into tblColor values ('#F1932E', '주황');
+insert into tblColor values ('#A8D8EA', '하늘');
+insert into tblColor values ('#AA96DA', '보라');
+insert into tblColor values ('#F9B8D1', '분홍');
+insert into tblColor values ('#FFFFD2', '노랑');
+
+delete from tblColor where name='주황';
+--
+update tblEvent set colSeq = '#AA96DA' where eventSeq=1;
+
+
+
 commit;
 select * from tblEvent;
 update tblEvent set "start"='2023-01-23 20:00',"end"='' where eventSeq = 1;
@@ -63,17 +85,7 @@ rollback;
 
 -----------------------------여기까지 정보 넣으면 테스트 가능
 
-create table tblShare (
-    userSeq NUMBER references tblUser(userSeq) not null,
-    calSeq NUMBER references tblCal(calSeq) not null,
-    shareTk VARCHAR2(1000)
-);
 
-create table tblSync (
-    userSeq NUMBER references tblUser(userSeq) primary key,
-    syncTk VARCHAR2(1000) not null,
-    googleCalendarApiKey VARCHAR2(300)
-);
 
 create table tblWhat (
     whatSeq NUMBER primary key,
@@ -82,7 +94,7 @@ create table tblWhat (
 
 create table tblLog (
     logSeq NUMBER primary key,
-    userSeq NUMBER references tblUser(userSeq),
+    id VARCHAR2(100) not null references tblUser(id),
     whatSeq NUMBER references tblWhat(whatSeq),
     logStamp TIMESTAMP
 );

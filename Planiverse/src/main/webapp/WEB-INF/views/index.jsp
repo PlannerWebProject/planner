@@ -747,7 +747,7 @@ html, body {
    						title: obj.title,
    						start: obj.start,
    						end: obj.end,
-   						color: obj.colSeq,
+   						color: obj.color,
    						extendedProps: {
    							eventSeq: obj.eventSeq,
 			   				loc: obj.loc,
