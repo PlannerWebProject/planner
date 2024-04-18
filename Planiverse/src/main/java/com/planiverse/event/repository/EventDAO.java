@@ -17,7 +17,7 @@ public class EventDAO {
 	private ResultSet rs;
 
 	public EventDAO() {
-		this.conn = DBUtil.open();
+		this.conn = DBUtil.open("43.202.179.175", "planiverse", "java1234");
 	}
 
 	public ArrayList<EventDTO> list() {
