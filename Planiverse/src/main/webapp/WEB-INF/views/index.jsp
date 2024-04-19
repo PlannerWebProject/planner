@@ -90,7 +90,8 @@ html, body {
 	border: 0;
 }
 
-#exampleModal, #editEventModal, #loginModal, #signupModal, #eventProduceModal {
+#exampleModal, #editEventModal, #loginModal, #signupModal,
+	#eventProduceModal {
 	background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -313,15 +314,23 @@ html, body {
 									type="text" class="form-control" id="eventModalTitle">
 							</div>
 							<div class="mb-3">
+								<div class="form-check form-switch" id="allDayBox">
+									<input class="form-check-input" type="checkbox"
+										id="allDayCheck" checked> <label
+										class="form-check-label" for="allDayCheck">하루종일</label>
+								</div>
+							</div>
+							<div class="mb-3">
 								<label for="eventModalStart" class="col-form-label">일정
 									시작</label> <input type="datetime-local" id="eventModalStart"
-									class="form-control" placeholder="datetime-local input">
+									class="form-control" placeholder="datetime-local input"
+									disabled>
 							</div>
 							<div class="mb-3">
 								<label for="eventModalEnd" class="col-form-label">일정 종료</label>
 								<input type="datetime-local" id="eventModalEnd"
 									class="form-control" placeholder="datetime-local input"
-									onchange="validateEndDate()">
+									disabled onchange="validateEndDate()">
 							</div>
 							<div class="mb-3">
 								<label for="eventModalSelect" class="col-form-label">카테고리</label>
@@ -511,10 +520,30 @@ html, body {
 					<div class="modal-body">
 						<form>
 							<div class="mb-3">
+								<div class="container">
+									<div id="color-selector">
+										<div class="color-circle" style="background-color: #FF8080"></div>
+										<div class="color-circle" style="background-color: #FFCF96"></div>
+										<div class="color-circle" style="background-color: #F6FDC3"></div>
+										<div class="color-circle" style="background-color: #CDFAD5"></div>
+									</div>
+									<p>
+										선택한 색: <span id="selected-color"></span>
+									</p>
+								</div>
+							</div>
+							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">제목</label> <input
 									type="text" class="form-control" id="editEventModalTitle">
 							</div>
 
+							<div class="mb-3">
+								<div class="form-check form-switch" id="allDayBox">
+									<input class="form-check-input" type="checkbox"
+										id="allDayCheck" checked> <label
+										class="form-check-label" for="allDayCheck">하루종일</label>
+								</div>
+							</div>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">일정 시작</label>
 								<input type="datetime-local" id="editEventModalStart"
@@ -590,7 +619,6 @@ html, body {
 				}
 			});
 		}
-
 		// datepicker
 		document.addEventListener('DOMContentLoaded', function () {
 			$('#datepicker').datepicker({
@@ -654,16 +682,27 @@ html, body {
 				var sidebarMain = document.getElementById("sidebarMain");
 				var addSchedule = document.getElementById("addSchedule");
 
-
 				sidebarMain.style.width = sidebarStatus ? "0" : "250px";
 				Array.from(sidebarMain.children).forEach(child => {
 					if (child !== addSchedule) {
-						child.style.display = sidebarStatus ? "none" : "block";
-						child.style.width = sidebarStatus ? "0" : "100%";
+						child.style.display = sidebarStatus ? "none" : "";
 					}
 				});
+				
 				sidebarStatus = !sidebarStatus;
+				$('.fc-toolbar-chunk').css("margin-left", sidebarStatus ? "0" : "100px");
+				calendar.render();
+				//$('.fc-daygrid-body .fc-daygrid-body-unbalanced').css('width', '100%');
+				//$('fc-scrollgrid-sync-table').css('width', '100%');
+				//$('fc-scrollgrid-sync-table').children().css('width', '100%');
 			};
+			$('.calendarGroup').css("display", "flex");
+			$('.calendarGroup').css("padding-right", "10px");
+			//$('.calendarGroup').css("display", "flex");
+			$('.calendarGroup').children().css("margin-left", "auto");
+			$('.button-border').css("border", "0");
+			$('.button.button-border').css("background", "");
+			//$('.button.button-border').css("background-color", "#eee");
 		};
 		
 		
@@ -674,11 +713,17 @@ html, body {
 	var loginBtn = document.getElementById('login-action');
 	var signupBtn = document.getElementById('signup-action');
 
-    	
+	var modalElement = document.querySelector('.modal');
 	var exampleModal = document.getElementById('event');
+	
 	addScheduleBtn.addEventListener('click', function() {
 		 var modal = new bootstrap.Modal(eventProduceModal);
+		 //allDayBox.style.display = 'none';
+		 document.getElementById('eventModalStart').removeAttribute('disabled');
+		 document.getElementById('eventModalEnd').removeAttribute('disabled');  
+
 		 modal.show();
+		 
 		 var start = document.getElementById('eventstart')
 	});
 
@@ -774,10 +819,26 @@ html, body {
 			});
 		},
 		dateClick: function(info) {
-        var container = document.getElementById("eventProduceModal");//
-        var modal = new bootstrap.Modal(container);
-        modal.show();
-      },
+            var clickedDate = info.date;
+            var momentClickedDate = moment(clickedDate); 
+
+			//allDayBox.style.display = 'block'; 
+			document.getElementById('eventModalStart').disabled = true;
+			document.getElementById('eventModalEnd').disabled = true;
+
+
+            var formattedDateTimeStart = momentClickedDate.format('YYYY-MM-DD HH:mm:ss');
+            document.getElementById("eventModalStart").value = formattedDateTimeStart;
+    
+			var formattedDateTimeEnd = moment(momentClickedDate).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
+            document.getElementById("eventModalEnd").value = formattedDateTimeEnd;
+
+
+            var container = document.getElementById("eventProduceModal");
+            var modal = new bootstrap.Modal(container);
+            var allday = document.getElementById("allDayCheck");
+            modal.show();
+		},
       select: function(info) {
         
       },
@@ -787,9 +848,7 @@ html, body {
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay'
       },
-      initialDate: '2023-01-12',
       navLinks: true, // can click day/week names to navigate views
-    //   businessHours: true, // display business hours
       editable: true,
       selectable: true,
       events: [
@@ -845,35 +904,46 @@ html, body {
   });
 		
 	function getDisplayEventDate(event) {
-			var displayEventDate;
+		var displayEventDate;
 
-			if(event.end == null) {
-				displayEventDate = moment(event.start).format('HH:mm');
-			} else if (moment(event.start).format('MM-DD')!=moment(event.end).format('MM-DD')) {
-			  var startEventInfo = moment(event.start).format('MM/DD');
-			  var endEventInfo = moment(event.end).format('MM/DD');
-			  displayEventDate = startEventInfo + " - " + endEventInfo;
-			} else if (moment(event.start).format('MM-DD')==moment(event.end).format('MM-DD')) {
-			  var startTimeEventInfo = moment(event.start).format('HH:mm');
-			  var endTimeEventInfo = moment(event.end).format('HH:mm');
-			  displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
-			} else {	
+		if(event.end == null) {
+			displayEventDate = moment(event.start).format('HH:mm');
+		} else if (moment(event.start).format('MM-DD')!=moment(event.end).format('MM-DD')) {
+		  var startEventInfo = moment(event.start).format('MM/DD');
+		  var endEventInfo = moment(event.end).format('MM/DD');
+		  displayEventDate = startEventInfo + " - " + endEventInfo;
+		} else if (moment(event.start).format('MM-DD')==moment(event.end).format('MM-DD')) {
+		  var startTimeEventInfo = moment(event.start).format('HH:mm');
+		  var endTimeEventInfo = moment(event.end).format('HH:mm');
+		  displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
+		} else {	
 			  displayEventDate = "하루종일";
-			}
+		}
+		return displayEventDate;
+		}
+	
+		document.getElementById('allDayCheck').addEventListener('change', function() {
+	    
+	    	if(this.checked){
+	        	document.getElementById("eventModalStart").disabled = true;
+	        	document.getElementById("eventModalEnd").disabled = true;
+	    	}else{
+	        	document.getElementById("eventModalStart").disabled = false;
+	        	document.getElementById("eventModalEnd").disabled = false;
+	    	}
+		});
+	
+		function validateEndDate() {
+		    var startDate = document.getElementById("eventModalStart").value;
+		    var endDate = document.getElementById("eventModalEnd").value;
 
-			return displayEventDate;
-			}
-			function validateEndDate() {
-			    var startDate = document.getElementById("eventModalStart").value;
-			    var endDate = document.getElementById("eventModalEnd").value;
-
-			    if (startDate && endDate) {
-			        if (startDate > endDate) {
-			            alert("일정 종료일은 시작일 이후여야 합니다.");
-			            document.getElementById("eventModalEnd").value = startDate;
-			        }
+			if (startDate && endDate) {
+			    if (startDate > endDate) {
+			        alert("일정 종료일은 시작일 이후여야 합니다.");
+			        document.getElementById("eventModalEnd").value = startDate;
 			    }
 			}
+		}
 	</script>
 </body>
 </html>
