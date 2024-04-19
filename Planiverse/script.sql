@@ -1,20 +1,36 @@
+alter session set "_oracle_script" = true;
+grant connect, resource, dba to planiverse;
+create user planiverse identified by java1234;
+
+--여기부터 시작
 create table tblUser(
-    userSeq number primary key,
-    id VARCHAR2(100) not null, 
-    pw VARCHAR2(50),
+    id VARCHAR2(100) primary key,
+    pw VARCHAR2(50) not null,
     name VARCHAR2(20) not null
 );
+--아래는 CRUD
+insert into tblUser values ('test', '1111', '테스트');
 
-insert into tblUser values (1, 'test', '1111', '테스트');
+select * from tblUser;
 
---
+update tblUser set pw = ? where id = ?;
+
+delete from tblUser where id = ?;
+--------------------------------------------------------------유저테이블
 create table tblCalList(
     calListSeq number primary key,
-    userSeq NUMBER references tblUser(userSeq)
+    id VARCHAR2(100) not null references tblUser(id)
 );
-insert into tblCalList values (1, 1);
---
+create sequence seqCalList;
+--아래는 CRUD
+insert into tblCalList values (1, 'test');
 
+select * from tblCalList;
+
+update tblCalList set id = ? where calListSeq = ?;
+
+delete from tblCalList where calListSeq = ?;
+---------------------------------------------------------------달력리스트
 create table tblCal (
     calSeq number primary key,
     shareInfo CHAR(1) default 'n' not null,
@@ -22,17 +38,31 @@ create table tblCal (
     calListSeq NUMBER references tblCalList(calListSeq),
     check (shareInfo in ('y', 'n'))
 );
+create sequence seqCal;
+--아래는 CRUD
 insert into tblCal values (1, 'n', 'test', 1);
 
---
+select * from tblCal;
+
+update tblCal set shareInfo = ? where calSeq = ?;
+
+delete from tblCal where calSeq = ?;
+----------------------------------------------------------------달력
 create table tblColor(
-    colSeq VARCHAR2(10) primary key,
+    color VARCHAR2(10) primary key,
     name VARCHAR2(30)
 );
-insert into tblColor values ('#FFCF96', '주황');
+--아래는 CRUD
+insert into tblColor values ('#F1932E', '주황');
+insert into tblColor values ('#A8D8EA', '하늘');
+insert into tblColor values ('#AA96DA', '보라');
+insert into tblColor values ('#F9B8D1', '분홍');
+insert into tblColor values ('#FFFFD2', '노랑');
 
---
+select * from tblColor;
 
+delete from tblCal where color = ?;
+----------------------------------------------------------------컬러
 create table tblEvent (
     eventSeq number primary key,
     title VARCHAR2(100) not null,
@@ -41,32 +71,44 @@ create table tblEvent (
     "end" TIMESTAMP,
     loc VARCHAR2(100),
     "content" CLOB,
-    eDel number,
-    googleCalendarId VARCHAR2(200),
-    className VARCHAR2(100),
-    colSeq VARCHAR2(10) references tblColor(colSeq),
+    color VARCHAR2(10) references tblColor(color),
     calSeq NUMBER references tblCal(calSeq) not null,
     check (allDay in ('y', 'n'))
 );
+create sequence seqEvent;
+--아래는 CRUD
+insert into tblEvent(eventSeq, title, allDay, "start", "end", loc, "content", color, calSeq) 
+values (seqEvent.nextVal, 'Party', 'n', '2023-01-05 20:00:00','', '우리집','재밌겠다','#A8D8EA',1);
 
-insert into tblEvent(eventSeq, title, allDay, "start", "end", loc, "content", colSeq, calSeq) 
-values (1, 'Party', 'n', '2023-01-29 20:00:00','', '우리집','재밌겠다','#FFCF96',1);
-commit;
 select * from tblEvent;
 
------------------------------여기까지 정보 넣으면 테스트 가능
+update tblEvent set title = ? where eventSeq = ?;
 
+delete from tblEvent where eventSeq = ?;
+----------------------------------------------------------------일정
 create table tblShare (
-    userSeq NUMBER references tblUser(userSeq) not null,
+    id VARCHAR2(100) not null references tblUser(id),
     calSeq NUMBER references tblCal(calSeq) not null,
     shareTk VARCHAR2(1000)
 );
+--아래는 CRUD
+insert into tblShare values ('test', ?, '');
 
-create table tblSync (
-    userSeq NUMBER references tblUser(userSeq) primary key,
-    syncTk VARCHAR2(1000) not null,
-    googleCalendarApiKey VARCHAR2(300)
-);
+select * from tblShare;
+
+update tblShare set shareTk =? where id =? and calSeq = ?;
+
+delete from tblShare where id =? and calSeq = ?;
+----------------------------------------------------------------공유여부
+
+commit;
+
+rollback;
+
+
+-----------------------------여기까지 정보 넣으면 테스트 가능
+--아래는 논의 필요
+
 
 create table tblWhat (
     whatSeq NUMBER primary key,
@@ -75,7 +117,7 @@ create table tblWhat (
 
 create table tblLog (
     logSeq NUMBER primary key,
-    userSeq NUMBER references tblUser(userSeq),
+    id VARCHAR2(100) not null references tblUser(id),
     whatSeq NUMBER references tblWhat(whatSeq),
     logStamp TIMESTAMP
 );
