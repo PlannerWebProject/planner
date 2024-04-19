@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.planiverse.Test;
+import com.planiverse.DBUtil;
 import com.planiverse.event.model.EventDTO;
 
 public class EventDAO {
@@ -18,7 +18,7 @@ public class EventDAO {
 	private ResultSet rs;
 
 	public EventDAO() {
-		this.conn = open();
+		this.conn = DBUtil.open();
 	}
 
 	public ArrayList<EventDTO> list() {
@@ -104,26 +104,4 @@ public class EventDAO {
 		return 0;
 	}
 
-	public static Connection open() {
-		
-		return Test.open();
-//		Connection conn = null;
-//
-//		String url = "jdbc:oracle:thin:@125.241.245.222:1521:xe";
-//		String id = "project";
-//		String pw = "java1234";
-//
-//		try {
-//			Class.forName("oracle.jdbc.driver.OracleDriver");
-//
-//			conn = DriverManager.getConnection(url, id, pw);
-//			// conn.setAutoCommit(false);
-//
-//			return conn;
-//		} catch (Exception e) {
-//			System.out.println("DB.open");
-//			e.printStackTrace();
-//		}
-//		return null;
-	}
 }

@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="${path}/resources/css/style.css">
 
 <!-- Font Icons -->
-<link rel="stylesheet" href="/plan/resources/css/font-icons.css">
+<link rel="stylesheet" href="${path}/resources/css/font-icons.css">
 
 <!-- Plugins/Components CSS -->
 <link rel="stylesheet" href="${path}/resources/css/swiper.css">
@@ -66,6 +66,10 @@ html, body {
 
 #addScheduleBtn {
 	position: relative;
+	height: 38.88px;
+	margin-bottom: 19px;
+	display: grid;
+	place-items: center;
 }
 
 #datepickerDiv {
@@ -99,6 +103,33 @@ html, body {
 	border-radius: 50%;
 }
 
+.button {
+	margin: 0; -
+	-cnvs-btn-padding-x: 1rem; -
+	-cnvs-btn-padding-y: 0.5rem;
+}
+
+#scheduleSearchBox {
+	display: flex;
+}
+
+#addMyCalendarBtn {
+	padding: 0px 48px;
+	margin-bottom: 8px;
+}
+
+#addShCalendarBtn {
+	padding: 0px 48px;
+	margin-bottom: 8px;
+}
+
+.white {
+	color: #FFF;
+}
+
+.bgclightgray {
+	background-color: #eeeeee;
+}
 </style>
 
 </head>
@@ -128,8 +159,13 @@ html, body {
 						<!-- Logo
 						============================================= -->
 						<div id="logo" class="me-lg-0">
-							<div>
-								<button name="sidebarFoldingBtn" id="sidebarFoldingBtn">접기</button>
+							<div id="sidebarFoldingBtnDiv">
+								<button name="sidebarFoldingBtn" id="sidebarFoldingBtn"
+									class="fc-button button button-rounded button-border button-dark button-icon-effect button-icon-flip-x">
+									<div>
+										<i class="bi-list-nested"></i>
+									</div>
+								</button>
 							</div>
 
 							<a href="index.html"><img
@@ -171,49 +207,69 @@ html, body {
 		<section id="slider" class="slider-element">
 			<div id="sidebarMain" class="sidebar">
 				<div id="addSchedule" class="sidebar">
-					<button id="addScheduleBtn" class="sidebar">일정생성</button>
+					<a href="#" id="addScheduleBtn"
+						class="fc-button sidebar button button-rounded px-5 button-border button-text-effect button-text-flip-x">
+						<div class="button-inner">
+							<span><i class="bi-plus-circle"></i>일정생성</span><span><i
+								class="bi-plus-circle-fill"></i>일정생성</span>
+						</div>
+					</a>
 				</div>
 				<div id="datepickerDiv" class="sidebar">
 					<div id="datepicker"></div>
 				</div>
-				<div id="scheduleSearchBox" class="sidebar">
-
-					<input type="text" placeholder="일정 검색" class="sidebar">
+				<div>&nbsp;</div>
+				<div id="scheduleSearchBox" class="input-group"
+					style="display: flex">
+					<input type="text" name="q" class="form-control" value=""
+						placeholder="일정 검색">
+					<div class="input-group-text">
+						<i class="uil uil-search"></i>
+					</div>
 				</div>
+				<div>&nbsp;</div>
 				<div id="scheduleAcc" class="sidebar">
-					<button type="button" class="collapsible sidebar">내 달력</button>
-					<div class="calendarGroup" class="sidebar">
-
-						<div class="calendarItem">
-							<label class="calendarCheckbox"><input
-								class='calendarFilter' type="checkbox" value="정연" checked>달력1</label>
-						</div>
-						<div class="calendarItem">
-							<label class="calendarCheckbox"><input
-								class='calendarFilter' type="checkbox" value="정연" checked>달력2</label>
-						</div>
-						<div class="calendarItem">
-							<label class="calendarCheckbox"><input
-								class='calendarFilter' type="checkbox" value="정연" checked>달력3</label>
-						</div>
-					</div>
-
-					<button type="button" class="collapsible sidebar">공유받은 달력</button>
-					<div class="calendarGroup" class="sidebar">
-
-						<div class="calendarItem">
-							<label class="calendarCheckbox"><input
-								class='calendarFilter' type="checkbox" value="정연" checked>달력1</label>
-						</div>
-						<div class="calendarItem">
-							<label class="calendarCheckbox"><input
-								class='calendarFilter' type="checkbox" value="정연" checked>달력2</label>
-						</div>
-						<div class="calendarItem">
-							<label class="calendarCheckbox"><input
-								class='calendarFilter' type="checkbox" value="정연" checked>달력3</label>
-						</div>
-					</div>
+					<nav class="nav-tree mb-0">
+						<ul>
+							<li><a href="#" class="calendarGroup">내 달력</a></i>
+								<ul>
+									<li><a href="#" id="addMyCalendarBtn"
+										class="sidebar button button-rounded px-5 button-border button-text-effect button-text-flip-x">
+											<div class="button-inner">
+												<span><i class="bi-plus-circle"></i>달력추가</span> <span
+													class="white"><i class="bi-plus-circle-fill"></i>달력추가</span>
+											</div>
+									</a></li>
+									<li><label class="checkbox-inline"><input
+											class="filter" type="checkbox" value="달력1" checked="">달력1</label></li>
+									<li><label class="checkbox-inline"><input
+											class="filter" type="checkbox" value="달력2" checked="">달력2</label></li>
+									<li><label class="checkbox-inline"><input
+											class="filter" type="checkbox" value="달력3" checked="">달력3</label></li>
+								</ul></li>
+						</ul>
+					</nav>
+					<div>&nbsp;</div>
+					<nav class="nav-tree mb-0">
+						<ul>
+							<li><a href="#" class="calendarGroup">공유받은 달력</a>
+								<ul>
+									<li><a href="#" id="addShCalendarBtn"
+										class="sidebar button button-rounded px-5 button-border button-text-effect button-text-flip-x">
+											<div class="button-inner">
+												<span><i class="bi-plus-circle"></i>달력추가</span> <span
+													class="white"><i class="bi-plus-circle-fill"></i>달력추가</span>
+											</div>
+									</a></li>
+									<li><label class="checkbox-inline"><input
+											class="filter" type="checkbox" value="달력1" checked="">달력1</label></li>
+									<li><label class="checkbox-inline"><input
+											class="filter" type="checkbox" value="달력2" checked="">달력2</label></li>
+									<li><label class="checkbox-inline"><input
+											class="filter" type="checkbox" value="달력3" checked="">달력3</label></li>
+								</ul></li>
+						</ul>
+					</nav>
 				</div>
 			</div>
 
