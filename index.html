@@ -60,6 +60,10 @@
 
 	#addScheduleBtn {
 		position: relative;
+		height: 38.88px;
+		margin-bottom: 19px;
+		display: grid;
+		place-items: center;
 	}
 
 
@@ -107,6 +111,30 @@
 	#signupModal{
 		background-color: rgba(0,0,0,0.4);
     }
+	
+	.button {
+		margin: 0;
+		--cnvs-btn-padding-x: 1rem;
+		--cnvs-btn-padding-y: 0.5rem;
+	}
+	
+	#scheduleSearchBox {
+		display: flex;
+	}
+	#addMyCalendarBtn {
+		padding: 0px 48px;
+		margin-bottom: 8px;
+	}
+	#addShCalendarBtn {
+		padding: 0px 48px;
+		margin-bottom: 8px;
+	}
+	.white {
+		color: #FFF;
+	}
+	.bgclightgray {
+		background-color: #eeeeee;
+	}
 	</style>
 
 </head>
@@ -134,7 +162,11 @@
 						<!-- Logo
 						============================================= -->
 						<div id="logo" class="me-lg-0">
-							<div><button name="sidebarFoldingBtn" id="sidebarFoldingBtn">접기</button></div>
+							<div id="sidebarFoldingBtnDiv">
+								<button name="sidebarFoldingBtn" id="sidebarFoldingBtn" class="fc-button button button-rounded button-border button-dark button-icon-effect button-icon-flip-x">
+									<div><i class="bi-list-nested"></i></div>
+								</button>
+							</div>
 
 							<a href="index.html"><img src="demos/speaker/images/plannerLogo.webp" alt=""></a>
 
@@ -166,43 +198,61 @@
 		<section id="slider" class="slider-element">
 			<div id="sidebarMain" class="sidebar">
 				<div id="addSchedule" class="sidebar">
-					<button id="addScheduleBtn" class="sidebar">일정생성</button>
+					<a href="#" id="addScheduleBtn"
+						class="fc-button sidebar button button-rounded px-5 button-border button-text-effect button-text-flip-x">
+						<div class="button-inner"><span><i class="bi-plus-circle"></i>일정생성</span><span><i
+									class="bi-plus-circle-fill"></i>일정생성</span></div>
+					</a>
 				</div>
 				<div id="datepickerDiv" class="sidebar">
 					<div id="datepicker"></div>
 				</div>
-				<div id="scheduleSearchBox" class="sidebar">
-
-					<input type="text" placeholder="일정 검색" class="sidebar">
+				<div>&nbsp;</div>
+				<div id="scheduleSearchBox" class="input-group" style="display: flex">
+					<input type="text" name="q" class="form-control" value="" placeholder="일정 검색">
+					<div class="input-group-text"><i class="uil uil-search"></i></div>
 				</div>
+				<div>&nbsp;</div>
 				<div id="scheduleAcc" class="sidebar">
-					<button type="button" class="collapsible sidebar">내 달력</button>
-					<div class="calendarGroup" class="sidebar">
-
-						<div class="calendarItem">
-							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력1</label>
-						</div>
-						<div class="calendarItem">
-							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력2</label>
-						</div>
-						<div class="calendarItem">
-							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력3</label>
-						</div>
-					</div>
-
-					<button type="button" class="collapsible sidebar">공유받은 달력</button>
-					<div class="calendarGroup" class="sidebar">
-
-						<div class="calendarItem">
-							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력1</label>
-						</div>
-						<div class="calendarItem">
-							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력2</label>
-						</div>
-						<div class="calendarItem">
-							<label class="calendarCheckbox"><input class='calendarFilter' type="checkbox" value="정연" checked>달력3</label>
-						</div>
-					</div>
+					<nav class="nav-tree mb-0">
+						<ul>
+							<li><a href="#" class="calendarGroup">내 달력</a></i>
+								<ul>
+									<li>
+										<a href="#" id="addMyCalendarBtn" class="sidebar button button-rounded px-5 button-border button-text-effect button-text-flip-x">
+											<div class="button-inner">
+												<span><i class="bi-plus-circle"></i>달력추가</span>
+												<span class="white"><i class="bi-plus-circle-fill"></i>달력추가</span>
+											</div>
+										</a>
+									</li>
+									<li><label class="checkbox-inline"><input class="filter" type="checkbox" value="달력1" checked="">달력1</label></li>
+									<li><label class="checkbox-inline"><input class="filter" type="checkbox" value="달력2" checked="">달력2</label></li>
+									<li><label class="checkbox-inline"><input class="filter" type="checkbox" value="달력3" checked="">달력3</label></li>
+								</ul>
+							</li>
+						</ul>
+					</nav>
+					<div>&nbsp;</div>
+					<nav class="nav-tree mb-0">
+						<ul>
+							<li><a href="#" class="calendarGroup">공유받은 달력</a>
+								<ul>
+									<li>
+										<a href="#" id="addShCalendarBtn" class="sidebar button button-rounded px-5 button-border button-text-effect button-text-flip-x">
+											<div class="button-inner">
+												<span><i class="bi-plus-circle"></i>달력추가</span>
+												<span class="white"><i class="bi-plus-circle-fill"></i>달력추가</span>
+											</div>
+										</a>
+									</li>
+									<li><label class="checkbox-inline"><input class="filter" type="checkbox" value="달력1" checked="">달력1</label></li>
+									<li><label class="checkbox-inline"><input class="filter" type="checkbox" value="달력2" checked="">달력2</label></li>
+									<li><label class="checkbox-inline"><input class="filter" type="checkbox" value="달력3" checked="">달력3</label></li>
+								</ul>
+							</li>
+						</ul>
+					</nav>
 				</div>
 			</div>
 
@@ -458,7 +508,7 @@
 		var sidebar = document.getElementsByClassName("sidebar");
 		var addScheduleBtn = document.getElementById("addScheduleBtn");
 		var i;
-
+		var calendar;
 		
 		// Accordian
 		for (var i = 0; i < coll.length; i++) {
@@ -486,32 +536,32 @@
 		});
 		
 		$('#datepicker').datepicker({
-        language: {
-            daysMin: ['일', '월', '화', '수', '목', '금', '토'],
-            months: [
-                '1월', '2월', '3월', '4월', '5월', '6월',
-                '7월', '8월', '9월', '10월', '11월', '12월'
-            ],
-            today: '오늘',
-            clear: '지우기',
-            dateFormat: 'yyyy-mm-dd',
-            firstDay: 0
-        },
-        minDate: new Date(),  // 최소 선택 가능한 날짜를 현재 날짜로 설정
-        dateFormat: 'yyyy-mm-dd',  // 날짜 형식 설정 (년-월-일)
-		onSelect: function (formattedDate, date, picker) {
-			if (date) {
-				$('#selected-date').text('선택한 날짜: ' + formattedDate);
+			language: {
+				daysMin: ['일', '월', '화', '수', '목', '금', '토'],
+				months: [
+					'1월', '2월', '3월', '4월', '5월', '6월',
+					'7월', '8월', '9월', '10월', '11월', '12월'
+				],
+				today: '오늘',
+				clear: '지우기',
+				dateFormat: 'yyyy-mm-dd',
+				firstDay: 0
+			},
+			minDate: new Date(),  // 최소 선택 가능한 날짜를 현재 날짜로 설정
+			dateFormat: 'yyyy-mm-dd',  // 날짜 형식 설정 (년-월-일)
+			onSelect: function (formattedDate, date, picker) {
+				if (date) {
+					$('#selected-date').text('선택한 날짜: ' + formattedDate);
 
-				var dayOfWeek = date.getDay();
-				var days = ['일', '월', '화', '수', '목', '금', '토'];
-				$('#day-of-week').text('요일: ' + days[dayOfWeek]);
-			} else {
-				$('#selected-date').text('');
-				$('#day-of-week').text('');
+					var dayOfWeek = date.getDay();
+					var days = ['일', '월', '화', '수', '목', '금', '토'];
+					$('#day-of-week').text('요일: ' + days[dayOfWeek]);
+				} else {
+					$('#selected-date').text('');
+					$('#day-of-week').text('');
+				}
 			}
-		}
-    });
+		});
     
 		window.addEventListener( 'load', function() {
 			var swiperThumb = new Swiper(".swiper-thumb", {
@@ -541,16 +591,28 @@
 				var sidebarMain = document.getElementById("sidebarMain");
 				var addSchedule = document.getElementById("addSchedule");
 
-
 				sidebarMain.style.width = sidebarStatus ? "0" : "250px";
 				Array.from(sidebarMain.children).forEach(child => {
 					if (child !== addSchedule) {
-						child.style.display = sidebarStatus ? "none" : "block";
-						child.style.width = sidebarStatus ? "0" : "100%";
+						child.style.display = sidebarStatus ? "none" : "";
 					}
 				});
+				
 				sidebarStatus = !sidebarStatus;
+				$('.fc-toolbar-chunk').css("margin-left", sidebarStatus ? "0" : "100px");
+				calendar.render();
+				//$('.fc-daygrid-body .fc-daygrid-body-unbalanced').css('width', '100%');
+				//$('fc-scrollgrid-sync-table').css('width', '100%');
+				//$('fc-scrollgrid-sync-table').children().css('width', '100%');
 			};
+			
+			$('.calendarGroup').css("display", "flex");
+			$('.calendarGroup').css("padding-right", "10px");
+			//$('.calendarGroup').css("display", "flex");
+			$('.calendarGroup').children().css("margin-left", "auto");
+			$('.button-border').css("border", "0");
+			$('.button.button-border').css("background", "");
+			//$('.button.button-border').css("background-color", "#eee");
 		};
 		
 		
@@ -588,7 +650,7 @@
 		})
 	})
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    calendar = new FullCalendar.Calendar(calendarEl, {
 		eventClick: function(info) {
 			var container = document.getElementById("editEventModal");
 			var modal = new bootstrap.Modal(container);
