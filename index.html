@@ -162,7 +162,11 @@
 						<!-- Logo
 						============================================= -->
 						<div id="logo" class="me-lg-0">
-							<div><button name="sidebarFoldingBtn" id="sidebarFoldingBtn">접기</button></div>
+							<div id="sidebarFoldingBtnDiv">
+								<button name="sidebarFoldingBtn" id="sidebarFoldingBtn" class="fc-button button button-rounded button-border button-dark button-icon-effect button-icon-flip-x">
+									<div><i class="bi-list-nested"></i></div>
+								</button>
+							</div>
 
 							<a href="index.html"><img src="demos/speaker/images/plannerLogo.webp" alt=""></a>
 
@@ -504,7 +508,7 @@
 		var sidebar = document.getElementsByClassName("sidebar");
 		var addScheduleBtn = document.getElementById("addScheduleBtn");
 		var i;
-
+		var calendar;
 		
 		// Accordian
 		for (var i = 0; i < coll.length; i++) {
@@ -532,32 +536,32 @@
 		});
 		
 		$('#datepicker').datepicker({
-        language: {
-            daysMin: ['일', '월', '화', '수', '목', '금', '토'],
-            months: [
-                '1월', '2월', '3월', '4월', '5월', '6월',
-                '7월', '8월', '9월', '10월', '11월', '12월'
-            ],
-            today: '오늘',
-            clear: '지우기',
-            dateFormat: 'yyyy-mm-dd',
-            firstDay: 0
-        },
-        minDate: new Date(),  // 최소 선택 가능한 날짜를 현재 날짜로 설정
-        dateFormat: 'yyyy-mm-dd',  // 날짜 형식 설정 (년-월-일)
-		onSelect: function (formattedDate, date, picker) {
-			if (date) {
-				$('#selected-date').text('선택한 날짜: ' + formattedDate);
+			language: {
+				daysMin: ['일', '월', '화', '수', '목', '금', '토'],
+				months: [
+					'1월', '2월', '3월', '4월', '5월', '6월',
+					'7월', '8월', '9월', '10월', '11월', '12월'
+				],
+				today: '오늘',
+				clear: '지우기',
+				dateFormat: 'yyyy-mm-dd',
+				firstDay: 0
+			},
+			minDate: new Date(),  // 최소 선택 가능한 날짜를 현재 날짜로 설정
+			dateFormat: 'yyyy-mm-dd',  // 날짜 형식 설정 (년-월-일)
+			onSelect: function (formattedDate, date, picker) {
+				if (date) {
+					$('#selected-date').text('선택한 날짜: ' + formattedDate);
 
-				var dayOfWeek = date.getDay();
-				var days = ['일', '월', '화', '수', '목', '금', '토'];
-				$('#day-of-week').text('요일: ' + days[dayOfWeek]);
-			} else {
-				$('#selected-date').text('');
-				$('#day-of-week').text('');
+					var dayOfWeek = date.getDay();
+					var days = ['일', '월', '화', '수', '목', '금', '토'];
+					$('#day-of-week').text('요일: ' + days[dayOfWeek]);
+				} else {
+					$('#selected-date').text('');
+					$('#day-of-week').text('');
+				}
 			}
-		}
-    });
+		});
     
 		window.addEventListener( 'load', function() {
 			var swiperThumb = new Swiper(".swiper-thumb", {
@@ -587,16 +591,28 @@
 				var sidebarMain = document.getElementById("sidebarMain");
 				var addSchedule = document.getElementById("addSchedule");
 
-
 				sidebarMain.style.width = sidebarStatus ? "0" : "250px";
 				Array.from(sidebarMain.children).forEach(child => {
 					if (child !== addSchedule) {
-						child.style.display = sidebarStatus ? "none" : "block";
-						child.style.width = sidebarStatus ? "0" : "100%";
+						child.style.display = sidebarStatus ? "none" : "";
 					}
 				});
+				
 				sidebarStatus = !sidebarStatus;
+				$('.fc-toolbar-chunk').css("margin-left", sidebarStatus ? "0" : "100px");
+				calendar.render();
+				//$('.fc-daygrid-body .fc-daygrid-body-unbalanced').css('width', '100%');
+				//$('fc-scrollgrid-sync-table').css('width', '100%');
+				//$('fc-scrollgrid-sync-table').children().css('width', '100%');
 			};
+			
+			$('.calendarGroup').css("display", "flex");
+			$('.calendarGroup').css("padding-right", "10px");
+			//$('.calendarGroup').css("display", "flex");
+			$('.calendarGroup').children().css("margin-left", "auto");
+			$('.button-border').css("border", "0");
+			$('.button.button-border').css("background", "");
+			//$('.button.button-border').css("background-color", "#eee");
 		};
 		
 		
@@ -634,7 +650,7 @@
 		})
 	})
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    calendar = new FullCalendar.Calendar(calendarEl, {
 		eventClick: function(info) {
 			var container = document.getElementById("editEventModal");
 			var modal = new bootstrap.Modal(container);
