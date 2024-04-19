@@ -22913,7 +22913,7 @@ td.actions {
 }
 .button i {
   position: relative;
-  margin-right: calc(var(--cnvs-btn-icon-margin) + var(--cnvs-btn-icon-margin-offset));
+  /*margin-right: calc(var(--cnvs-btn-icon-margin) + var(--cnvs-btn-icon-margin-offset));*/
   width: 1rem;
   text-align: center;
 }
