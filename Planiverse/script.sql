@@ -43,7 +43,7 @@ create table tblEvent (
 );
 create sequence seqEvent;
 insert into tblEvent(eventSeq, title, allDay, "start", "end", loc, "content", color, calSeq) 
-values (seqEvent.nextVal, 'Party', 'n', '2023-01-03 20:00:00','', '우리집','재밌겠다','#A8D8EA',1);
+values (seqEvent.nextVal, 'Party', 'n', '2023-01-05 20:00:00','', '우리집','재밌겠다','#A8D8EA',1);
 ----------------------------------------------------------------일정
 create table tblShare (
     id VARCHAR2(100) not null references tblUser(id),
@@ -51,7 +51,7 @@ create table tblShare (
     shareTk VARCHAR2(1000)
 );
 ----------------------------------------------------------------공유여부
-
+select * from tblEvent;
 
 insert into tblUser values ('test', '1111', '테스트');
 
