@@ -601,6 +601,7 @@ html, body {
 		var sidebar = document.getElementsByClassName("sidebar");
 		var addScheduleBtn = document.getElementById("addScheduleBtn");
 		var i;
+		var calendar;
 		
 		// Accordian
 		for (var i = 0; i < coll.length; i++) {
@@ -691,7 +692,7 @@ html, body {
 				
 				sidebarStatus = !sidebarStatus;
 				$('.fc-toolbar-chunk').css("margin-left", sidebarStatus ? "0" : "100px");
-				//calendar.render();
+				calendar.render();
 				//$('.fc-daygrid-body .fc-daygrid-body-unbalanced').css('width', '100%');
 				//$('fc-scrollgrid-sync-table').css('width', '100%');
 				//$('fc-scrollgrid-sync-table').children().css('width', '100%');
@@ -754,7 +755,7 @@ html, body {
 		}		
 	});
 	
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    calendar = new FullCalendar.Calendar(calendarEl, {
     	//이벤트 클릭시 수정 모달 생성
 		eventClick: function(info) {
 			var container = document.getElementById("editEventModal");
