@@ -538,11 +538,11 @@ html, body {
 							</div>
 
 							<div class="mb-3">
-								<div class="form-check form-switch" id="allDayBox">
+								<label class="form-check-label" for="editEventModalAllDay">
 									<input class="form-check-input" type="checkbox"
-										id="allDayCheck" checked> <label
-										class="form-check-label" for="allDayCheck">하루종일</label>
-								</div>
+									id="editEventModalAllDay" name="editEventModalAllDay">
+									하루종일
+								</label>
 							</div>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">일정 시작</label>
@@ -691,7 +691,7 @@ html, body {
 				
 				sidebarStatus = !sidebarStatus;
 				$('.fc-toolbar-chunk').css("margin-left", sidebarStatus ? "0" : "100px");
-				calendar.render();
+				//calendar.render();
 				//$('.fc-daygrid-body .fc-daygrid-body-unbalanced').css('width', '100%');
 				//$('fc-scrollgrid-sync-table').css('width', '100%');
 				//$('fc-scrollgrid-sync-table').children().css('width', '100%');
@@ -739,23 +739,64 @@ html, body {
 		})
 	})
 
-	
+	//수정 모달 하루종일 버튼 제어
+	$('#editEventModalAllDay').change(()=>{
+		if($('#editEventModalAllDay').is(':checked')){
+			var clickedDate = $('#editEventModalStart').val();
+            var momentClickedDate = moment(clickedDate);
+			$('#editEventModalStart').val(momentClickedDate.format('YYYY-MM-DDT00:00'));
+			$('#editEventModalEnd').val(momentClickedDate.add(24, 'hours').format('YYYY-MM-DDT00:00'));
+			$('#editEventModalStart').attr("disabled",true); 
+			$('#editEventModalEnd').attr("disabled",true); 
+		} else {
+			$('#editEventModalStart').attr("disabled",false); 
+			$('#editEventModalEnd').attr("disabled",false); 
+		}		
+	});
 	
     var calendar = new FullCalendar.Calendar(calendarEl, {
+    	//이벤트 클릭시 수정 모달 생성
 		eventClick: function(info) {
 			var container = document.getElementById("editEventModal");
 			var modal = new bootstrap.Modal(container);
-			$('#editEventModalTitle').val(info.event.title);
+
+			if(info.event.allDay ==true){
+				$('#editEventModalAllDay').prop('checked',true);
+				$('#editEventModalStart').attr("disabled",true); 
+				$('#editEventModalEnd').attr("disabled",true); 
+			} else {
+				$('#editEventModalAllDay').prop('checked',false);
+				$('#editEventModalStart').attr("disabled",false); 
+				$('#editEventModalEnd').attr("disabled",false); 
+			}
+		
 			$('#editEventModalStart').val(moment(info.event.start).format('YYYY-MM-DDTHH:mm'));
 			$('#editEventModalEnd').val(moment(info.event.end).format('YYYY-MM-DDTHH:mm'));
+			$('#editEventModalTitle').val(info.event.title);
 			$('#editEventModalColor').val(info.event.backgroundColor);
 			$('#editEventModalLoc').val(info.event.extendedProps.loc);
 			$('#editEventModalContent').val(info.event.extendedProps.content);
         	modal.show();
 
 			$('#deleteEventBtn').on('click', function() {
-				if(window.confirm('일정을 삭제하시겠습니까?'))
-				info.event.remove();
+				if(window.confirm('일정을 삭제하시겠습니까?')){
+					$.ajax({
+		   	      		type: "post",
+		   	      		url: "/plan/event/delete.do",
+		   	      		data: {
+		   	      			eventSeq: info.event.extendedProps.eventSeq
+		   	      		},
+		   	      		dataType: 'json',
+		   	      		success: function (response) {
+		   	      			if(response.result ==1){
+								info.event.remove();
+		   	      			}
+		   	      		},
+		   	      		error: function(a,b,c){
+		   					console.log(a,b,c);
+		   				}
+		   	    	});
+				} 
 				modal.hide();
 			});
 			
@@ -766,7 +807,7 @@ html, body {
 				   		url: "/plan/event/change.do",
 				   		data: {
 				   			eventSeq: info.event.extendedProps.eventSeq,
-				   			allDay: info.event.allDay,
+				   			allDay: $('#editEventModalAllDay').is(':checked'),
 				   			title: $('#editEventModalTitle').val(),
 				   			start: moment($('#editEventModalStart').val()).format('YYYY/MM/DD HH:mm'), 
 				   			end: moment($('#editEventModalEnd').val()).format('YYYY/MM/DD HH:mm'), 
@@ -774,30 +815,53 @@ html, body {
 				   			loc: $('#editEventModalLoc').val(),
 				   			content: $('#editEventModalContent').val()
 				   	    },
+				   	    dataType: 'json',
 				   	    success: function (response) {
+				   	    	if(response.result ==1){
 				   	    	info.event.setProp('title', $('#editEventModalTitle').val());
-				   	    	info.event.setAllDay(false);
+				   	    	info.event.setAllDay($('#editEventModalAllDay').is(':checked'));
 				   	    	info.event.setStart($('#editEventModalStart').val());
 				   	    	info.event.setEnd($('#editEventModalEnd').val());
 				   	    	info.event.setProp('color', $('#editEventModalColor').val());
 				   	    	info.event.setExtendedProp('loc', $('#editEventModalLoc').val());
 				   	    	info.event.setExtendedProp('content', $('#editEventModalContent').val());
-				   	    	modal.hide();
+				   	    	}
 				   	    },
 				   	    error: function(a,b,c){
 				   			console.log(a,b,c);
 				   		}
 				   	});
 				}
-			});
-			
-			$("#btnEventProduce").on('click', function(event) {
-				var start = $('#eventModalStart').val();
-				var end = $('#eventModalEnd').val();
-				alert();
+				modal.hide();
 			});
 		},
-		
+		//이벤트 드롭으로 일정 수정
+	   	  eventDrop: function(info){
+	   		  if(confirm('일정을 수정하시겠습니까?')){
+	   			$.ajax({
+	   	      		type: "post",
+	   	      		url: "/plan/event/dropchange.do",
+	   	      		data: {
+	   	      			eventSeq: info.event.extendedProps.eventSeq,
+	   	      			allDay: info.event.allDay,
+	   	      			start: moment(info.event.start).format('YYYY/MM/DD HH:mm'),
+	   	      			end: moment(info.event.end).format('YYYY/MM/DD HH:mm')
+	   	      		},
+	   	      		dataType: 'json',
+	   	      		success: function (response) {
+	   	      			if(response.result ==1){
+	   	        			alert('수정 완료');
+	   	      			}
+	   	      		},
+	   	      		error: function(a,b,c){
+	   					console.log(a,b,c);
+	   				}
+	   	    	});
+	   		  } else {
+	   			  info.revert();
+	   		  }
+	   	  },
+	   	//이벤트 hover 시 팝오버창 생성
 		eventDidMount: function (info) {
 			var popover = new bootstrap.Popover(info.el, {
 				title: $('<div />', {
@@ -818,6 +882,8 @@ html, body {
 			container: 'body'
 			});
 		},
+		
+		//날짜 선택 시 일정 추가 모달 생성 + 이벤트 등록
 		dateClick: function(info) {
             var clickedDate = info.date;
             var momentClickedDate = moment(clickedDate); 
@@ -826,19 +892,59 @@ html, body {
 			document.getElementById('eventModalStart').disabled = true;
 			document.getElementById('eventModalEnd').disabled = true;
 
-
             var formattedDateTimeStart = momentClickedDate.format('YYYY-MM-DD HH:mm:ss');
             document.getElementById("eventModalStart").value = formattedDateTimeStart;
     
 			var formattedDateTimeEnd = moment(momentClickedDate).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
             document.getElementById("eventModalEnd").value = formattedDateTimeEnd;
 
-
             var container = document.getElementById("eventProduceModal");
             var modal = new bootstrap.Modal(container);
             var allday = document.getElementById("allDayCheck");
             modal.show();
+            
+            $("#btnEventProduce").on('click', function() {
+            	$.ajax({
+           			type: 'post',
+           			url: '/plan/event/add.do',
+           			data: {
+			   			allDay: allday.checked,
+			   			title: $('#eventModalTitle').val(),
+			   			start: moment($('#eventModalStart').val()).format('YYYY/MM/DD HH:mm'), 
+			   			end: moment($('#eventModalEnd').val()).format('YYYY/MM/DD HH:mm'), 
+			   			color: $('#eventModalColor').val(),
+			   			loc: $('#eventModalLoc').val(),
+			   			content: $('#eventModalContent').val(),
+			   			calSeq: 1
+           			},
+           			dataType: 'json',
+           			success: function(result){
+           				var newEvent = {
+           					title: $('#eventModalTitle').val(),
+           					allDay: allday.checked,
+           					start: moment($('#eventModalStart').val()).format('YYYY/MM/DD HH:mm'), 
+           					end: moment($('#eventModalEnd').val()).format('YYYY/MM/DD HH:mm'), 
+           					color: $('#eventModalColor').val(),
+           					extendedProps: {
+           						eventSeq: result.eventSeq,
+        			   			loc: $('#eventModalLoc').val(),
+        			   			content: $('#eventModalContent').val()
+           					}
+           				};
+           				console.log(newEvent);
+            			calendar.addEvent(newEvent);
+           				modal.hide();
+          			},
+           			error: function(a,b,c){
+           				console.log(a,b,c);
+           			}
+           		  });
+   				
+			});
 		},
+	  eventAdd: function (addInfo) {
+	      console.log("eventAdd");
+	  }, 
       select: function(info) {
         
       },
@@ -851,74 +957,53 @@ html, body {
       navLinks: true, // can click day/week names to navigate views
       editable: true,
       selectable: true,
+      dayMaxEvents: true,
       events: [
-   		   $.ajax({
-   			type: 'get',
-   			url: '/plan/event/list.do',
-   			dataType: 'json',
-   			success: function(result){
-   				result.forEach(obj =>{
-   					calendar.addEvent({
-   						title: obj.title,
-   						start: obj.start,
-   						end: obj.end,
-   						color: obj.color,
-   						extendedProps: {
-   							eventSeq: obj.eventSeq,
-			   				loc: obj.loc,
-			   				content: obj.content
-   						}
-   					})
-   				})
-  			},
-   			error: function(a,b,c){
-   				console.log(a,b,c);
-   			}
-   		  }) 
-   	  ],
-   	  eventDrop: function(info){
-   		  if(confirm('일정을 수정하시겠습니까?')){
-   			$.ajax({
-   	      		type: "post",
-   	      		url: "/plan/event/dropchange.do",
-   	      		data: {
-   	      			eventSeq: info.event.extendedProps.eventSeq,
-   	      			allDay: info.event.allDay,
-   	      			start: moment(info.event.start).format('YYYY/MM/DD HH:mm'),
-   	      			end: moment(info.event.end).format('YYYY/MM/DD HH:mm')
-   	      		},
-   	      		success: function (response) {
-   	        		alert('수정 완료');
-   	      		},
-   	      		error: function(a,b,c){
-   					console.log(a,b,c);
-   				}
-   	    	});
-   		  } else {
-   			  info.revert();
-   		  }
-   	  }
+    	  $.ajax({
+     			type: 'get',
+     			url: '/plan/event/list.do',
+     			dataType: 'json',
+     			success: function(result){
+     				result.forEach(obj =>{
+     					calendar.addEvent({
+     						title: obj.title,
+     						allDay: (obj.allDay == 'y'? true: false),
+     						start: obj.start,
+     						end: obj.end,
+     						color: obj.color,
+     						extendedProps: {
+     							eventSeq: obj.eventSeq,
+  			   				loc: obj.loc,
+  			   				content: obj.content
+     						}
+     					})
+     				})
+    			},
+     			error: function(a,b,c){
+     				console.log(a,b,c);
+     			}
+     		 }) 
+      ]
     });
     calendar.render();
-
   });
-		
+	
 	function getDisplayEventDate(event) {
 		var displayEventDate;
-
+		
 		if(event.end == null) {
 			displayEventDate = moment(event.start).format('HH:mm');
+		} else if (moment(event.start).format('MM-DD')==moment(event.end).format('MM-DD')) {
+			  var startTimeEventInfo = moment(event.start).format('HH:mm');
+			  var endTimeEventInfo = moment(event.end).format('HH:mm');
+			  displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
+		} else if ((moment(event.start).format('MM-DD')==moment(event.end-1).format('MM-DD'))&& event.allDay==true) {
+			displayEventDate = "하루종일";
 		} else if (moment(event.start).format('MM-DD')!=moment(event.end).format('MM-DD')) {
 		  var startEventInfo = moment(event.start).format('MM/DD');
 		  var endEventInfo = moment(event.end).format('MM/DD');
 		  displayEventDate = startEventInfo + " - " + endEventInfo;
-		} else if (moment(event.start).format('MM-DD')==moment(event.end).format('MM-DD')) {
-		  var startTimeEventInfo = moment(event.start).format('HH:mm');
-		  var endTimeEventInfo = moment(event.end).format('HH:mm');
-		  displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
-		} else {	
-			  displayEventDate = "하루종일";
-		}
+		} 
 		return displayEventDate;
 		}
 	
@@ -944,6 +1029,7 @@ html, body {
 			    }
 			}
 		}
+	
 	</script>
 </body>
 </html>
