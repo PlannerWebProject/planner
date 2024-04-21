@@ -12,21 +12,31 @@ import javax.servlet.http.HttpServletResponse;
 import com.planiverse.event.model.EventDTO;
 import com.planiverse.event.repository.EventDAO;
 
-@WebServlet("/event/dropchange.do")
-public class DropChange extends HttpServlet {
+@WebServlet("/event/add.do")
+public class Add extends HttpServlet {
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		String eventSeq = req.getParameter("eventSeq");
+
+		req.setCharacterEncoding("UTF-8");
 		String allDay = req.getParameter("allDay");
+		String title = req.getParameter("title");
 		String start = req.getParameter("start");
 		String end = req.getParameter("end");
+		String color = req.getParameter("color");
+		String loc = req.getParameter("loc");
+		String content = req.getParameter("content");
+		String calSeq = req.getParameter("calSeq");
 		
 		EventDAO dao = new EventDAO();
 		EventDTO dto = new EventDTO();
+
+		dto.setTitle(title);
+		dto.setColor(color);
+		dto.setLoc(loc);
+		dto.setContent(content);
+		dto.setCalSeq(calSeq);
 		
-		dto.setEventSeq(eventSeq);
-		System.out.println(allDay);
 		if(allDay.equals("true")) {
 			dto.setAllDay("y");
 			dto.setStart(start.substring(0,10));
@@ -45,16 +55,16 @@ public class DropChange extends HttpServlet {
 				dto.setEnd("");
 			}
 		}
-		System.out.println(dto);//---------------------나중에 지우기
 		
-		int result = dao.dropchange(dto);
-
+		int eventSeq = dao.add(dto);
+		
 		resp.setContentType("application/json");
 		PrintWriter writer = resp.getWriter();
 		writer.print("{");
-		writer.print("\"result\":"+result);
+		writer.print("\"eventSeq\":"+eventSeq);
 		writer.print("}");
 		writer.close();
 
 	}
+
 }

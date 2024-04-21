@@ -1,6 +1,7 @@
 package com.planiverse.event.data;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,7 +29,7 @@ public class Change extends HttpServlet {
 		
 		EventDAO dao = new EventDAO();
 		EventDTO dto = new EventDTO();
-		
+
 		dto.setEventSeq(eventSeq);
 		dto.setTitle(title);
 		dto.setColor(color);
@@ -38,7 +39,11 @@ public class Change extends HttpServlet {
 		if(allDay.equals("true")) {
 			dto.setAllDay("y");
 			dto.setStart(start.substring(0,10));
-			dto.setEnd(end.substring(0,10));
+			if(!end.equals("Invalid date")) {
+				dto.setEnd(end.substring(0,10));
+			} else {
+				dto.setEnd("");
+			}
 		} else {
 			dto.setAllDay("n");
 			dto.setStart(start);
@@ -54,18 +59,12 @@ public class Change extends HttpServlet {
 		
 		int result = dao.change(dto);
 
-		if(result==1) {
-			resp.sendRedirect("/plan/planiverse.do");
-		} else {
-			/*
-			 * resp.setCharacterEncoding("UTF-8");
-			 * 
-			 * PrintWriter writer = resp.getWriter();
-			 * 
-			 * writer.close();
-			 */
-			System.out.println("에러");
-		}
+		resp.setContentType("application/json");
+		PrintWriter writer = resp.getWriter();
+		writer.print("{");
+		writer.print("\"result\":"+result);
+		writer.print("}");
+		writer.close();
 
 	}
 }
