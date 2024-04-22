@@ -903,68 +903,62 @@ html, body {
 		
 		//날짜 선택 시 일정 추가 모달 생성 + 이벤트 등록
 		dateClick: function(info) {
-            var clickedDate = info.date;
-            var momentClickedDate = moment(clickedDate); 
+			var clickedDate = info.date;
+			var momentClickedDate = moment(clickedDate);
+			var container = document.getElementById("eventProduceModal");
+			var modal = new bootstrap.Modal(container);
+			var allday = document.getElementById("allDayCheck");
 
-			//allDayBox.style.display = 'block'; 
-			document.getElementById('eventModalStart').disabled = true;
-			document.getElementById('eventModalEnd').disabled = true;
-
-            var formattedDateTimeStart = momentClickedDate.format('YYYY-MM-DD HH:mm:ss');
-            document.getElementById("eventModalStart").value = formattedDateTimeStart;
-    
+			// 설정된 날짜 및 시간 설정
+			var formattedDateTimeStart = momentClickedDate.format('YYYY-MM-DD HH:mm:ss');
 			var formattedDateTimeEnd = moment(momentClickedDate).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
-            document.getElementById("eventModalEnd").value = formattedDateTimeEnd;
+			document.getElementById("eventModalStart").value = formattedDateTimeStart;
+			document.getElementById("eventModalEnd").value = formattedDateTimeEnd;
 
-            var container = document.getElementById("eventProduceModal");
-            var modal = new bootstrap.Modal(container);
-            var allday = document.getElementById("allDayCheck");
-            modal.show();
-            
-            $("#btnEventProduce").off('click').click(function() {
-            	// 중복 실행 방지
-				  if (addRequest !== null) {
-					  addRequest.abort();
-				  }
+			modal.show();
 
-				  // ajax 요청 생성
-				  addRequest =$.ajax({
-           			type: 'post',
-           			url: '/plan/event/add.do',
-           			data: {
-			   			allDay: allday.checked,
-			   			title: $('#eventModalTitle').val(),
-			   			start: moment($('#eventModalStart').val()).format('YYYY/MM/DD HH:mm'), 
-			   			end: moment($('#eventModalEnd').val()).format('YYYY/MM/DD HH:mm'), 
-			   			color: $('#eventModalColor').val(),
-			   			loc: $('#eventModalLoc').val(),
-			   			content: $('#eventModalContent').val(),
-			   			calSeq: 1
-           			},
-           			dataType: 'json',
-           			success: function(result){
-           				var newEvent = {
-           					title: $('#eventModalTitle').val(),
-           					allDay: allday.checked,
-           					start: moment($('#eventModalStart').val()).format('YYYY/MM/DD HH:mm'), 
-           					end: moment($('#eventModalEnd').val()).format('YYYY/MM/DD HH:mm'), 
-           					color: $('#eventModalColor').val(),
-           					extendedProps: {
-           						eventSeq: result.eventSeq,
-        			   			loc: $('#eventModalLoc').val(),
-        			   			content: $('#eventModalContent').val()
-           					}
-           				};
-           				console.log(newEvent);
-            			calendar.addEvent(newEvent);
-           				$('#eventProduceModal input, textarea').val('');
-           				modal.hide();
-          			},
-           			error: function(a,b,c){
-           				console.log(a,b,c);
-           			}
-           		  });
-   				
+			$("#btnEventProduce").one('click', function() {
+				// 중복 실행 방지
+				if (addRequest) {
+					addRequest.abort();
+				}
+
+				// ajax 요청 생성
+				addRequest = $.ajax({
+					type: 'post',
+					url: '/plan/event/add.do',
+					data: {
+						allDay: allday.checked,
+						title: $('#eventModalTitle').val(),
+						start: formattedDateTimeStart, 
+						end: formattedDateTimeEnd,
+						color: $('#eventModalColor').val(),
+						loc: $('#eventModalLoc').val(),
+						content: $('#eventModalContent').val(),
+						calSeq: 1
+					},
+					dataType: 'json',
+					success: function(result){
+						calendar.addEvent({
+							title: $('#eventModalTitle').val(),
+							allDay: allday.checked,
+							start: formattedDateTimeStart,
+							end: formattedDateTimeEnd,
+							color: $('#eventModalColor').val(),
+							extendedProps: {
+								eventSeq: result.eventSeq,
+								loc: $('#eventModalLoc').val(),
+								content: $('#eventModalContent').val()
+							}
+						});
+						calendar.render();
+						$('#eventProduceModal input, textarea').val('');
+						modal.hide();
+					},
+					error: function(a, b, c){
+						console.log(a, b, c);
+					}
+				});
 			});
 		},
 	  eventAdd: function (addInfo) {
