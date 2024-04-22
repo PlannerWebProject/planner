@@ -33,7 +33,7 @@
 
 <!-- Document Title
 	============================================= -->
-<title>Demo Planner</title>
+<title>Planiverse</title>
 
 <style>
 html, body {
@@ -602,7 +602,11 @@ html, body {
 		var addScheduleBtn = document.getElementById("addScheduleBtn");
 		var i;
 		var calendar;
-		
+		// ajax 중복 방지
+		var delRequest = null;
+		var addRequest = null;
+		var editRequest = null;
+
 		// Accordian
 		for (var i = 0; i < coll.length; i++) {
 			var initialContent = coll[i].nextElementSibling;
@@ -779,9 +783,15 @@ html, body {
 			$('#editEventModalContent').val(info.event.extendedProps.content);
         	modal.show();
 
-			$('#deleteEventBtn').on('click', function() {
+			$('#deleteEventBtn').off('click').click(function() {
 				if(window.confirm('일정을 삭제하시겠습니까?')){
-					$.ajax({
+					// 중복 실행 방지
+					if (delRequest !== null) {
+					    delRequest.abort();
+					}
+
+					  // ajax 요청 생성
+					delRequest = $.ajax({
 		   	      		type: "post",
 		   	      		url: "/plan/event/delete.do",
 		   	      		data: {
@@ -801,9 +811,15 @@ html, body {
 				modal.hide();
 			});
 			
-			$('#editEventBtn').on('click', function() {
+			$('#editEventBtn').off('click').click(function() {
 				if(confirm('일정을 수정하시겠습니까?')){
-					$.ajax({
+					// 중복 실행 방지
+					if (editRequest !== null) {
+						editRequest.abort();
+					}
+
+					  // ajax 요청 생성
+					editRequest =  $.ajax({
 				  		type: "post",
 				   		url: "/plan/event/change.do",
 				   		data: {
@@ -833,6 +849,7 @@ html, body {
 				   		}
 				   	});
 				}
+				$('#editEventModal input, textarea').val('');
 				modal.hide();
 			});
 		},
@@ -904,8 +921,14 @@ html, body {
             var allday = document.getElementById("allDayCheck");
             modal.show();
             
-            $("#btnEventProduce").on('click', function() {
-            	$.ajax({
+            $("#btnEventProduce").off('click').click(function() {
+            	// 중복 실행 방지
+				  if (addRequest !== null) {
+					  addRequest.abort();
+				  }
+
+				  // ajax 요청 생성
+				  addRequest =$.ajax({
            			type: 'post',
            			url: '/plan/event/add.do',
            			data: {
@@ -934,6 +957,7 @@ html, body {
            				};
            				console.log(newEvent);
             			calendar.addEvent(newEvent);
+           				$('#eventProduceModal input, textarea').val('');
            				modal.hide();
           			},
            			error: function(a,b,c){
