@@ -131,6 +131,25 @@ html, body {
 .bgclightgray {
 	background-color: #eeeeee;
 }
+
+@media screen and (max-width: 960px) {
+	#datepickerDiv {
+		display: none;
+	}
+	.WhitespaceBlock {
+		display: none;
+	}
+	#addScheduleBtn {
+		margin-bottom: 0;
+	}
+	#sidebarMain {
+		display: block;
+		width: 100%;
+	}
+	#slider {
+		height: auto;
+	}
+}
 </style>
 
 </head>
@@ -219,7 +238,7 @@ html, body {
 				<div id="datepickerDiv" class="sidebar">
 					<div id="datepicker"></div>
 				</div>
-				<div>&nbsp;</div>
+				<div class="WhitespaceBlock">&nbsp;</div>
 				<div id="scheduleSearchBox" class="input-group"
 					style="display: flex">
 					<input type="text" name="q" class="form-control" value=""
@@ -228,7 +247,7 @@ html, body {
 						<i class="uil uil-search"></i>
 					</div>
 				</div>
-				<div>&nbsp;</div>
+				<div class="WhitespaceBlock">&nbsp;</div>
 				<div id="scheduleAcc" class="sidebar">
 					<nav class="nav-tree mb-0">
 						<ul>
@@ -250,7 +269,7 @@ html, body {
 								</ul></li>
 						</ul>
 					</nav>
-					<div>&nbsp;</div>
+					<div class="WhitespaceBlock">&nbsp;</div>
 					<nav class="nav-tree mb-0">
 						<ul>
 							<li><a href="#" class="calendarGroup">공유받은 달력</a>
