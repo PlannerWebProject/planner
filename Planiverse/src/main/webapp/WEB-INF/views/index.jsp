@@ -105,8 +105,8 @@ html, body {
 }
 
 .button {
-	margin: 0; -
-	-cnvs-btn-padding-x: 1rem; -
+	margin: 0;
+	-cnvs-btn-padding-x: 1rem;
 	-cnvs-btn-padding-y: 0.5rem;
 }
 
