@@ -47,10 +47,10 @@ public class Add extends HttpServlet {
 			}
 		} else {
 			dto.setAllDay("n");
-			dto.setStart(start);
+			dto.setStart(start.substring(0, 10) + " " + start.substring(11));
 			
 			if(!end.equals("Invalid date")) {
-				dto.setEnd(end);
+				dto.setEnd(end.substring(0, 10) + " " + end.substring(11));
 			} else {
 				dto.setEnd("");
 			}
