@@ -917,7 +917,7 @@ html, body {
 
 			modal.show();
 
-			$("#btnEventProduce").one('click', function() {
+			$("#btnEventProduce").off('click').click(function() {
 				// 중복 실행 방지
 				if (addRequest) {
 					addRequest.abort();
