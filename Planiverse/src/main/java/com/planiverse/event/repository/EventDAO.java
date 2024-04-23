@@ -1,7 +1,6 @@
 package com.planiverse.event.repository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -23,36 +22,26 @@ public class EventDAO {
 
 	public ArrayList<EventDTO> list() {
 		try {
-			String sql = "select * from tblEvent";
-
-			stat = conn.createStatement();
-			rs = stat.executeQuery(sql);
+			String sql = "select * from vwEvent where id = ?";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, "test");  //id 넣을 예정
+			rs = pstat.executeQuery();
 
 			ArrayList<EventDTO> list = new ArrayList<>();
 
 			while (rs.next()) {
+				
 				EventDTO dto = new EventDTO();
 				dto.setEventSeq(rs.getString("eventSeq"));
 				dto.setTitle(rs.getString("title"));
 				dto.setAllDay(rs.getString("allDay"));
-				
-				if (rs.getString("allDay").equals("y")) {
-					dto.setStart(rs.getString("start").substring(0, 10));
-					if (rs.getString("end") != null) {
-					dto.setEnd(rs.getString("end").substring(0, 10));
-					}
-				} else {
-					dto.setStart(rs.getString("start").substring(0, 10) + "T" + rs.getString("start").substring(11));
-					if (rs.getString("end") != null) {
-						dto.setEnd(rs.getString("end").substring(0, 10) + "T" + rs.getString("end").substring(11));
-					}
-				}
-
+				dto.setStart(rs.getString("start"));
+				dto.setEnd(rs.getString("end"));
 				dto.setLoc(rs.getString("loc"));
 				dto.setContent(rs.getString("content"));
 				dto.setColor(rs.getString("color"));
 				dto.setCalSeq(rs.getString("calSeq"));
-
+				
 				list.add(dto);
 			}
 			return list;
