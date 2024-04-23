@@ -324,13 +324,13 @@ html, body {
 								<label for="eventModalStart" class="col-form-label">일정
 									시작</label> <input type="datetime-local" id="eventModalStart"
 									class="form-control" placeholder="datetime-local input"
-									disabled>
+									disabled onchange="validateEndDate('eventModal')">
 							</div>
 							<div class="mb-3">
 								<label for="eventModalEnd" class="col-form-label">일정 종료</label>
 								<input type="datetime-local" id="eventModalEnd"
 									class="form-control" placeholder="datetime-local input"
-									disabled onchange="validateEndDate()">
+									disabled >
 							</div>
 							<div class="mb-3">
 								<label for="eventModalSelect" class="col-form-label">카테고리</label>
@@ -342,8 +342,8 @@ html, body {
 								</select>
 							</div>
 							<div class="mb-3">
-								<label for="eventModalIoc" class="col-form-label">장소</label> <input
-									type="text" class="form-control" id="eventModalIoc">
+								<label for="eventModalLoc" class="col-form-label">장소</label> <input
+									type="text" class="form-control" id="eventModalLoc">
 							</div>
 							<div class="mb-3">
 								<label for="eventModalContent" class="col-form-label">내용:</label>
@@ -547,7 +547,7 @@ html, body {
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">일정 시작</label>
 								<input type="datetime-local" id="editEventModalStart"
-									class="form-control" placeholder="datetime-local input">
+									class="form-control" placeholder="datetime-local input" onchange="validateEndDate('editEventModal')">
 							</div>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">일정 종료</label>
@@ -726,10 +726,13 @@ html, body {
 		 //allDayBox.style.display = 'none';
 		 document.getElementById('eventModalStart').removeAttribute('disabled');
 		 document.getElementById('eventModalEnd').removeAttribute('disabled');  
-
+		 $('#eventProduceModal input, textarea').val('');
 		 modal.show();
-		 
-		 var start = document.getElementById('eventstart')
+		 $("#btnEventProduce").off('click').click(function () {
+			addEvent();
+		 	modal.hide();
+		 });
+		 //var start = document.getElementById('eventstart')
 	});
 
 	var loginModal = document.getElementById('loginModal');
@@ -914,52 +917,12 @@ html, body {
 			var formattedDateTimeEnd = moment(momentClickedDate).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
 			document.getElementById("eventModalStart").value = formattedDateTimeStart;
 			document.getElementById("eventModalEnd").value = formattedDateTimeEnd;
-
+			$('#eventProduceModal input[type=text], textarea').val('');
 			modal.show();
-
-			$("#btnEventProduce").off('click').click(function() {
-				// 중복 실행 방지
-				if (addRequest) {
-					addRequest.abort();
-				}
-
-				// ajax 요청 생성
-				addRequest = $.ajax({
-					type: 'post',
-					url: '/plan/event/add.do',
-					data: {
-						allDay: allday.checked,
-						title: $('#eventModalTitle').val(),
-						start: formattedDateTimeStart, 
-						end: formattedDateTimeEnd,
-						color: $('#eventModalColor').val(),
-						loc: $('#eventModalLoc').val(),
-						content: $('#eventModalContent').val(),
-						calSeq: 1
-					},
-					dataType: 'json',
-					success: function(result){
-						calendar.addEvent({
-							title: $('#eventModalTitle').val(),
-							allDay: allday.checked,
-							start: formattedDateTimeStart,
-							end: formattedDateTimeEnd,
-							color: $('#eventModalColor').val(),
-							extendedProps: {
-								eventSeq: result.eventSeq,
-								loc: $('#eventModalLoc').val(),
-								content: $('#eventModalContent').val()
-							}
-						});
-						calendar.render();
-						$('#eventProduceModal input, textarea').val('');
-						modal.hide();
-					},
-					error: function(a, b, c){
-						console.log(a, b, c);
-					}
-				});
-			});
+			$("#btnEventProduce").off('click').click(function () {
+				addEvent();
+			 	modal.hide();
+			 });
 		},
 	  eventAdd: function (addInfo) {
 	      console.log("eventAdd");
@@ -1037,16 +1000,57 @@ html, body {
 	    	}
 		});
 	
-		function validateEndDate() {
-		    var startDate = document.getElementById("eventModalStart").value;
-		    var endDate = document.getElementById("eventModalEnd").value;
+		function validateEndDate(modal) {
+		    var startDate = document.getElementById(modal+"Start").value;
+			document.getElementById(modal+"End").setAttribute("min", startDate);
+		    /* var endDate = document.getElementById("eventModalEnd").value;
 
 			if (startDate && endDate) {
 			    if (startDate > endDate) {
-			        alert("일정 종료일은 시작일 이후여야 합니다.");
-			        document.getElementById("eventModalEnd").value = startDate;
-			    }
+			        alert("일정 종료일은 시작일 이후여야 합니다."); }}*/
+		}
+		
+				
+		function addEvent() {
+			// 중복 실행 방지
+			if (addRequest) {
+				addRequest.abort();
 			}
+
+			// ajax 요청 생성
+			addRequest = $.ajax({
+				type: 'post',
+				url: '/plan/event/add.do',
+				data: {
+					allDay: $('#allDayCheck').is(':checked'),
+					title: $('#eventModalTitle').val(),
+					start: $('#eventModalStart').val(), 
+					end: $('#eventModalEnd').val(),
+					color: $('#eventModalColor').val(),
+					loc: $('#eventModalLoc').val(),
+					content: $('#eventModalContent').val(),
+					calSeq: 1
+				},
+				dataType: 'json',
+				success: function(result){
+					calendar.addEvent({
+						title: $('#eventModalTitle').val(),
+						allDay: $('#allDayCheck').is(':checked'),
+						start: $('#eventModalStart').val(),
+						end: $('#eventModalEnd').val(),
+						color: $('#eventModalColor').val(),
+						extendedProps: {
+							eventSeq: result.eventSeq,
+							loc: $('#eventModalLoc').val(),
+							content: $('#eventModalContent').val()
+						}
+					});
+					calendar.render();
+				},
+				error: function(a, b, c){
+					console.log(a, b, c);
+				}
+			});
 		}
 	
 	</script>
