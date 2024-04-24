@@ -22913,7 +22913,7 @@ td.actions {
 }
 .button i {
   position: relative;
-  margin-right: calc(var(--cnvs-btn-icon-margin) + var(--cnvs-btn-icon-margin-offset));
+  /* margin-right: calc(var(--cnvs-btn-icon-margin) + var(--cnvs-btn-icon-margin-offset)); */
   width: 1rem;
   text-align: center;
 }
@@ -23493,7 +23493,7 @@ td.actions {
   vertical-align: top;
 }
 .button-text-effect .button-inner span {
-  transition: all 0.3s cubic-bezier(0.17, 0.75, 0.8, 1);
+  transition: all 0.7s cubic-bezier(0.17, 0.75, 0.8, 1);
 }
 .button-text-effect .button-inner span:nth-child(1) {
   display: inline-block;

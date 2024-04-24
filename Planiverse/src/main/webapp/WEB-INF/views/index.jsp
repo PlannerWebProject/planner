@@ -33,7 +33,7 @@
 
 <!-- Document Title
 	============================================= -->
-<title>Demo Planner</title>
+<title>Planiverse</title>
 
 <style>
 html, body {
@@ -105,8 +105,8 @@ html, body {
 }
 
 .button {
-	margin: 0; -
-	-cnvs-btn-padding-x: 1rem; -
+	margin: 0;
+	-cnvs-btn-padding-x: 1rem;
 	-cnvs-btn-padding-y: 0.5rem;
 }
 
@@ -130,6 +130,25 @@ html, body {
 
 .bgclightgray {
 	background-color: #eeeeee;
+}
+
+@media screen and (max-width: 960px) {
+	#datepickerDiv {
+		display: none;
+	}
+	.WhitespaceBlock {
+		display: none;
+	}
+	#addScheduleBtn {
+		margin-bottom: 0;
+	}
+	#sidebarMain {
+		display: block;
+		width: 100%;
+	}
+	#slider {
+		height: auto;
+	}
 }
 </style>
 
@@ -219,7 +238,7 @@ html, body {
 				<div id="datepickerDiv" class="sidebar">
 					<div id="datepicker"></div>
 				</div>
-				<div>&nbsp;</div>
+				<div class="WhitespaceBlock">&nbsp;</div>
 				<div id="scheduleSearchBox" class="input-group"
 					style="display: flex">
 					<input type="text" name="q" class="form-control" value=""
@@ -228,7 +247,7 @@ html, body {
 						<i class="uil uil-search"></i>
 					</div>
 				</div>
-				<div>&nbsp;</div>
+				<div class="WhitespaceBlock">&nbsp;</div>
 				<div id="scheduleAcc" class="sidebar">
 					<nav class="nav-tree mb-0">
 						<ul>
@@ -250,7 +269,7 @@ html, body {
 								</ul></li>
 						</ul>
 					</nav>
-					<div>&nbsp;</div>
+					<div class="WhitespaceBlock">&nbsp;</div>
 					<nav class="nav-tree mb-0">
 						<ul>
 							<li><a href="#" class="calendarGroup">공유받은 달력</a>
@@ -324,13 +343,13 @@ html, body {
 								<label for="eventModalStart" class="col-form-label">일정
 									시작</label> <input type="datetime-local" id="eventModalStart"
 									class="form-control" placeholder="datetime-local input"
-									disabled>
+									disabled onchange="validateEndDate('eventModal')">
 							</div>
 							<div class="mb-3">
 								<label for="eventModalEnd" class="col-form-label">일정 종료</label>
 								<input type="datetime-local" id="eventModalEnd"
 									class="form-control" placeholder="datetime-local input"
-									disabled onchange="validateEndDate()">
+									disabled >
 							</div>
 							<div class="mb-3">
 								<label for="eventModalSelect" class="col-form-label">카테고리</label>
@@ -342,8 +361,8 @@ html, body {
 								</select>
 							</div>
 							<div class="mb-3">
-								<label for="eventModalIoc" class="col-form-label">장소</label> <input
-									type="text" class="form-control" id="eventModalIoc">
+								<label for="eventModalLoc" class="col-form-label">장소</label> <input
+									type="text" class="form-control" id="eventModalLoc">
 							</div>
 							<div class="mb-3">
 								<label for="eventModalContent" class="col-form-label">내용:</label>
@@ -538,16 +557,16 @@ html, body {
 							</div>
 
 							<div class="mb-3">
-								<div class="form-check form-switch" id="allDayBox">
+								<label class="form-check-label" for="editEventModalAllDay">
 									<input class="form-check-input" type="checkbox"
-										id="allDayCheck" checked> <label
-										class="form-check-label" for="allDayCheck">하루종일</label>
-								</div>
+									id="editEventModalAllDay" name="editEventModalAllDay">
+									하루종일
+								</label>
 							</div>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">일정 시작</label>
 								<input type="datetime-local" id="editEventModalStart"
-									class="form-control" placeholder="datetime-local input">
+									class="form-control" placeholder="datetime-local input" onchange="validateEndDate('editEventModal')">
 							</div>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">일정 종료</label>
@@ -601,7 +620,12 @@ html, body {
 		var sidebar = document.getElementsByClassName("sidebar");
 		var addScheduleBtn = document.getElementById("addScheduleBtn");
 		var i;
-		
+		var calendar;
+		// ajax 중복 방지
+		var delRequest = null;
+		var addRequest = null;
+		var editRequest = null;
+
 		// Accordian
 		for (var i = 0; i < coll.length; i++) {
 			var initialContent = coll[i].nextElementSibling;
@@ -721,10 +745,13 @@ html, body {
 		 //allDayBox.style.display = 'none';
 		 document.getElementById('eventModalStart').removeAttribute('disabled');
 		 document.getElementById('eventModalEnd').removeAttribute('disabled');  
-
+		 $('#eventProduceModal input, textarea').val('');
 		 modal.show();
-		 
-		 var start = document.getElementById('eventstart')
+		 $("#btnEventProduce").off('click').click(function () {
+			addEvent();
+		 	modal.hide();
+		 });
+		 //var start = document.getElementById('eventstart')
 	});
 
 	var loginModal = document.getElementById('loginModal');
@@ -739,34 +766,87 @@ html, body {
 		})
 	})
 
+	//수정 모달 하루종일 버튼 제어
+	$('#editEventModalAllDay').change(()=>{
+		if($('#editEventModalAllDay').is(':checked')){
+			var clickedDate = $('#editEventModalStart').val();
+            var momentClickedDate = moment(clickedDate);
+			$('#editEventModalStart').val(momentClickedDate.format('YYYY-MM-DDT00:00'));
+			$('#editEventModalEnd').val(momentClickedDate.add(24, 'hours').format('YYYY-MM-DDT00:00'));
+			$('#editEventModalStart').attr("disabled",true); 
+			$('#editEventModalEnd').attr("disabled",true); 
+		} else {
+			$('#editEventModalStart').attr("disabled",false); 
+			$('#editEventModalEnd').attr("disabled",false); 
+		}		
+	});
 	
-	
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    calendar = new FullCalendar.Calendar(calendarEl, {
+    	//이벤트 클릭시 수정 모달 생성
 		eventClick: function(info) {
 			var container = document.getElementById("editEventModal");
 			var modal = new bootstrap.Modal(container);
-			$('#editEventModalTitle').val(info.event.title);
+
+			if(info.event.allDay ==true){
+				$('#editEventModalAllDay').prop('checked',true);
+				$('#editEventModalStart').attr("disabled",true); 
+				$('#editEventModalEnd').attr("disabled",true); 
+			} else {
+				$('#editEventModalAllDay').prop('checked',false);
+				$('#editEventModalStart').attr("disabled",false); 
+				$('#editEventModalEnd').attr("disabled",false); 
+			}
+		
 			$('#editEventModalStart').val(moment(info.event.start).format('YYYY-MM-DDTHH:mm'));
 			$('#editEventModalEnd').val(moment(info.event.end).format('YYYY-MM-DDTHH:mm'));
+			$('#editEventModalTitle').val(info.event.title);
 			$('#editEventModalColor').val(info.event.backgroundColor);
 			$('#editEventModalLoc').val(info.event.extendedProps.loc);
 			$('#editEventModalContent').val(info.event.extendedProps.content);
         	modal.show();
 
-			$('#deleteEventBtn').on('click', function() {
-				if(window.confirm('일정을 삭제하시겠습니까?'))
-				info.event.remove();
+			$('#deleteEventBtn').off('click').click(function() {
+				if(window.confirm('일정을 삭제하시겠습니까?')){
+					// 중복 실행 방지
+					if (delRequest !== null) {
+					    delRequest.abort();
+					}
+
+					  // ajax 요청 생성
+					delRequest = $.ajax({
+		   	      		type: "post",
+		   	      		url: "/plan/event/delete.do",
+		   	      		data: {
+		   	      			eventSeq: info.event.extendedProps.eventSeq
+		   	      		},
+		   	      		dataType: 'json',
+		   	      		success: function (response) {
+		   	      			if(response.result ==1){
+								info.event.remove();
+		   	      			}
+		   	      		},
+		   	      		error: function(a,b,c){
+		   					console.log(a,b,c);
+		   				}
+		   	    	});
+				} 
 				modal.hide();
 			});
 			
-			$('#editEventBtn').on('click', function() {
+			$('#editEventBtn').off('click').click(function() {
 				if(confirm('일정을 수정하시겠습니까?')){
-					$.ajax({
+					// 중복 실행 방지
+					if (editRequest !== null) {
+						editRequest.abort();
+					}
+
+					  // ajax 요청 생성
+					editRequest =  $.ajax({
 				  		type: "post",
 				   		url: "/plan/event/change.do",
 				   		data: {
 				   			eventSeq: info.event.extendedProps.eventSeq,
-				   			allDay: info.event.allDay,
+				   			allDay: $('#editEventModalAllDay').is(':checked'),
 				   			title: $('#editEventModalTitle').val(),
 				   			start: moment($('#editEventModalStart').val()).format('YYYY/MM/DD HH:mm'), 
 				   			end: moment($('#editEventModalEnd').val()).format('YYYY/MM/DD HH:mm'), 
@@ -774,30 +854,54 @@ html, body {
 				   			loc: $('#editEventModalLoc').val(),
 				   			content: $('#editEventModalContent').val()
 				   	    },
+				   	    dataType: 'json',
 				   	    success: function (response) {
+				   	    	if(response.result ==1){
 				   	    	info.event.setProp('title', $('#editEventModalTitle').val());
-				   	    	info.event.setAllDay(false);
+				   	    	info.event.setAllDay($('#editEventModalAllDay').is(':checked'));
 				   	    	info.event.setStart($('#editEventModalStart').val());
 				   	    	info.event.setEnd($('#editEventModalEnd').val());
 				   	    	info.event.setProp('color', $('#editEventModalColor').val());
 				   	    	info.event.setExtendedProp('loc', $('#editEventModalLoc').val());
 				   	    	info.event.setExtendedProp('content', $('#editEventModalContent').val());
-				   	    	modal.hide();
+				   	    	}
 				   	    },
 				   	    error: function(a,b,c){
 				   			console.log(a,b,c);
 				   		}
 				   	});
 				}
-			});
-			
-			$("#btnEventProduce").on('click', function(event) {
-				var start = $('#eventModalStart').val();
-				var end = $('#eventModalEnd').val();
-				alert();
+				$('#editEventModal input, textarea').val('');
+				modal.hide();
 			});
 		},
-		
+		//이벤트 드롭으로 일정 수정
+	   	  eventDrop: function(info){
+	   		  if(confirm('일정을 수정하시겠습니까?')){
+	   			$.ajax({
+	   	      		type: "post",
+	   	      		url: "/plan/event/dropchange.do",
+	   	      		data: {
+	   	      			eventSeq: info.event.extendedProps.eventSeq,
+	   	      			allDay: info.event.allDay,
+	   	      			start: moment(info.event.start).format('YYYY/MM/DD HH:mm'),
+	   	      			end: moment(info.event.end).format('YYYY/MM/DD HH:mm')
+	   	      		},
+	   	      		dataType: 'json',
+	   	      		success: function (response) {
+	   	      			if(response.result ==1){
+	   	        			alert('수정 완료');
+	   	      			}
+	   	      		},
+	   	      		error: function(a,b,c){
+	   					console.log(a,b,c);
+	   				}
+	   	    	});
+	   		  } else {
+	   			  info.revert();
+	   		  }
+	   	  },
+	   	//이벤트 hover 시 팝오버창 생성
 		eventDidMount: function (info) {
 			var popover = new bootstrap.Popover(info.el, {
 				title: $('<div />', {
@@ -818,27 +922,30 @@ html, body {
 			container: 'body'
 			});
 		},
+		
+		//날짜 선택 시 일정 추가 모달 생성 + 이벤트 등록
 		dateClick: function(info) {
-            var clickedDate = info.date;
-            var momentClickedDate = moment(clickedDate); 
+			var clickedDate = info.date;
+			var momentClickedDate = moment(clickedDate);
+			var container = document.getElementById("eventProduceModal");
+			var modal = new bootstrap.Modal(container);
+			var allday = document.getElementById("allDayCheck");
 
-			//allDayBox.style.display = 'block'; 
-			document.getElementById('eventModalStart').disabled = true;
-			document.getElementById('eventModalEnd').disabled = true;
-
-
-            var formattedDateTimeStart = momentClickedDate.format('YYYY-MM-DD HH:mm:ss');
-            document.getElementById("eventModalStart").value = formattedDateTimeStart;
-    
+			// 설정된 날짜 및 시간 설정
+			var formattedDateTimeStart = momentClickedDate.format('YYYY-MM-DD HH:mm:ss');
 			var formattedDateTimeEnd = moment(momentClickedDate).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
-            document.getElementById("eventModalEnd").value = formattedDateTimeEnd;
-
-
-            var container = document.getElementById("eventProduceModal");
-            var modal = new bootstrap.Modal(container);
-            var allday = document.getElementById("allDayCheck");
-            modal.show();
+			document.getElementById("eventModalStart").value = formattedDateTimeStart;
+			document.getElementById("eventModalEnd").value = formattedDateTimeEnd;
+			$('#eventProduceModal input[type=text], textarea').val('');
+			modal.show();
+			$("#btnEventProduce").off('click').click(function () {
+				addEvent();
+			 	modal.hide();
+			 });
 		},
+	  eventAdd: function (addInfo) {
+	      console.log("eventAdd");
+	  }, 
       select: function(info) {
         
       },
@@ -851,74 +958,53 @@ html, body {
       navLinks: true, // can click day/week names to navigate views
       editable: true,
       selectable: true,
+      dayMaxEvents: true,
       events: [
-   		   $.ajax({
-   			type: 'get',
-   			url: '/plan/event/list.do',
-   			dataType: 'json',
-   			success: function(result){
-   				result.forEach(obj =>{
-   					calendar.addEvent({
-   						title: obj.title,
-   						start: obj.start,
-   						end: obj.end,
-   						color: obj.color,
-   						extendedProps: {
-   							eventSeq: obj.eventSeq,
-			   				loc: obj.loc,
-			   				content: obj.content
-   						}
-   					})
-   				})
-  			},
-   			error: function(a,b,c){
-   				console.log(a,b,c);
-   			}
-   		  }) 
-   	  ],
-   	  eventDrop: function(info){
-   		  if(confirm('일정을 수정하시겠습니까?')){
-   			$.ajax({
-   	      		type: "post",
-   	      		url: "/plan/event/dropchange.do",
-   	      		data: {
-   	      			eventSeq: info.event.extendedProps.eventSeq,
-   	      			allDay: info.event.allDay,
-   	      			start: moment(info.event.start).format('YYYY/MM/DD HH:mm'),
-   	      			end: moment(info.event.end).format('YYYY/MM/DD HH:mm')
-   	      		},
-   	      		success: function (response) {
-   	        		alert('수정 완료');
-   	      		},
-   	      		error: function(a,b,c){
-   					console.log(a,b,c);
-   				}
-   	    	});
-   		  } else {
-   			  info.revert();
-   		  }
-   	  }
+    	  $.ajax({
+     			type: 'get',
+     			url: '/plan/event/list.do',
+     			dataType: 'json',
+     			success: function(result){
+     				result.forEach(obj =>{
+     					calendar.addEvent({
+     						title: obj.title,
+     						allDay: (obj.allDay == 'y'? true: false),
+     						start: obj.start,
+     						end: obj.end,
+     						color: obj.color,
+     						extendedProps: {
+     							eventSeq: obj.eventSeq,
+  			   				loc: obj.loc,
+  			   				content: obj.content
+     						}
+     					})
+     				})
+    			},
+     			error: function(a,b,c){
+     				console.log(a,b,c);
+     			}
+     		 }) 
+      ]
     });
     calendar.render();
-
   });
-		
+	
 	function getDisplayEventDate(event) {
 		var displayEventDate;
-
+		
 		if(event.end == null) {
 			displayEventDate = moment(event.start).format('HH:mm');
+		} else if (moment(event.start).format('MM-DD')==moment(event.end).format('MM-DD')) {
+			  var startTimeEventInfo = moment(event.start).format('HH:mm');
+			  var endTimeEventInfo = moment(event.end).format('HH:mm');
+			  displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
+		} else if ((moment(event.start).format('MM-DD')==moment(event.end-1).format('MM-DD'))&& event.allDay==true) {
+			displayEventDate = "하루종일";
 		} else if (moment(event.start).format('MM-DD')!=moment(event.end).format('MM-DD')) {
 		  var startEventInfo = moment(event.start).format('MM/DD');
 		  var endEventInfo = moment(event.end).format('MM/DD');
 		  displayEventDate = startEventInfo + " - " + endEventInfo;
-		} else if (moment(event.start).format('MM-DD')==moment(event.end).format('MM-DD')) {
-		  var startTimeEventInfo = moment(event.start).format('HH:mm');
-		  var endTimeEventInfo = moment(event.end).format('HH:mm');
-		  displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
-		} else {	
-			  displayEventDate = "하루종일";
-		}
+		} 
 		return displayEventDate;
 		}
 	
@@ -933,17 +1019,59 @@ html, body {
 	    	}
 		});
 	
-		function validateEndDate() {
-		    var startDate = document.getElementById("eventModalStart").value;
-		    var endDate = document.getElementById("eventModalEnd").value;
+		function validateEndDate(modal) {
+		    var startDate = document.getElementById(modal+"Start").value;
+			document.getElementById(modal+"End").setAttribute("min", startDate);
+		    /* var endDate = document.getElementById("eventModalEnd").value;
 
 			if (startDate && endDate) {
 			    if (startDate > endDate) {
-			        alert("일정 종료일은 시작일 이후여야 합니다.");
-			        document.getElementById("eventModalEnd").value = startDate;
-			    }
-			}
+			        alert("일정 종료일은 시작일 이후여야 합니다."); }}*/
 		}
+		
+				
+		function addEvent() {
+			// 중복 실행 방지
+			if (addRequest) {
+				addRequest.abort();
+			}
+
+			// ajax 요청 생성
+			addRequest = $.ajax({
+				type: 'post',
+				url: '/plan/event/add.do',
+				data: {
+					allDay: $('#allDayCheck').is(':checked'),
+					title: $('#eventModalTitle').val(),
+					start: $('#eventModalStart').val(), 
+					end: $('#eventModalEnd').val(),
+					color: $('#eventModalColor').val(),
+					loc: $('#eventModalLoc').val(),
+					content: $('#eventModalContent').val(),
+					calSeq: 1
+				},
+				dataType: 'json',
+				success: function(result){
+					calendar.addEvent({
+						title: $('#eventModalTitle').val(),
+						allDay: $('#allDayCheck').is(':checked'),
+						start: $('#eventModalStart').val(),
+						end: $('#eventModalEnd').val(),
+						color: $('#eventModalColor').val(),
+						extendedProps: {
+							eventSeq: result.eventSeq,
+							loc: $('#eventModalLoc').val(),
+							content: $('#eventModalContent').val()
+						}
+					});
+					calendar.render();
+				},
+				error: function(a, b, c){
+					console.log(a, b, c);
+				}
+			});
+		}
+	
 	</script>
 </body>
 </html>

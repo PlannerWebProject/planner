@@ -29,16 +29,19 @@ public class List extends HttpServlet {
 		JSONArray arr = new JSONArray();
 		for (EventDTO dto : list) {
 			JSONObject obj = new JSONObject();
+			String start = "20"+dto.getStart().replace("/", "-");
+			String end = "20"+dto.getEnd().replace("/", "-");
+			
 			obj.put("eventSeq", dto.getEventSeq());
 			obj.put("title", dto.getTitle());
 			obj.put("allDay", dto.getAllDay());
-			obj.put("start", dto.getStart());
-			obj.put("end", dto.getEnd());
+			obj.put("start", start);
+			obj.put("end", end);
 			obj.put("loc", dto.getLoc());
 			obj.put("content", dto.getContent());
 			obj.put("color", dto.getColor());
 			obj.put("calSeq", dto.getCalSeq());
-
+			
 			arr.add(obj);
 		}
 

@@ -25,7 +25,7 @@ create sequence seqCalList;
 --아래는 CRUD
 insert into tblCalList values (1, 'test');
 
-select * from tblCalList;
+select * from tblCalList where id = 'test';
 
 update tblCalList set id = ? where calListSeq = ?;
 
@@ -42,7 +42,10 @@ create sequence seqCal;
 --아래는 CRUD
 insert into tblCal values (1, 'n', 'test', 1);
 
-select * from tblCal;
+select * from tblCal c
+    inner join tblCalList cl
+        on c.calListSeq = cl.calListSeq
+            where cl.id = 'test';
 
 update tblCal set shareInfo = ? where calSeq = ?;
 
@@ -61,7 +64,7 @@ insert into tblColor values ('#FFFFD2', '노랑');
 
 select * from tblColor;
 
-delete from tblCal where color = ?;
+delete from tblColor where color = ?;
 ----------------------------------------------------------------컬러
 create table tblEvent (
     eventSeq number primary key,
@@ -81,6 +84,24 @@ insert into tblEvent(eventSeq, title, allDay, "start", "end", loc, "content", co
 values (seqEvent.nextVal, 'Party', 'n', '2023-01-05 20:00:00','', '우리집','재밌겠다','#A8D8EA',1);
 
 select * from tblEvent;
+select eventSeq, title, allday,loc, "content", color, calSeq,
+case
+    when allday = 'y' then substr("start", 1, 8)
+    when allday = 'n' then substr("start", 1, 8)||'T'||substr("start", 10, 8)
+end as "start",
+case 
+    when "end" is null then ''
+    when allday = 'y' then substr("end", 1, 8)
+    when allday = 'n' then substr("end", 1, 8)||'T'||substr("end", 10, 8)
+end as "end"
+from tblEvent;
+
+select * from tblEvent e 
+    inner join tblCal c
+        on e.calSeq = c.calSeq
+            inner join tblCalList cl
+                on c.calListSeq = cl.calListSeq
+                    where cl.id = 'test';
 
 update tblEvent set title = ? where eventSeq = ?;
 
@@ -100,6 +121,25 @@ update tblShare set shareTk =? where id =? and calSeq = ?;
 
 delete from tblShare where id =? and calSeq = ?;
 ----------------------------------------------------------------공유여부
+--뷰!!!!!!!!!!!!!!!!!!!!
+create view vwEvent
+as
+select e.eventSeq, e.title, e.allday, e.loc, e."content", e.color, e.calSeq,
+case
+    when e.allday = 'y' then substr(e."start", 1, 8)
+    when e.allday = 'n' then substr(e."start", 1, 8)||'T'||substr(e."start", 10, 8)
+end as "start",
+case 
+    when e.allday = 'y' then substr(e."end", 1, 8)
+    when e.allday = 'n' then substr(e."end", 1, 8)||'T'||substr(e."end", 10, 8)
+end as "end", c.shareinfo, c.name, c.callistSeq, cl.id 
+from tblEvent e 
+    inner join tblCal c
+        on e.calSeq = c.calSeq
+            inner join tblCalList cl
+                on c.calListSeq = cl.calListSeq;
+                
+select * from vwEvent where id = 'test';
 
 commit;
 
