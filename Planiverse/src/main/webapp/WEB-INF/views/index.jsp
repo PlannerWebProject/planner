@@ -375,7 +375,7 @@ html, body {
 							<form id="login-form" name="login-form" class="mb-0" action="#"
 								method="post">
 								<h1 class="fs-4 fw-semibold text-center mb-0">Sign In to
-									Canvas Account</h1>
+									Planiverse Account</h1>
 								<h2 class="fs-5 text-center fw-medium mb-5 mt-1">
 									<span class="op-06 nocolor">New?</span> <a href="#"
 										id="signup-action">Create Account</a>
@@ -449,49 +449,36 @@ html, body {
 								<h3>Register for an Account</h3>
 
 								<form id="register-form" name="register-form" class="row mb-0"
-									action="#" method="post">
+									action="/plan/user/register.do" method="post">
 
 									<div class="col-12 form-group">
-										<label for="register-form-name">Name:</label> <input
-											type="text" id="register-form-name" name="register-form-name"
-											value="" class="form-control">
+										<label for="register-form-email">Email(ID):</label> <input
+											type="text" id="id"	name="id" class="form-control" required>
+										<br>	
+										<button class="button button-3d button-black m-0"
+											id="idCheck" name="idCheck" disabled>중복 검사</button>
 									</div>
-
+									
 									<div class="col-12 form-group">
-										<label for="register-form-email">Email Address:</label> <input
-											type="text" id="register-form-email"
-											name="register-form-email" value="" class="form-control">
-									</div>
-
-									<div class="col-12 form-group">
-										<label for="register-form-username">Choose a Username:</label>
-										<input type="text" id="register-form-username"
-											name="register-form-username" value="" class="form-control">
-									</div>
-
-									<div class="col-12 form-group">
-										<label for="register-form-phone">Phone:</label> <input
-											type="text" id="register-form-phone"
-											name="register-form-phone" value="" class="form-control">
-									</div>
-
-									<div class="col-12 form-group">
-										<label for="register-form-password">Choose Password:</label> <input
-											type="password" id="register-form-password"
-											name="register-form-password" value="" class="form-control">
+										<label for="register-form-password">Password:</label> 
+										<input type="password" id="pw" name="pw" class="form-control" 
+										required disabled>
 									</div>
 
 									<div class="col-12 form-group">
 										<label for="register-form-repassword">Re-enter
-											Password:</label> <input type="password"
-											id="register-form-repassword" name="register-form-repassword"
-											value="" class="form-control">
+											Password:</label> <input type="password" id="repw" name="repw"
+											class="form-control" required disabled>
 									</div>
-
+									
 									<div class="col-12 form-group">
-										<button class="button button-3d button-black m-0"
-											id="register-form-submit" name="register-form-submit"
-											value="register">Register Now</button>
+										<label for="register-form-name">Name:</label> <input
+											type="text" id="name" name="name" class="form-control" required>
+									</div>
+											
+									<div class="col-12 form-group">
+										<button class="button button-3d button-black m-0" type="submit"
+											id="registerBtn" name="registerBtn"	value="register" disabled>Register Now</button>
 									</div>
 
 								</form>
@@ -1052,7 +1039,53 @@ html, body {
 				}
 			});
 		}
-	
+		
+		//회원가입창 생성시 input 값 비우기
+		$('#signup-action').click(function() {
+			$('#signupModal input').val('');
+		});
+		
+		//비밀번호 동일한지 검사
+		$('#repw').keyup(function () {
+			if($('#pw').val()!=$('#repw').val()){
+				$('#registerBtn').attr("disabled",true); 
+			} else if ($('#pw').val()==$('#repw').val()){
+				$('#registerBtn').attr("disabled",false); 
+			}
+		});
+		
+		//id 다시 수정하면 블록
+		$('#id').keyup(function () {
+			$('#pw').attr("disabled",true); 
+			$('#repw').attr("disabled",true);
+			$('#registerBtn').attr("disabled",true); 
+			$('#idCheck').attr("disabled",false); 
+		});
+		
+		//id 중복검사
+		$('#idCheck').click(function () {
+			$.ajax({
+				type: 'post',
+				url: '/plan/user/idcheck.do',
+				data: {
+					id: $('#id').val()
+				},
+				success: function(result){
+					if(result==1){
+						alert('사용 가능한 Email(ID)입니다.');
+						$('#pw').attr("disabled",false); 
+						$('#repw').attr("disabled",false); 
+					} else {
+						alert('이미 사용중인 Email(ID)입니다.');
+						$('#id').val('').focus();
+					}
+				},
+				error: function(a, b, c){
+					console.log(a, b, c);
+				}
+			});
+		});
+		
 	</script>
 </body>
 </html>
