@@ -150,6 +150,12 @@ html, body {
 		height: auto;
 	}
 }
+
+#selected-color, #editSelColor {
+	width: 50px;
+	display: inline-block;
+	height: 15px;
+}
 </style>
 
 </head>
@@ -317,11 +323,12 @@ html, body {
 						<form>
 							<div class="mb-3">
 								<div class="container">
-									<div id="color-selector">
-										<div class="color-circle" style="background-color: #FF8080"></div>
-										<div class="color-circle" style="background-color: #FFCF96"></div>
-										<div class="color-circle" style="background-color: #F6FDC3"></div>
-										<div class="color-circle" style="background-color: #CDFAD5"></div>
+									<div id="color">
+										<div class="color-circle" style="background-color: #F9B8D1" value="#F9B8D1"></div>
+										<div class="color-circle" style="background-color: #F1932E" value="#F1932E"></div>
+										<div class="color-circle" style="background-color: #FFFFD2" value="#FFFFD2"></div>
+										<div class="color-circle" style="background-color: #A8D8EA" value="#A8D8EA"></div>
+										<div class="color-circle" style="background-color: #AA96DA" value="#AA96DA"></div>
 									</div>
 									<p>
 										선택한 색: <span id="selected-color"></span>
@@ -527,14 +534,15 @@ html, body {
 						<form>
 							<div class="mb-3">
 								<div class="container">
-									<div id="color-selector">
-										<div class="color-circle" style="background-color: #FF8080"></div>
-										<div class="color-circle" style="background-color: #FFCF96"></div>
-										<div class="color-circle" style="background-color: #F6FDC3"></div>
-										<div class="color-circle" style="background-color: #CDFAD5"></div>
+									<div id="editColor">
+										<div class="color-circle" style="background-color: #F9B8D1" value="#F9B8D1"></div>
+										<div class="color-circle" style="background-color: #F1932E" value="#F1932E"></div>
+										<div class="color-circle" style="background-color: #FFFFD2" value="#FFFFD2"></div>
+										<div class="color-circle" style="background-color: #A8D8EA" value="#A8D8EA"></div>
+										<div class="color-circle" style="background-color: #AA96DA" value="#AA96DA"></div>
 									</div>
 									<p>
-										선택한 색: <span id="selected-color"></span>
+										선택한 색: <span id="editSelColor"></span>
 									</p>
 								</div>
 							</div>
@@ -733,6 +741,7 @@ html, body {
 		 document.getElementById('eventModalStart').removeAttribute('disabled');
 		 document.getElementById('eventModalEnd').removeAttribute('disabled');  
 		 $('#eventProduceModal input, textarea').val('');
+		 $('#selected-color').css("background-color", "transparent");
 		 modal.show();
 		 $("#btnEventProduce").off('click').click(function () {
 			addEvent();
@@ -767,6 +776,21 @@ html, body {
 			$('#editEventModalEnd').attr("disabled",false); 
 		}		
 	});
+		
+	//생성 모달 하루종일 버튼 제어
+	$('#allDayCheck').change(()=>{
+		if($('#allDayCheck').is(':checked')){
+			var clickedDate = $('#eventModalStart').val();
+            var momentClickedDate = moment(clickedDate);
+			$('#eventModalStart').val(momentClickedDate.format('YYYY-MM-DDT00:00'));
+			$('#eventModalEnd').val(momentClickedDate.add(24, 'hours').format('YYYY-MM-DDT00:00'));
+			$('#eventModalStart').attr("disabled",true); 
+			$('#eventModalEnd').attr("disabled",true); 
+		} else {
+			$('#eventModalStart').attr("disabled",false); 
+			$('#eventModalEnd').attr("disabled",false); 
+		}		
+	});
 	
     calendar = new FullCalendar.Calendar(calendarEl, {
     	//이벤트 클릭시 수정 모달 생성
@@ -783,13 +807,14 @@ html, body {
 				$('#editEventModalStart').attr("disabled",false); 
 				$('#editEventModalEnd').attr("disabled",false); 
 			}
-		
 			$('#editEventModalStart').val(moment(info.event.start).format('YYYY-MM-DDTHH:mm'));
 			$('#editEventModalEnd').val(moment(info.event.end).format('YYYY-MM-DDTHH:mm'));
 			$('#editEventModalTitle').val(info.event.title);
-			$('#editEventModalColor').val(info.event.backgroundColor);
+			$('#editSelColor').css("background-color", "transparent");
+			$('#editSelColor').css("background-color", info.event.backgroundColor);
 			$('#editEventModalLoc').val(info.event.extendedProps.loc);
 			$('#editEventModalContent').val(info.event.extendedProps.content);
+			
         	modal.show();
 
 			$('#deleteEventBtn').off('click').click(function() {
@@ -837,7 +862,7 @@ html, body {
 				   			title: $('#editEventModalTitle').val(),
 				   			start: moment($('#editEventModalStart').val()).format('YYYY/MM/DD HH:mm'), 
 				   			end: moment($('#editEventModalEnd').val()).format('YYYY/MM/DD HH:mm'), 
-				   			color: $('#editEventModalColor').val(),
+				   			color: $('#editColor').attr("value"),
 				   			loc: $('#editEventModalLoc').val(),
 				   			content: $('#editEventModalContent').val()
 				   	    },
@@ -848,7 +873,7 @@ html, body {
 				   	    	info.event.setAllDay($('#editEventModalAllDay').is(':checked'));
 				   	    	info.event.setStart($('#editEventModalStart').val());
 				   	    	info.event.setEnd($('#editEventModalEnd').val());
-				   	    	info.event.setProp('color', $('#editEventModalColor').val());
+				   	    	info.event.setProp('color', $('#editColor').attr("value"));
 				   	    	info.event.setExtendedProp('loc', $('#editEventModalLoc').val());
 				   	    	info.event.setExtendedProp('content', $('#editEventModalContent').val());
 				   	    	}
@@ -924,6 +949,7 @@ html, body {
 			document.getElementById("eventModalStart").value = formattedDateTimeStart;
 			document.getElementById("eventModalEnd").value = formattedDateTimeEnd;
 			$('#eventProduceModal input[type=text], textarea').val('');
+			$('#selected-color').css("background-color", "transparent");
 			modal.show();
 			$("#btnEventProduce").off('click').click(function () {
 				addEvent();
@@ -1032,7 +1058,7 @@ html, body {
 					title: $('#eventModalTitle').val(),
 					start: $('#eventModalStart').val(), 
 					end: $('#eventModalEnd').val(),
-					color: $('#eventModalColor').val(),
+					color: $('#color').attr("value"),
 					loc: $('#eventModalLoc').val(),
 					content: $('#eventModalContent').val(),
 					calSeq: 1
@@ -1044,7 +1070,7 @@ html, body {
 						allDay: $('#allDayCheck').is(':checked'),
 						start: $('#eventModalStart').val(),
 						end: $('#eventModalEnd').val(),
-						color: $('#eventModalColor').val(),
+						color: $('#color').attr("value"),
 						extendedProps: {
 							eventSeq: result.eventSeq,
 							loc: $('#eventModalLoc').val(),
@@ -1103,6 +1129,17 @@ html, body {
 					console.log(a, b, c);
 				}
 			});
+		});
+		
+		//선택한 색 표시
+		$('#color > div').click(function(){
+			$('#selected-color').css("background-color", $(event.target).attr("value"));
+			$('#color').attr("value", $(event.target).attr("value"));
+		});
+		
+		$('#editColor > div').click(function(){
+			$('#editSelColor').css("background-color", $(event.target).attr("value"));
+			$('#editColor').attr("value", $(event.target).attr("value"));
 		});
 		
 	</script>
