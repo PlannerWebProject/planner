@@ -620,6 +620,12 @@ html, body {
 		var delRequest = null;
 		var addRequest = null;
 		var editRequest = null;
+		
+		//사이드바 토글
+		var sidebarStatus = true;
+		var sidebarMain = document.getElementById("sidebarMain");
+		var addSchedule = document.getElementById("addSchedule");
+	    var sidebarFoldingBtn = document.getElementById('sidebarFoldingBtn');
 
 		// Accordian
 		for (var i = 0; i < coll.length; i++) {
@@ -694,20 +700,35 @@ html, body {
 				},
 			});
 		});
+		
+		document.addEventListener('DOMContentLoaded', function() {
+
+		    // 윈도우 크기 변경 이벤트 리스너 추가
+		    window.onresize = adjustSidebar;
+
+		    function adjustSidebar() {
+		    	if (window.innerWidth < 1000) {
+			        sidebarMain.style.width = sidebarStatus ? "0" : "100%";
+			    } else {
+			        sidebarMain.style.width = sidebarStatus ? "0" : "250px";
+			    }
+		    }
+		});
 
 		window.onload = function() {
-			var sidebarStatus = true;
+			//사이드바 접기
 			sidebarFoldingBtn.onclick = function () {
-				var sidebarMain = document.getElementById("sidebarMain");
-				var addSchedule = document.getElementById("addSchedule");
-
-				sidebarMain.style.width = sidebarStatus ? "0" : "250px";
+		    	if (window.innerWidth < 1000) {
+			        sidebarMain.style.width = sidebarStatus ? "0" : "100%";
+			    } else {
+			        sidebarMain.style.width = sidebarStatus ? "0" : "250px";
+			    }
 				Array.from(sidebarMain.children).forEach(child => {
 					if (child !== addSchedule) {
 						child.style.display = sidebarStatus ? "none" : "";
 					}
 				});
-				
+		        // sidebarStatus 토글
 				sidebarStatus = !sidebarStatus;
 				$('.fc-toolbar-chunk').css("margin-left", sidebarStatus ? "0" : "100px");
 				calendar.render();
@@ -715,6 +736,8 @@ html, body {
 				//$('fc-scrollgrid-sync-table').css('width', '100%');
 				//$('fc-scrollgrid-sync-table').children().css('width', '100%');
 			};
+			
+			//사이드바 css 후처리
 			$('.calendarGroup').css("display", "flex");
 			$('.calendarGroup').css("padding-right", "10px");
 			//$('.calendarGroup').css("display", "flex");
