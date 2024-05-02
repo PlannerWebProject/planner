@@ -701,51 +701,65 @@ html, body {
 			});
 		});
 		
+		// 윈도우 크기 변경, 사이드바 토글 이벤트 리스너 추가
 		document.addEventListener('DOMContentLoaded', function() {
-
-		    // 윈도우 크기 변경 이벤트 리스너 추가
-		    window.onresize = adjustSidebar;
-
+			// 사이드바 및 내부 요소 조정 함수
 		    function adjustSidebar() {
-		    	if (window.innerWidth < 1000) {
-			        sidebarMain.style.width = sidebarStatus ? "0" : "100%";
-			    } else {
-			        sidebarMain.style.width = sidebarStatus ? "0" : "250px";
-			    }
+		    	// 브라우저 내부 사이즈 저장
+		        const windowWidth = window.innerWidth;
+		    	// 사이드바 너비 저장
+		        var sidebarWidth;
+		    	// 사이드바 높이 저장
+		        const sliderHeight = windowWidth < 1000 ? "auto" : "calc(100vh - 70px)";
+		    	// 사이드바 토글시의 버튼 간격(일정 생성과 이전달버튼) 저장
+		        const marginLeft = sidebarStatus ? "0" : "100px";
+				
+		    	// 사이드바 너비 적용
+		        if (sidebarStatus) {
+		            sidebarWidth = (windowWidth >= 1000) ? "250px" : "100%";
+		        } else {
+		            sidebarWidth = (windowWidth >= 1000) ? "0" : "100%";
+		        }
+		
+		        $('#sidebarMain').css({
+		            display: (windowWidth < 1000) ? "block" : "",
+		            width: sidebarWidth
+		        });
+		    	// 사이드바 높이 적용
+		        $('#slider').css("height", sliderHeight);
+		    	// 버튼 간격 적용
+		        $('.fc-toolbar-chunk').css("margin-left", marginLeft);
+				
+		    	// 사이드바 토글시 내부 요소들 감추기/보이기
+		        $('#sidebarMain').children().not('#addSchedule').css("display", sidebarStatus ? "" : "none");
 		    }
+			
+		    // 사이드바 토글 함수
+		    function toggleSidebar() {
+		        sidebarStatus = !sidebarStatus;
+		        adjustSidebar();
+		        calendar.render();
+		    }
+			
+		    // 브라우저 크기 변경시 사이드바 조정함수 실행
+		    window.addEventListener('resize', adjustSidebar);
+		    // 사이드바 토글버튼 클릭시 토글 함수 실행
+		    $('#sidebarFoldingBtn').on('click', toggleSidebar);
+			
+		    // 사이트 로딩 직후 사이드바 크기 조정
+		    adjustSidebar();
+		    // 사이트 로딩 후 css 후처리
+		    $('.calendarGroup').css({
+		        display: "flex",
+		        paddingRight: "10px"
+		    }).children().css("marginLeft", "auto");
+		
+		    $('.button-border').css({
+		        border: "0",
+		        background: "none"
+		    });
 		});
 
-		window.onload = function() {
-			//사이드바 접기
-			sidebarFoldingBtn.onclick = function () {
-		    	if (window.innerWidth < 1000) {
-			        sidebarMain.style.width = sidebarStatus ? "0" : "100%";
-			    } else {
-			        sidebarMain.style.width = sidebarStatus ? "0" : "250px";
-			    }
-				Array.from(sidebarMain.children).forEach(child => {
-					if (child !== addSchedule) {
-						child.style.display = sidebarStatus ? "none" : "";
-					}
-				});
-		        // sidebarStatus 토글
-				sidebarStatus = !sidebarStatus;
-				$('.fc-toolbar-chunk').css("margin-left", sidebarStatus ? "0" : "100px");
-				calendar.render();
-				//$('.fc-daygrid-body .fc-daygrid-body-unbalanced').css('width', '100%');
-				//$('fc-scrollgrid-sync-table').css('width', '100%');
-				//$('fc-scrollgrid-sync-table').children().css('width', '100%');
-			};
-			
-			//사이드바 css 후처리
-			$('.calendarGroup').css("display", "flex");
-			$('.calendarGroup').css("padding-right", "10px");
-			//$('.calendarGroup').css("display", "flex");
-			$('.calendarGroup').children().css("margin-left", "auto");
-			$('.button-border').css("border", "0");
-			$('.button.button-border').css("background", "");
-			//$('.button.button-border').css("background-color", "#eee");
-		};
 		
 		
 	document.addEventListener('DOMContentLoaded', function() {
