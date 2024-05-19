@@ -215,8 +215,9 @@ html, body {
 									<a
 										class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary"
 										href="#"><i class="bi-person me-2"></i>Your Profile</a> <a
-										class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary"
-										href="#"><i class="bi-box-arrow-right me-2"></i>Log Out</a>
+										class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary api-btn"
+										href="#" onclick="kakaoOut()"><i
+										class="bi-box-arrow-right me-2"></i>Log Out</a>
 								</div>
 							</div>
 
@@ -324,11 +325,16 @@ html, body {
 							<div class="mb-3">
 								<div class="container">
 									<div id="color">
-										<div class="color-circle" style="background-color: #F9B8D1" value="#F9B8D1"></div>
-										<div class="color-circle" style="background-color: #F1932E" value="#F1932E"></div>
-										<div class="color-circle" style="background-color: #FFFFD2" value="#FFFFD2"></div>
-										<div class="color-circle" style="background-color: #A8D8EA" value="#A8D8EA"></div>
-										<div class="color-circle" style="background-color: #AA96DA" value="#AA96DA"></div>
+										<div class="color-circle" style="background-color: #F9B8D1"
+											value="#F9B8D1"></div>
+										<div class="color-circle" style="background-color: #F1932E"
+											value="#F1932E"></div>
+										<div class="color-circle" style="background-color: #FFFFD2"
+											value="#FFFFD2"></div>
+										<div class="color-circle" style="background-color: #A8D8EA"
+											value="#A8D8EA"></div>
+										<div class="color-circle" style="background-color: #AA96DA"
+											value="#AA96DA"></div>
 									</div>
 									<p>
 										선택한 색: <span id="selected-color"></span>
@@ -356,7 +362,7 @@ html, body {
 								<label for="eventModalEnd" class="col-form-label">일정 종료</label>
 								<input type="datetime-local" id="eventModalEnd"
 									class="form-control" placeholder="datetime-local input"
-									disabled >
+									disabled>
 							</div>
 							<div class="mb-3">
 								<label for="eventModalSelect" class="col-form-label">카테고리</label>
@@ -442,12 +448,12 @@ html, body {
 									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img
 									src="https://cdn.cdnlogo.com/logos/g/35/google-icon.svg"
 									alt="Google Logo" class="d-inline-block me-2 square square-xs">Sign
-									In with Google</a> <a href="#"
+									In with Google</a> <a href="javascript:loginWithKakao()"
 									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img
-									src="https://cdn.cdnlogo.com/logos/f/91/facebook-icon.svg"
-									alt="Facebook Logo"
+									id="kakao-login-btn"
+									src="https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Ff5d7b9d3-6faa-4fbd-92fb-abc13883f4ac%2Fkakao.png&blockId=845a0760-d543-46ae-965d-018c4289eb32&width=256"
 									class="d-inline-block me-2 square square-xs">Sign In with
-									Facebook</a> <a href="#"
+									Kakao</a> <a href="#"
 									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img
 									src="https://cdn.cdnlogo.com/logos/t/39/twitter.svg"
 									alt="Twitter Logo" class="d-inline-block me-2 square square-xs">Sign
@@ -479,16 +485,16 @@ html, body {
 
 									<div class="col-12 form-group">
 										<label for="register-form-email">Email(ID):</label> <input
-											type="text" id="id"	name="id" class="form-control" required>
-										<br>	
-										<button class="button button-3d button-black m-0"
-											id="idCheck" name="idCheck" disabled>중복 검사</button>
+											type="text" id="id" name="id" class="form-control" required>
+										<br>
+										<button class="button button-3d button-black m-0" id="idCheck"
+											name="idCheck" disabled>중복 검사</button>
 									</div>
-									
+
 									<div class="col-12 form-group">
-										<label for="register-form-password">Password:</label> 
-										<input type="password" id="pw" name="pw" class="form-control" 
-										required disabled>
+										<label for="register-form-password">Password:</label> <input
+											type="password" id="pw" name="pw" class="form-control"
+											required disabled>
 									</div>
 
 									<div class="col-12 form-group">
@@ -496,15 +502,17 @@ html, body {
 											Password:</label> <input type="password" id="repw" name="repw"
 											class="form-control" required disabled>
 									</div>
-									
+
 									<div class="col-12 form-group">
 										<label for="register-form-name">Name:</label> <input
-											type="text" id="name" name="name" class="form-control" required>
+											type="text" id="name" name="name" class="form-control"
+											required>
 									</div>
-											
+
 									<div class="col-12 form-group">
-										<button class="button button-3d button-black m-0" type="submit"
-											id="registerBtn" name="registerBtn"	value="register" disabled>Register Now</button>
+										<button class="button button-3d button-black m-0"
+											type="submit" id="registerBtn" name="registerBtn"
+											value="register" disabled>Register Now</button>
 									</div>
 
 								</form>
@@ -535,11 +543,16 @@ html, body {
 							<div class="mb-3">
 								<div class="container">
 									<div id="editColor">
-										<div class="color-circle" style="background-color: #F9B8D1" value="#F9B8D1"></div>
-										<div class="color-circle" style="background-color: #F1932E" value="#F1932E"></div>
-										<div class="color-circle" style="background-color: #FFFFD2" value="#FFFFD2"></div>
-										<div class="color-circle" style="background-color: #A8D8EA" value="#A8D8EA"></div>
-										<div class="color-circle" style="background-color: #AA96DA" value="#AA96DA"></div>
+										<div class="color-circle" style="background-color: #F9B8D1"
+											value="#F9B8D1"></div>
+										<div class="color-circle" style="background-color: #F1932E"
+											value="#F1932E"></div>
+										<div class="color-circle" style="background-color: #FFFFD2"
+											value="#FFFFD2"></div>
+										<div class="color-circle" style="background-color: #A8D8EA"
+											value="#A8D8EA"></div>
+										<div class="color-circle" style="background-color: #AA96DA"
+											value="#AA96DA"></div>
 									</div>
 									<p>
 										선택한 색: <span id="editSelColor"></span>
@@ -561,7 +574,8 @@ html, body {
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">일정 시작</label>
 								<input type="datetime-local" id="editEventModalStart"
-									class="form-control" placeholder="datetime-local input" onchange="validateEndDate('editEventModal')">
+									class="form-control" placeholder="datetime-local input"
+									onchange="validateEndDate('editEventModal')">
 							</div>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">일정 종료</label>
@@ -609,6 +623,87 @@ html, body {
 	<script src="${path}/resources/js/functions.bundle.js"></script>
 	<script src='${path}/resources/js/index.global.js'></script>
 
+	<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js"
+		integrity="sha384-kDljxUXHaJ9xAb2AzRd59KxjrFjzHa5TAoFQ6GbYTCAG0bjM55XohjjDT7tDDC01"
+		crossorigin="anonymous"></script>
+	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+	<script>
+	Kakao.init('264eac61bfebe8b0add3dd5814946507'); // 사용하려는 앱의 JavaScript 키 입력
+	Kakao.isInitialized();
+	console.log(Kakao.isInitialized());
+  
+
+	
+	function loginWithKakao() {
+		Kakao.Auth.login({
+			success: function (authObj) {
+			  console.log(authObj); //access토큰 값
+			  getInfo();
+			},
+			fail: function (err) {
+			  console.log(err);
+			},
+		  });
+		}
+
+	// 아래는 데모를 위한 UI 코드입니다.
+	function getInfo() {
+        Kakao.API.request({
+          url: "/v2/user/me",
+          success: function (res) {
+            console.log(res);
+            var id = res.id;
+            var profile_nickname = res.kakao_account.profile.nickname;
+			var email = res.kakao_account.email;
+            localStorage.setItem("nickname", profile_nickname);
+            localStorage.setItem("id", id);
+            localStorage.setItem("email", email);
+            console.log(profile_nickname);
+            console.log(id);
+			console.log(email);
+	
+          },
+          fail: function (error) {
+            alert("카카오 로그인 실패" + JSON.stringify(error));
+          },
+        });
+      }
+	
+
+
+  
+	function getCookie(name) {
+	  var parts = document.cookie.split(name + '=');
+	  if (parts.length === 2) { return parts[1].split(';')[0]; }
+	}
+	
+	
+	function kakaoOut(){
+    Kakao.API.request({
+        url: '/v1/user/unlink',
+    })
+        .then(function (response) {
+            console.log(response);
+            
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    
+   		 sessionStorage.clear();
+    	 localStorage.clear();
+    	 Kakao.Auth.setAccessToken(undefined);
+    	 
+    	 window.location.href = 'http://localhost:8081/plan/planiverse.do';
+	
+	}
+	
+
+		  function deleteCookie() {
+		    document.cookie = 'authorize-access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+		   
+		  }
+  </script>
 	<script>
 		
 		var coll = document.getElementsByClassName("collapsible");
@@ -798,6 +893,35 @@ html, body {
 			modal1.show();
 		})
 	})
+	function login() {
+    var loginId = $('#login-form-username').val();
+    var loginPw = $('#login-form-password').val();
+    console.log("Attempting login with:", loginId, loginPw);
+    $.ajax({
+        type: "post",
+        url: "/plan/event/login.do",
+        data: {
+            loginId: loginId,
+            loginPw: loginPw
+        },
+        success: function(response) {
+            console.log(response);
+            if (response == "1") {
+                sessionStorage.setItem("userId", loginId);
+                alert('로그인 성공');
+                window.location.href = "/plan/planiverse.do";
+            } else {
+                alert('로그인 실패');
+            }
+        },
+        error: function(a, b, c) {	
+            console.error(a, b, c);
+        }
+    });
+}
+$("#login-form-submit").on('click', function(event) {
+    login();
+});
 
 	//수정 모달 하루종일 버튼 제어
 	$('#editEventModalAllDay').change(()=>{
@@ -882,6 +1006,7 @@ html, body {
 				modal.hide();
 			});
 			
+			
 			$('#editEventBtn').off('click').click(function() {
 				if(confirm('일정을 수정하시겠습니까?')){
 					// 중복 실행 방지
@@ -923,6 +1048,7 @@ html, body {
 				$('#editEventModal input, textarea').val('');
 				modal.hide();
 			});
+
 		},
 		//이벤트 드롭으로 일정 수정
 	   	  eventDrop: function(info){
@@ -993,6 +1119,7 @@ html, body {
 			 	modal.hide();
 			 });
 		},
+		
 	  eventAdd: function (addInfo) {
 	      console.log("eventAdd");
 	  }, 

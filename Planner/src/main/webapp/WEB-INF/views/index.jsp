@@ -190,8 +190,8 @@ html, body {
 									<a
 										class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary"
 										href="#"><i class="bi-person me-2"></i>Your Profile</a> <a
-										class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary"
-										href="#"><i class="bi-box-arrow-right me-2"></i>Log Out</a>
+										class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary api-btn"
+										href="#" onclick="kakaoOut()"><i class="bi-box-arrow-right me-2" ></i>Log Out</a>
 								</div>
 							</div>
 
@@ -609,7 +609,7 @@ html, body {
 		src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
 		width="222" alt="카카오 로그인 버튼" />
 	</a>
-	<button class="api-btn" onclick="out()">로그아웃</button>
+	<button class="api-btn" onclick="kakaoOut()">로그아웃</button>
 	<p id="token-result"></p>
 
 	<script>
@@ -659,7 +659,7 @@ html, body {
 	}
 	
 	
-	function out(){
+	function kakaoOut(){
     Kakao.API.request({
         url: '/v1/user/unlink',
     })
