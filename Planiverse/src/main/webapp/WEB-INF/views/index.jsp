@@ -694,7 +694,7 @@ html, body {
     	 localStorage.clear();
     	 Kakao.Auth.setAccessToken(undefined);
     	 
-    	 window.location.href = 'http://localhost:8081/plan/planiverse.do';
+    	 window.location.href = 'http://localhost:8080/plan/planiverse.do';
 	
 	}
 	
