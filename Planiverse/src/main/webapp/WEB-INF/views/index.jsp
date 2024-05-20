@@ -888,7 +888,10 @@ html, body {
 					if (editRequest !== null) {
 						editRequest.abort();
 					}
-
+					var titleValue =  $('#editEventModalTitle').val();
+					var locValue = $('#editEventModalLoc').val();
+		   			var contentValue = $('#editEventModalContent').val();
+				
 					  // ajax 요청 생성
 					editRequest =  $.ajax({
 				  		type: "post",
@@ -896,23 +899,24 @@ html, body {
 				   		data: {
 				   			eventSeq: info.event.extendedProps.eventSeq,
 				   			allDay: $('#editEventModalAllDay').is(':checked'),
-				   			title: $('#editEventModalTitle').val(),
+				   			title: titleValue,
 				   			start: moment($('#editEventModalStart').val()).format('YYYY/MM/DD HH:mm'), 
 				   			end: moment($('#editEventModalEnd').val()).format('YYYY/MM/DD HH:mm'), 
 				   			color: $('#editColor').attr("value"),
-				   			loc: $('#editEventModalLoc').val(),
-				   			content: $('#editEventModalContent').val()
+				   			loc: locValue,
+				   			content: contentValue
 				   	    },
 				   	    dataType: 'json',
 				   	    success: function (response) {
 				   	    	if(response.result ==1){
-				   	    	info.event.setProp('title', $('#editEventModalTitle').val());
+				   	    	console.log(titleValue);
+				   	    	info.event.setProp('title', titleValue);
 				   	    	info.event.setAllDay($('#editEventModalAllDay').is(':checked'));
 				   	    	info.event.setStart($('#editEventModalStart').val());
 				   	    	info.event.setEnd($('#editEventModalEnd').val());
 				   	    	info.event.setProp('color', $('#editColor').attr("value"));
-				   	    	info.event.setExtendedProp('loc', $('#editEventModalLoc').val());
-				   	    	info.event.setExtendedProp('content', $('#editEventModalContent').val());
+				   	    	info.event.setExtendedProp('loc', locValue);
+				   	    	info.event.setExtendedProp('content', contentValue);
 				   	    	}
 				   	    },
 				   	    error: function(a,b,c){
