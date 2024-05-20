@@ -3,6 +3,7 @@ package com.planiverse.user.repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.planiverse.DBUtil;
@@ -53,5 +54,39 @@ public class UserDAO {
 		}
 		
 		return 0;
+	}
+	
+public boolean login(String id, String pw) {
+		
+		String sql ="select * from tblUser where id = ? and  pw = ?";
+		boolean isSuccess = false;
+		
+		try {
+			
+			pstat = conn.prepareStatement(sql);
+			
+			pstat.setString(1, id);
+			pstat.setString(2, pw);
+			
+			ResultSet rs = pstat.executeQuery();
+			
+	        if (rs.next()) {
+	           
+	            isSuccess = true;
+	        } else {
+	        
+	            isSuccess = false;
+	        }
+	        rs.close();
+
+	    } catch (SQLException e) {
+	     
+	        e.printStackTrace();
+	    } 
+
+	    return isSuccess;
+			
+		
+		
 	}
 }

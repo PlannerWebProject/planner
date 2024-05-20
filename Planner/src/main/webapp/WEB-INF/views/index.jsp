@@ -33,7 +33,7 @@
 
 <!-- Document Title
 	============================================= -->
-<title>Planiverse</title>
+<title>Demo Planner</title>
 
 <style>
 html, body {
@@ -105,8 +105,8 @@ html, body {
 }
 
 .button {
-	margin: 0;
-	-cnvs-btn-padding-x: 1rem;
+	margin: 0; -
+	-cnvs-btn-padding-x: 1rem; -
 	-cnvs-btn-padding-y: 0.5rem;
 }
 
@@ -130,31 +130,6 @@ html, body {
 
 .bgclightgray {
 	background-color: #eeeeee;
-}
-
-@media screen and (max-width: 1000px) {
-	#datepickerDiv {
-		display: none;
-	}
-	.WhitespaceBlock {
-		display: none;
-	}
-	#addScheduleBtn {
-		margin-bottom: 0;
-	}
-	#sidebarMain {
-		display: block;
-		width: 100%;
-	}
-	#slider {
-		height: auto;
-	}
-}
-
-#selected-color, #editSelColor {
-	width: 50px;
-	display: inline-block;
-	height: 15px;
 }
 </style>
 
@@ -216,8 +191,7 @@ html, body {
 										class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary"
 										href="#"><i class="bi-person me-2"></i>Your Profile</a> <a
 										class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary api-btn"
-										href="#" onclick="kakaoOut()"><i
-										class="bi-box-arrow-right me-2"></i>Log Out</a>
+										href="#" onclick="kakaoOut()"><i class="bi-box-arrow-right me-2" ></i>Log Out</a>
 								</div>
 							</div>
 
@@ -245,7 +219,7 @@ html, body {
 				<div id="datepickerDiv" class="sidebar">
 					<div id="datepicker"></div>
 				</div>
-				<div class="WhitespaceBlock">&nbsp;</div>
+				<div>&nbsp;</div>
 				<div id="scheduleSearchBox" class="input-group"
 					style="display: flex">
 					<input type="text" name="q" class="form-control" value=""
@@ -254,7 +228,7 @@ html, body {
 						<i class="uil uil-search"></i>
 					</div>
 				</div>
-				<div class="WhitespaceBlock">&nbsp;</div>
+				<div>&nbsp;</div>
 				<div id="scheduleAcc" class="sidebar">
 					<nav class="nav-tree mb-0">
 						<ul>
@@ -276,7 +250,7 @@ html, body {
 								</ul></li>
 						</ul>
 					</nav>
-					<div class="WhitespaceBlock">&nbsp;</div>
+					<div>&nbsp;</div>
 					<nav class="nav-tree mb-0">
 						<ul>
 							<li><a href="#" class="calendarGroup">공유받은 달력</a>
@@ -324,17 +298,11 @@ html, body {
 						<form>
 							<div class="mb-3">
 								<div class="container">
-									<div id="color">
-										<div class="color-circle" style="background-color: #F9B8D1"
-											value="#F9B8D1"></div>
-										<div class="color-circle" style="background-color: #F1932E"
-											value="#F1932E"></div>
-										<div class="color-circle" style="background-color: #FFFFD2"
-											value="#FFFFD2"></div>
-										<div class="color-circle" style="background-color: #A8D8EA"
-											value="#A8D8EA"></div>
-										<div class="color-circle" style="background-color: #AA96DA"
-											value="#AA96DA"></div>
+									<div id="color-selector">
+										<div class="color-circle" style="background-color: #FF8080"></div>
+										<div class="color-circle" style="background-color: #FFCF96"></div>
+										<div class="color-circle" style="background-color: #F6FDC3"></div>
+										<div class="color-circle" style="background-color: #CDFAD5"></div>
 									</div>
 									<p>
 										선택한 색: <span id="selected-color"></span>
@@ -356,13 +324,13 @@ html, body {
 								<label for="eventModalStart" class="col-form-label">일정
 									시작</label> <input type="datetime-local" id="eventModalStart"
 									class="form-control" placeholder="datetime-local input"
-									disabled onchange="validateEndDate('eventModal')">
+									disabled>
 							</div>
 							<div class="mb-3">
 								<label for="eventModalEnd" class="col-form-label">일정 종료</label>
 								<input type="datetime-local" id="eventModalEnd"
 									class="form-control" placeholder="datetime-local input"
-									disabled>
+									disabled onchange="validateEndDate()">
 							</div>
 							<div class="mb-3">
 								<label for="eventModalSelect" class="col-form-label">카테고리</label>
@@ -374,8 +342,8 @@ html, body {
 								</select>
 							</div>
 							<div class="mb-3">
-								<label for="eventModalLoc" class="col-form-label">장소</label> <input
-									type="text" class="form-control" id="eventModalLoc">
+								<label for="eventModalIoc" class="col-form-label">장소</label> <input
+									type="text" class="form-control" id="eventModalIoc">
 							</div>
 							<div class="mb-3">
 								<label for="eventModalContent" class="col-form-label">내용:</label>
@@ -404,10 +372,10 @@ html, body {
 				<div class="modal-content">
 					<div class="modal-body">
 						<div class="card-body p-5">
-							<form id="login-form" name="login-form" class="mb-0" action="#"
-								method="post">
+							<form id="login-form" name="login-form" class="mb-0"
+								>
 								<h1 class="fs-4 fw-semibold text-center mb-0">Sign In to
-									Planiverse Account</h1>
+									Canvas Account</h1>
 								<h2 class="fs-5 text-center fw-medium mb-5 mt-1">
 									<span class="op-06 nocolor">New?</span> <a href="#"
 										id="signup-action">Create Account</a>
@@ -448,12 +416,12 @@ html, body {
 									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img
 									src="https://cdn.cdnlogo.com/logos/g/35/google-icon.svg"
 									alt="Google Logo" class="d-inline-block me-2 square square-xs">Sign
-									In with Google</a> <a href="javascript:loginWithKakao()"
+									In with Google</a> <a href="#"
 									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img
-									id="kakao-login-btn"
-									src="https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Ff5d7b9d3-6faa-4fbd-92fb-abc13883f4ac%2Fkakao.png&blockId=845a0760-d543-46ae-965d-018c4289eb32&width=256"
+									src="https://cdn.cdnlogo.com/logos/f/91/facebook-icon.svg"
+									alt="Facebook Logo"
 									class="d-inline-block me-2 square square-xs">Sign In with
-									Kakao</a> <a href="#"
+									Facebook</a> <a href="#"
 									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img
 									src="https://cdn.cdnlogo.com/logos/t/39/twitter.svg"
 									alt="Twitter Logo" class="d-inline-block me-2 square square-xs">Sign
@@ -481,38 +449,49 @@ html, body {
 								<h3>Register for an Account</h3>
 
 								<form id="register-form" name="register-form" class="row mb-0"
-									action="/plan/user/register.do" method="post">
+									action="#" method="post">
 
 									<div class="col-12 form-group">
-										<label for="register-form-email">Email(ID):</label> <input
-											type="text" id="id" name="id" class="form-control" required>
-										<br>
-										<button class="button button-3d button-black m-0" id="idCheck"
-											name="idCheck" disabled>중복 검사</button>
+										<label for="register-form-name">Name:</label> <input
+											type="text" id="register-form-name" name="register-form-name"
+											value="" class="form-control">
 									</div>
 
 									<div class="col-12 form-group">
-										<label for="register-form-password">Password:</label> <input
-											type="password" id="pw" name="pw" class="form-control"
-											required disabled>
+										<label for="register-form-email">Email Address:</label> <input
+											type="text" id="register-form-email"
+											name="register-form-email" value="" class="form-control">
+									</div>
+
+									<div class="col-12 form-group">
+										<label for="register-form-username">Choose a Username:</label>
+										<input type="text" id="register-form-username"
+											name="register-form-username" value="" class="form-control">
+									</div>
+
+									<div class="col-12 form-group">
+										<label for="register-form-phone">Phone:</label> <input
+											type="text" id="register-form-phone"
+											name="register-form-phone" value="" class="form-control">
+									</div>
+
+									<div class="col-12 form-group">
+										<label for="register-form-password">Choose Password:</label> <input
+											type="password" id="register-form-password"
+											name="register-form-password" value="" class="form-control">
 									</div>
 
 									<div class="col-12 form-group">
 										<label for="register-form-repassword">Re-enter
-											Password:</label> <input type="password" id="repw" name="repw"
-											class="form-control" required disabled>
-									</div>
-
-									<div class="col-12 form-group">
-										<label for="register-form-name">Name:</label> <input
-											type="text" id="name" name="name" class="form-control"
-											required>
+											Password:</label> <input type="password"
+											id="register-form-repassword" name="register-form-repassword"
+											value="" class="form-control">
 									</div>
 
 									<div class="col-12 form-group">
 										<button class="button button-3d button-black m-0"
-											type="submit" id="registerBtn" name="registerBtn"
-											value="register" disabled>Register Now</button>
+											id="register-form-submit" name="register-form-submit"
+											value="register">Register Now</button>
 									</div>
 
 								</form>
@@ -542,20 +521,14 @@ html, body {
 						<form>
 							<div class="mb-3">
 								<div class="container">
-									<div id="editColor">
-										<div class="color-circle" style="background-color: #F9B8D1"
-											value="#F9B8D1"></div>
-										<div class="color-circle" style="background-color: #F1932E"
-											value="#F1932E"></div>
-										<div class="color-circle" style="background-color: #FFFFD2"
-											value="#FFFFD2"></div>
-										<div class="color-circle" style="background-color: #A8D8EA"
-											value="#A8D8EA"></div>
-										<div class="color-circle" style="background-color: #AA96DA"
-											value="#AA96DA"></div>
+									<div id="color-selector">
+										<div class="color-circle" style="background-color: #FF8080"></div>
+										<div class="color-circle" style="background-color: #FFCF96"></div>
+										<div class="color-circle" style="background-color: #F6FDC3"></div>
+										<div class="color-circle" style="background-color: #CDFAD5"></div>
 									</div>
 									<p>
-										선택한 색: <span id="editSelColor"></span>
+										선택한 색: <span id="selected-color"></span>
 									</p>
 								</div>
 							</div>
@@ -565,17 +538,16 @@ html, body {
 							</div>
 
 							<div class="mb-3">
-								<label class="form-check-label" for="editEventModalAllDay">
+								<div class="form-check form-switch" id="allDayBox">
 									<input class="form-check-input" type="checkbox"
-									id="editEventModalAllDay" name="editEventModalAllDay">
-									하루종일
-								</label>
+										id="allDayCheck" checked> <label
+										class="form-check-label" for="allDayCheck">하루종일</label>
+								</div>
 							</div>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">일정 시작</label>
 								<input type="datetime-local" id="editEventModalStart"
-									class="form-control" placeholder="datetime-local input"
-									onchange="validateEndDate('editEventModal')">
+									class="form-control" placeholder="datetime-local input">
 							</div>
 							<div class="mb-3">
 								<label for="recipient-name" class="col-form-label">일정 종료</label>
@@ -631,7 +603,16 @@ html, body {
 	Kakao.init('264eac61bfebe8b0add3dd5814946507'); // 사용하려는 앱의 JavaScript 키 입력
 	Kakao.isInitialized();
 	console.log(Kakao.isInitialized());
-  
+  </script>
+
+	<a id="kakao-login-btn" href="javascript:loginWithKakao()"> <img
+		src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
+		width="222" alt="카카오 로그인 버튼" />
+	</a>
+	<button class="api-btn" onclick="kakaoOut()">로그아웃</button>
+	<p id="token-result"></p>
+
+	<script>
 
 	
 	function loginWithKakao() {
@@ -694,7 +675,7 @@ html, body {
     	 localStorage.clear();
     	 Kakao.Auth.setAccessToken(undefined);
     	 
-    	 window.location.href = 'http://localhost:8080/plan/planiverse.do';
+    	 window.location.href = 'http://localhost:8081/plan/planiverse.do';
 	
 	}
 	
@@ -704,24 +685,17 @@ html, body {
 		   
 		  }
   </script>
+
+
+
+
 	<script>
 		
 		var coll = document.getElementsByClassName("collapsible");
 		var sidebar = document.getElementsByClassName("sidebar");
 		var addScheduleBtn = document.getElementById("addScheduleBtn");
 		var i;
-		var calendar;
-		// ajax 중복 방지
-		var delRequest = null;
-		var addRequest = null;
-		var editRequest = null;
 		
-		//사이드바 토글
-		var sidebarStatus = true;
-		var sidebarMain = document.getElementById("sidebarMain");
-		var addSchedule = document.getElementById("addSchedule");
-	    var sidebarFoldingBtn = document.getElementById('sidebarFoldingBtn');
-
 		// Accordian
 		for (var i = 0; i < coll.length; i++) {
 			var initialContent = coll[i].nextElementSibling;
@@ -795,66 +769,35 @@ html, body {
 				},
 			});
 		});
-		
-		// 윈도우 크기 변경, 사이드바 토글 이벤트 리스너 추가
-		document.addEventListener('DOMContentLoaded', function() {
-			// 사이드바 및 내부 요소 조정 함수
-		    function adjustSidebar() {
-		    	// 브라우저 내부 사이즈 저장
-		        const windowWidth = window.innerWidth;
-		    	// 사이드바 너비 저장
-		        var sidebarWidth;
-		    	// 사이드바 높이 저장
-		        const sliderHeight = windowWidth < 1000 ? "auto" : "calc(100vh - 70px)";
-		    	// 사이드바 토글시의 버튼 간격(일정 생성과 이전달버튼) 저장
-		        const marginLeft = sidebarStatus ? "0" : "100px";
-				
-		    	// 사이드바 너비 적용
-		        if (sidebarStatus) {
-		            sidebarWidth = (windowWidth >= 1000) ? "250px" : "100%";
-		        } else {
-		            sidebarWidth = (windowWidth >= 1000) ? "0" : "100%";
-		        }
-		
-		        $('#sidebarMain').css({
-		            display: (windowWidth < 1000) ? "block" : "",
-		            width: sidebarWidth
-		        });
-		    	// 사이드바 높이 적용
-		        $('#slider').css("height", sliderHeight);
-		    	// 버튼 간격 적용
-		        $('.fc-toolbar-chunk').css("margin-left", marginLeft);
-				
-		    	// 사이드바 토글시 내부 요소들 감추기/보이기
-		        $('#sidebarMain').children().not('#addSchedule').css("display", sidebarStatus ? "" : "none");
-		    }
-			
-		    // 사이드바 토글 함수
-		    function toggleSidebar() {
-		        sidebarStatus = !sidebarStatus;
-		        adjustSidebar();
-		        calendar.render();
-		    }
-			
-		    // 브라우저 크기 변경시 사이드바 조정함수 실행
-		    window.addEventListener('resize', adjustSidebar);
-		    // 사이드바 토글버튼 클릭시 토글 함수 실행
-		    $('#sidebarFoldingBtn').on('click', toggleSidebar);
-			
-		    // 사이트 로딩 직후 사이드바 크기 조정
-		    adjustSidebar();
-		    // 사이트 로딩 후 css 후처리
-		    $('.calendarGroup').css({
-		        display: "flex",
-		        paddingRight: "10px"
-		    }).children().css("marginLeft", "auto");
-		
-		    $('.button-border').css({
-		        border: "0",
-		        background: "none"
-		    });
-		});
 
+		window.onload = function() {
+			var sidebarStatus = true;
+			sidebarFoldingBtn.onclick = function () {
+				var sidebarMain = document.getElementById("sidebarMain");
+				var addSchedule = document.getElementById("addSchedule");
+
+				sidebarMain.style.width = sidebarStatus ? "0" : "250px";
+				Array.from(sidebarMain.children).forEach(child => {
+					if (child !== addSchedule) {
+						child.style.display = sidebarStatus ? "none" : "";
+					}
+				});
+				
+				sidebarStatus = !sidebarStatus;
+				$('.fc-toolbar-chunk').css("margin-left", sidebarStatus ? "0" : "100px");
+				calendar.render();
+				//$('.fc-daygrid-body .fc-daygrid-body-unbalanced').css('width', '100%');
+				//$('fc-scrollgrid-sync-table').css('width', '100%');
+				//$('fc-scrollgrid-sync-table').children().css('width', '100%');
+			};
+			$('.calendarGroup').css("display", "flex");
+			$('.calendarGroup').css("padding-right", "10px");
+			//$('.calendarGroup').css("display", "flex");
+			$('.calendarGroup').children().css("margin-left", "auto");
+			$('.button-border').css("border", "0");
+			$('.button.button-border').css("background", "");
+			//$('.button.button-border').css("background-color", "#eee");
+		};
 		
 		
 	document.addEventListener('DOMContentLoaded', function() {
@@ -872,14 +815,10 @@ html, body {
 		 //allDayBox.style.display = 'none';
 		 document.getElementById('eventModalStart').removeAttribute('disabled');
 		 document.getElementById('eventModalEnd').removeAttribute('disabled');  
-		 $('#eventProduceModal input, textarea').val('');
-		 $('#selected-color').css("background-color", "transparent");
+
 		 modal.show();
-		 $("#btnEventProduce").off('click').click(function () {
-			addEvent();
-		 	modal.hide();
-		 });
-		 //var start = document.getElementById('eventstart')
+		 
+		 var start = document.getElementById('eventstart')
 	});
 
 	var loginModal = document.getElementById('loginModal');
@@ -893,190 +832,74 @@ html, body {
 			modal1.show();
 		})
 	})
-	function login() {
-    var loginId = $('#login-form-username').val();
-    var loginPw = $('#login-form-password').val();
-    console.log("Attempting login with:", loginId, loginPw);
-    $.ajax({
-        type: "post",
-        url: "/plan/event/login.do",
-        data: {
-            loginId: loginId,
-            loginPw: loginPw
-        },
-        success: function(response) {
-            console.log(response);
-            if (response == "1") {
-                sessionStorage.setItem("userId", loginId);
-                alert('로그인 성공');
-                window.location.href = "/plan/planiverse.do";
-            } else {
-                alert('로그인 실패');
-            }
-        },
-        error: function(a, b, c) {	
-            console.error(a, b, c);
-        }
-    });
-}
-$("#login-form-submit").on('click', function(event) {
-    login();
-});
 
-	//수정 모달 하루종일 버튼 제어
-	$('#editEventModalAllDay').change(()=>{
-		if($('#editEventModalAllDay').is(':checked')){
-			var clickedDate = $('#editEventModalStart').val();
-            var momentClickedDate = moment(clickedDate);
-			$('#editEventModalStart').val(momentClickedDate.format('YYYY-MM-DDT00:00'));
-			$('#editEventModalEnd').val(momentClickedDate.add(24, 'hours').format('YYYY-MM-DDT00:00'));
-			$('#editEventModalStart').attr("disabled",true); 
-			$('#editEventModalEnd').attr("disabled",true); 
-		} else {
-			$('#editEventModalStart').attr("disabled",false); 
-			$('#editEventModalEnd').attr("disabled",false); 
-		}		
-	});
-		
-	//생성 모달 하루종일 버튼 제어
-	$('#allDayCheck').change(()=>{
-		if($('#allDayCheck').is(':checked')){
-			var clickedDate = $('#eventModalStart').val();
-            var momentClickedDate = moment(clickedDate);
-			$('#eventModalStart').val(momentClickedDate.format('YYYY-MM-DDT00:00'));
-			$('#eventModalEnd').val(momentClickedDate.add(24, 'hours').format('YYYY-MM-DDT00:00'));
-			$('#eventModalStart').attr("disabled",true); 
-			$('#eventModalEnd').attr("disabled",true); 
-		} else {
-			$('#eventModalStart').attr("disabled",false); 
-			$('#eventModalEnd').attr("disabled",false); 
-		}		
-	});
 	
-    calendar = new FullCalendar.Calendar(calendarEl, {
-    	//이벤트 클릭시 수정 모달 생성
+	
+    var calendar = new FullCalendar.Calendar(calendarEl, {
 		eventClick: function(info) {
 			var container = document.getElementById("editEventModal");
 			var modal = new bootstrap.Modal(container);
-
-			if(info.event.allDay ==true){
-				$('#editEventModalAllDay').prop('checked',true);
-				$('#editEventModalStart').attr("disabled",true); 
-				$('#editEventModalEnd').attr("disabled",true); 
-			} else {
-				$('#editEventModalAllDay').prop('checked',false);
-				$('#editEventModalStart').attr("disabled",false); 
-				$('#editEventModalEnd').attr("disabled",false); 
-			}
+			$('#editEventModalTitle').val(info.event.title);
 			$('#editEventModalStart').val(moment(info.event.start).format('YYYY-MM-DDTHH:mm'));
 			$('#editEventModalEnd').val(moment(info.event.end).format('YYYY-MM-DDTHH:mm'));
-			$('#editEventModalTitle').val(info.event.title);
-			$('#editSelColor').css("background-color", "transparent");
-			$('#editSelColor').css("background-color", info.event.backgroundColor);
+			$('#editEventModalColor').val(info.event.backgroundColor);
 			$('#editEventModalLoc').val(info.event.extendedProps.loc);
 			$('#editEventModalContent').val(info.event.extendedProps.content);
-			
         	modal.show();
 
-			$('#deleteEventBtn').off('click').click(function() {
-				if(window.confirm('일정을 삭제하시겠습니까?')){
-					// 중복 실행 방지
-					if (delRequest !== null) {
-					    delRequest.abort();
-					}
-
-					  // ajax 요청 생성
-					delRequest = $.ajax({
-		   	      		type: "post",
-		   	      		url: "/plan/event/delete.do",
-		   	      		data: {
-		   	      			eventSeq: info.event.extendedProps.eventSeq
-		   	      		},
-		   	      		dataType: 'json',
-		   	      		success: function (response) {
-		   	      			if(response.result ==1){
-								info.event.remove();
-		   	      			}
-		   	      		},
-		   	      		error: function(a,b,c){
-		   					console.log(a,b,c);
-		   				}
-		   	    	});
-				} 
+			$('#deleteEventBtn').on('click', function() {
+				if(window.confirm('일정을 삭제하시겠습니까?'))
+				info.event.remove();
 				modal.hide();
 			});
 			
-			
-			$('#editEventBtn').off('click').click(function() {
+			$('#editEventBtn').on('click', function() {
 				if(confirm('일정을 수정하시겠습니까?')){
-					// 중복 실행 방지
-					if (editRequest !== null) {
-						editRequest.abort();
-					}
-
-					  // ajax 요청 생성
-					editRequest =  $.ajax({
+					$.ajax({
 				  		type: "post",
 				   		url: "/plan/event/change.do",
 				   		data: {
 				   			eventSeq: info.event.extendedProps.eventSeq,
-				   			allDay: $('#editEventModalAllDay').is(':checked'),
+				   			allDay: info.event.allDay,
 				   			title: $('#editEventModalTitle').val(),
 				   			start: moment($('#editEventModalStart').val()).format('YYYY/MM/DD HH:mm'), 
 				   			end: moment($('#editEventModalEnd').val()).format('YYYY/MM/DD HH:mm'), 
-				   			color: $('#editColor').attr("value"),
+				   			color: $('#editEventModalColor').val(),
 				   			loc: $('#editEventModalLoc').val(),
 				   			content: $('#editEventModalContent').val()
 				   	    },
-				   	    dataType: 'json',
 				   	    success: function (response) {
-				   	    	if(response.result ==1){
 				   	    	info.event.setProp('title', $('#editEventModalTitle').val());
-				   	    	info.event.setAllDay($('#editEventModalAllDay').is(':checked'));
+				   	    	info.event.setAllDay(false);
 				   	    	info.event.setStart($('#editEventModalStart').val());
 				   	    	info.event.setEnd($('#editEventModalEnd').val());
-				   	    	info.event.setProp('color', $('#editColor').attr("value"));
+				   	    	info.event.setProp('color', $('#editEventModalColor').val());
 				   	    	info.event.setExtendedProp('loc', $('#editEventModalLoc').val());
 				   	    	info.event.setExtendedProp('content', $('#editEventModalContent').val());
-				   	    	}
+				   	    	modal.hide();
 				   	    },
 				   	    error: function(a,b,c){
 				   			console.log(a,b,c);
 				   		}
 				   	});
 				}
-				$('#editEventModal input, textarea').val('');
-				modal.hide();
 			});
-
+			
+			$("#btnEventProduce").on('click', function(event) {
+				var start = $('#eventModalStart').val();
+				var end = $('#eventModalEnd').val();
+				alert();
+			});
+			
+			$("#login-form-submit").on('click', function(event) {
+				var loginId = $('#login-form-username').val();
+				var loginPw = $('#login-form-password').val();
+				alert(loginId);
+				alert(loginpw);
+				console.log(loginId);
+			});
 		},
-		//이벤트 드롭으로 일정 수정
-	   	  eventDrop: function(info){
-	   		  if(confirm('일정을 수정하시겠습니까?')){
-	   			$.ajax({
-	   	      		type: "post",
-	   	      		url: "/plan/event/dropchange.do",
-	   	      		data: {
-	   	      			eventSeq: info.event.extendedProps.eventSeq,
-	   	      			allDay: info.event.allDay,
-	   	      			start: moment(info.event.start).format('YYYY/MM/DD HH:mm'),
-	   	      			end: moment(info.event.end).format('YYYY/MM/DD HH:mm')
-	   	      		},
-	   	      		dataType: 'json',
-	   	      		success: function (response) {
-	   	      			if(response.result ==1){
-	   	        			alert('수정 완료');
-	   	      			}
-	   	      		},
-	   	      		error: function(a,b,c){
-	   					console.log(a,b,c);
-	   				}
-	   	    	});
-	   		  } else {
-	   			  info.revert();
-	   		  }
-	   	  },
-	   	//이벤트 hover 시 팝오버창 생성
+		
 		eventDidMount: function (info) {
 			var popover = new bootstrap.Popover(info.el, {
 				title: $('<div />', {
@@ -1097,32 +920,27 @@ $("#login-form-submit").on('click', function(event) {
 			container: 'body'
 			});
 		},
-		
-		//날짜 선택 시 일정 추가 모달 생성 + 이벤트 등록
 		dateClick: function(info) {
-			var clickedDate = info.date;
-			var momentClickedDate = moment(clickedDate);
-			var container = document.getElementById("eventProduceModal");
-			var modal = new bootstrap.Modal(container);
-			var allday = document.getElementById("allDayCheck");
+            var clickedDate = info.date;
+            var momentClickedDate = moment(clickedDate); 
 
-			// 설정된 날짜 및 시간 설정
-			var formattedDateTimeStart = momentClickedDate.format('YYYY-MM-DD HH:mm:ss');
+			//allDayBox.style.display = 'block'; 
+			document.getElementById('eventModalStart').disabled = true;
+			document.getElementById('eventModalEnd').disabled = true;
+
+
+            var formattedDateTimeStart = momentClickedDate.format('YYYY-MM-DD HH:mm:ss');
+            document.getElementById("eventModalStart").value = formattedDateTimeStart;
+    
 			var formattedDateTimeEnd = moment(momentClickedDate).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
-			document.getElementById("eventModalStart").value = formattedDateTimeStart;
-			document.getElementById("eventModalEnd").value = formattedDateTimeEnd;
-			$('#eventProduceModal input[type=text], textarea').val('');
-			$('#selected-color').css("background-color", "transparent");
-			modal.show();
-			$("#btnEventProduce").off('click').click(function () {
-				addEvent();
-			 	modal.hide();
-			 });
+            document.getElementById("eventModalEnd").value = formattedDateTimeEnd;
+
+
+            var container = document.getElementById("eventProduceModal");
+            var modal = new bootstrap.Modal(container);
+            var allday = document.getElementById("allDayCheck");
+            modal.show();
 		},
-		
-	  eventAdd: function (addInfo) {
-	      console.log("eventAdd");
-	  }, 
       select: function(info) {
         
       },
@@ -1135,53 +953,74 @@ $("#login-form-submit").on('click', function(event) {
       navLinks: true, // can click day/week names to navigate views
       editable: true,
       selectable: true,
-      dayMaxEvents: true,
       events: [
-    	  $.ajax({
-     			type: 'get',
-     			url: '/plan/event/list.do',
-     			dataType: 'json',
-     			success: function(result){
-     				result.forEach(obj =>{
-     					calendar.addEvent({
-     						title: obj.title,
-     						allDay: (obj.allDay == 'y'? true: false),
-     						start: obj.start,
-     						end: obj.end,
-     						color: obj.color,
-     						extendedProps: {
-     							eventSeq: obj.eventSeq,
-  			   				loc: obj.loc,
-  			   				content: obj.content
-     						}
-     					})
-     				})
-    			},
-     			error: function(a,b,c){
-     				console.log(a,b,c);
-     			}
-     		 }) 
-      ]
+   		   $.ajax({
+   			type: 'get',
+   			url: '/plan/event/list.do',
+   			dataType: 'json',
+   			success: function(result){
+   				result.forEach(obj =>{
+   					calendar.addEvent({
+   						title: obj.title,
+   						start: obj.start,
+   						end: obj.end,
+   						color: obj.color,
+   						extendedProps: {
+   							eventSeq: obj.eventSeq,
+			   				loc: obj.loc,
+			   				content: obj.content
+   						}
+   					})
+   				})
+  			},
+   			error: function(a,b,c){
+   				console.log(a,b,c);
+   			}
+   		  }) 
+   	  ],
+   	  eventDrop: function(info){
+   		  if(confirm('일정을 수정하시겠습니까?')){
+   			$.ajax({
+   	      		type: "post",
+   	      		url: "/plan/event/dropchange.do",
+   	      		data: {
+   	      			eventSeq: info.event.extendedProps.eventSeq,
+   	      			allDay: info.event.allDay,
+   	      			start: moment(info.event.start).format('YYYY/MM/DD HH:mm'),
+   	      			end: moment(info.event.end).format('YYYY/MM/DD HH:mm')
+   	      		},
+   	      		success: function (response) {
+   	        		alert('수정 완료');
+   	      		},
+   	      		error: function(a,b,c){
+   					console.log(a,b,c);
+   				}
+   	    	});
+   		  } else {
+   			  info.revert();
+   		  }
+   	  }
     });
     calendar.render();
+
   });
-	
+		
 	function getDisplayEventDate(event) {
 		var displayEventDate;
-		
+
 		if(event.end == null) {
 			displayEventDate = moment(event.start).format('HH:mm');
-		} else if (moment(event.start).format('MM-DD')==moment(event.end).format('MM-DD')) {
-			  var startTimeEventInfo = moment(event.start).format('HH:mm');
-			  var endTimeEventInfo = moment(event.end).format('HH:mm');
-			  displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
-		} else if ((moment(event.start).format('MM-DD')==moment(event.end-1).format('MM-DD'))&& event.allDay==true) {
-			displayEventDate = "하루종일";
 		} else if (moment(event.start).format('MM-DD')!=moment(event.end).format('MM-DD')) {
 		  var startEventInfo = moment(event.start).format('MM/DD');
 		  var endEventInfo = moment(event.end).format('MM/DD');
 		  displayEventDate = startEventInfo + " - " + endEventInfo;
-		} 
+		} else if (moment(event.start).format('MM-DD')==moment(event.end).format('MM-DD')) {
+		  var startTimeEventInfo = moment(event.start).format('HH:mm');
+		  var endTimeEventInfo = moment(event.end).format('HH:mm');
+		  displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
+		} else {	
+			  displayEventDate = "하루종일";
+		}
 		return displayEventDate;
 		}
 	
@@ -1196,116 +1035,17 @@ $("#login-form-submit").on('click', function(event) {
 	    	}
 		});
 	
-		function validateEndDate(modal) {
-		    var startDate = document.getElementById(modal+"Start").value;
-			document.getElementById(modal+"End").setAttribute("min", startDate);
-		    /* var endDate = document.getElementById("eventModalEnd").value;
+		function validateEndDate() {
+		    var startDate = document.getElementById("eventModalStart").value;
+		    var endDate = document.getElementById("eventModalEnd").value;
 
 			if (startDate && endDate) {
 			    if (startDate > endDate) {
-			        alert("일정 종료일은 시작일 이후여야 합니다."); }}*/
-		}
-		
-				
-		function addEvent() {
-			// 중복 실행 방지
-			if (addRequest) {
-				addRequest.abort();
+			        alert("일정 종료일은 시작일 이후여야 합니다.");
+			        document.getElementById("eventModalEnd").value = startDate;
+			    }
 			}
-
-			// ajax 요청 생성
-			addRequest = $.ajax({
-				type: 'post',
-				url: '/plan/event/add.do',
-				data: {
-					allDay: $('#allDayCheck').is(':checked'),
-					title: $('#eventModalTitle').val(),
-					start: $('#eventModalStart').val(), 
-					end: $('#eventModalEnd').val(),
-					color: $('#color').attr("value"),
-					loc: $('#eventModalLoc').val(),
-					content: $('#eventModalContent').val(),
-					calSeq: 1
-				},
-				dataType: 'json',
-				success: function(result){
-					calendar.addEvent({
-						title: $('#eventModalTitle').val(),
-						allDay: $('#allDayCheck').is(':checked'),
-						start: $('#eventModalStart').val(),
-						end: $('#eventModalEnd').val(),
-						color: $('#color').attr("value"),
-						extendedProps: {
-							eventSeq: result.eventSeq,
-							loc: $('#eventModalLoc').val(),
-							content: $('#eventModalContent').val()
-						}
-					});
-					calendar.render();
-				},
-				error: function(a, b, c){
-					console.log(a, b, c);
-				}
-			});
 		}
-		
-		//회원가입창 생성시 input 값 비우기
-		$('#signup-action').click(function() {
-			$('#signupModal input').val('');
-		});
-		
-		//비밀번호 동일한지 검사
-		$('#repw').keyup(function () {
-			if($('#pw').val()!=$('#repw').val()){
-				$('#registerBtn').attr("disabled",true); 
-			} else if ($('#pw').val()==$('#repw').val()){
-				$('#registerBtn').attr("disabled",false); 
-			}
-		});
-		
-		//id 다시 수정하면 블록
-		$('#id').keyup(function () {
-			$('#pw').attr("disabled",true); 
-			$('#repw').attr("disabled",true);
-			$('#registerBtn').attr("disabled",true); 
-			$('#idCheck').attr("disabled",false); 
-		});
-		
-		//id 중복검사
-		$('#idCheck').click(function () {
-			$.ajax({
-				type: 'post',
-				url: '/plan/user/idcheck.do',
-				data: {
-					id: $('#id').val()
-				},
-				success: function(result){
-					if(result==1){
-						alert('사용 가능한 Email(ID)입니다.');
-						$('#pw').attr("disabled",false); 
-						$('#repw').attr("disabled",false); 
-					} else {
-						alert('이미 사용중인 Email(ID)입니다.');
-						$('#id').val('').focus();
-					}
-				},
-				error: function(a, b, c){
-					console.log(a, b, c);
-				}
-			});
-		});
-		
-		//선택한 색 표시
-		$('#color > div').click(function(){
-			$('#selected-color').css("background-color", $(event.target).attr("value"));
-			$('#color').attr("value", $(event.target).attr("value"));
-		});
-		
-		$('#editColor > div').click(function(){
-			$('#editSelColor').css("background-color", $(event.target).attr("value"));
-			$('#editColor').attr("value", $(event.target).attr("value"));
-		});
-		
 	</script>
 </body>
 </html>

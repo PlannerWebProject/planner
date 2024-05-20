@@ -20,5 +20,11 @@ public class Index extends HttpServlet {
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/index.jsp");
 		dispatcher.forward(req, resp);
 	}
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setAttribute("path", "/plan");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/index.jsp");
+		dispatcher.forward(req, resp);
+	}
 }
 
