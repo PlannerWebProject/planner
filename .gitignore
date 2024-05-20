@@ -1,1 +1,17 @@
 /.metadata/
+.project
+/.settings/
+*.class
+*.log
+*.ctxt
+.mtj.tmp/
+*.war
+*.nar
+*.ear
+*.tar.gz
+.rar
+/Servers/
+/Servers2/
+hs_err_pid
+replay_pid*
+*.classpath
