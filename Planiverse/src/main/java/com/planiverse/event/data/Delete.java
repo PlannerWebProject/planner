@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.planiverse.event.repository.EventDAO;
 
@@ -17,11 +18,14 @@ public class Delete extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		String eventSeq = req.getParameter("eventSeq");
+		HttpSession session = req.getSession();
+		String id = (String) session.getAttribute("id");
+		int result = 0;
+		if (id != null) {
+			EventDAO dao = new EventDAO();
 
-		EventDAO dao = new EventDAO();
-
-		int result = dao.delete(eventSeq);
-
+			result = dao.delete(eventSeq);
+		}
 		resp.setContentType("application/json");
 		PrintWriter writer = resp.getWriter();
 		writer.print("{");

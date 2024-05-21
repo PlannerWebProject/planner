@@ -161,12 +161,29 @@ html, body {
 	height: 15px;
 }
 
+
 .pointer {
 	cursor: pointer;
 }
 .pointer:hover {
 	opacity: 0.7;
 }
+
+
+.bi-person-circle::before {
+    font-size: 30px;
+}
+
+@media (min-width: 1400px) {
+    .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: inherit;
+        width: 100%;
+
+    }
+}
+
+
+
 </style>
 
 </head>
@@ -448,7 +465,7 @@ html, body {
 
 							<div class="text-center">
 								<a href="#"
-									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img
+									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center" id="googleLoginNow"><img
 									src="https://cdn.cdnlogo.com/logos/g/35/google-icon.svg"
 									alt="Google Logo" class="d-inline-block me-2 square square-xs">Sign
 									In with Google</a> <a href="javascript:loginWithKakao()"
@@ -652,10 +669,11 @@ html, body {
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.1.0/js/datepicker.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
 	<script src="${path}/resources/js/plugins.min.js"></script>
 	<script src="${path}/resources/js/functions.bundle.js"></script>
 	<script src='${path}/resources/js/index.global.js'></script>
-
+	<script src='${path}/resources/js/index.global.min.js'></script>
 	<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js"
 		integrity="sha384-kDljxUXHaJ9xAb2AzRd59KxjrFjzHa5TAoFQ6GbYTCAG0bjM55XohjjDT7tDDC01"
 		crossorigin="anonymous"></script>
@@ -949,6 +967,13 @@ html, body {
 	var modalElement = document.querySelector('.modal');
 	var exampleModal = document.getElementById('event');
 	
+	var googlelogin = document.getElementById('googleLoginNow');
+	
+	googlelogin.onclick = function(){
+		
+		signIn();
+	}
+	
 	addScheduleBtn.addEventListener('click', function() {
 		 var modal = new bootstrap.Modal(eventProduceModal);
 		 //allDayBox.style.display = 'none';
@@ -981,7 +1006,7 @@ html, body {
     console.log("Attempting login with:", loginId, loginPw);
     $.ajax({
         type: "post",
-        url: "/plan/event/login.do",
+        url: "/plan/user/login.do",
         data: {
             loginId: loginId,
             loginPw: loginPw
@@ -1034,12 +1059,20 @@ $("#login-form-submit").on('click', function(event) {
 			$('#eventModalEnd').attr("disabled",false); 
 		}		
 	});
-	
     calendar = new FullCalendar.Calendar(calendarEl, {
-    	googleCalendarApiKey: '<YOUR API KEY>',
-    	events: {
-    		googleCalendarId: 'abcd1234@group.calendar.google.com'
+    	
+    	googleCalendarApiKey: 'AIzaSyCYi2s4BmKlnYWFKvDq1yfl7oUFmXSxiHc',
+
+    	eventSources: [
+
+    	{
+    		googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com'
     	},
+    	{
+    		googleCalendarId: 'shk19990314@gmail.com'
+    	}
+    	],
+			
     	//이벤트 클릭시 수정 모달 생성
 		eventClick: function(info) {
 			var container = document.getElementById("editEventModal");
@@ -1082,7 +1115,9 @@ $("#login-form-submit").on('click', function(event) {
 		   	      		success: function (response) {
 		   	      			if(response.result ==1){
 								info.event.remove();
-		   	      			}
+		   	      			} else if (response.result ==0){
+				   	    		alert('로그인 후 이용 가능합니다.');
+				   	    	}
 		   	      		},
 		   	      		error: function(a,b,c){
 		   					console.log(a,b,c);
@@ -1099,7 +1134,10 @@ $("#login-form-submit").on('click', function(event) {
 					if (editRequest !== null) {
 						editRequest.abort();
 					}
-
+					var titleValue =  $('#editEventModalTitle').val();
+					var locValue = $('#editEventModalLoc').val();
+		   			var contentValue = $('#editEventModalContent').val();
+				
 					  // ajax 요청 생성
 					editRequest =  $.ajax({
 				  		type: "post",
@@ -1107,23 +1145,26 @@ $("#login-form-submit").on('click', function(event) {
 				   		data: {
 				   			eventSeq: info.event.extendedProps.eventSeq,
 				   			allDay: $('#editEventModalAllDay').is(':checked'),
-				   			title: $('#editEventModalTitle').val(),
+				   			title: titleValue,
 				   			start: moment($('#editEventModalStart').val()).format('YYYY/MM/DD HH:mm'), 
 				   			end: moment($('#editEventModalEnd').val()).format('YYYY/MM/DD HH:mm'), 
 				   			color: $('#editColor').attr("value"),
-				   			loc: $('#editEventModalLoc').val(),
-				   			content: $('#editEventModalContent').val()
+				   			loc: locValue,
+				   			content: contentValue
 				   	    },
 				   	    dataType: 'json',
 				   	    success: function (response) {
 				   	    	if(response.result ==1){
-				   	    	info.event.setProp('title', $('#editEventModalTitle').val());
+				   	    	console.log(titleValue);
+				   	    	info.event.setProp('title', titleValue);
 				   	    	info.event.setAllDay($('#editEventModalAllDay').is(':checked'));
 				   	    	info.event.setStart($('#editEventModalStart').val());
 				   	    	info.event.setEnd($('#editEventModalEnd').val());
 				   	    	info.event.setProp('color', $('#editColor').attr("value"));
-				   	    	info.event.setExtendedProp('loc', $('#editEventModalLoc').val());
-				   	    	info.event.setExtendedProp('content', $('#editEventModalContent').val());
+				   	    	info.event.setExtendedProp('loc', locValue);
+				   	    	info.event.setExtendedProp('content', contentValue);
+				   	    	} else if (response.result ==0){
+				   	    		alert('로그인 후 이용 가능합니다.');
 				   	    	}
 				   	    },
 				   	    error: function(a,b,c){
@@ -1152,7 +1193,9 @@ $("#login-form-submit").on('click', function(event) {
 	   	      		success: function (response) {
 	   	      			if(response.result ==1){
 	   	        			alert('수정 완료');
-	   	      			}
+	   	      			} else if (response.result ==0){
+			   	    		alert('로그인 후 이용 가능합니다.');
+			   	    	}
 	   	      		},
 	   	      		error: function(a,b,c){
 	   					console.log(a,b,c);
@@ -1247,7 +1290,7 @@ $("#login-form-submit").on('click', function(event) {
      				console.log(a,b,c);
      			}
      		 }) 
-      ]
+      ] 
     });
     calendar.render();
   });
@@ -1391,6 +1434,100 @@ $("#login-form-submit").on('click', function(event) {
 			$('#editSelColor').css("background-color", $(event.target).attr("value"));
 			$('#editColor').attr("value", $(event.target).attr("value"));
 		});
+		
+		function signIn() {
+            let oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
+            let form = document.createElement('form');
+            form.setAttribute('method', 'GET'); 
+            form.setAttribute('action', oauth2Endpoint);
+
+            let params = {
+                "client_id": "76388159425-rve73ghc872aj4c9qfh6pqbohg14inr8.apps.googleusercontent.com",
+                "redirect_uri": "http://localhost:8090/plan/planiverse.do",
+                "response_type": "token",
+                "scope": "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.settings.readonly",
+                "include_granted_scopes": 'true',
+                "state": 'pass-through value'
+            };
+
+            for (var p in params) {
+                let input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', p);
+                input.setAttribute('value', params[p]);
+                form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+            
+           
+        }
+
+        function checkAuth() {
+            let params = {};
+            let regex = /([^&=]+)=([^&]*)/g, m;
+            while (m = regex.exec(location.href)) {
+                params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+            };
+
+            if (Object.keys(params).length > 0) {
+                localStorage.setItem('authInfo', JSON.stringify(params));
+                window.history.pushState({}, document.title, "/" + "profile.html");
+                showProfile();
+            } else {
+                let storedInfo = localStorage.getItem('authInfo');
+                if (storedInfo) {
+                    showProfile();
+                }
+            }
+        }
+
+        function showProfile() {
+			let info = JSON.parse(localStorage.getItem('authInfo'));
+			console.log(info['access_token']);
+			console.log(info['expires_in'])
+			fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+				headers: {
+					"Authorization": `Bearer \${info['access_token']}`
+				}
+			})
+			.then((data) => data.json())
+			.then((info) => {
+				/* document.getElementById('names').innerHTML += info.name;
+				document.getElementById('image').src = info.picture; */
+			});
+		
+			fetch("https://www.googleapis.com/calendar/v3/users/me/calendarList/", {
+				headers: {
+					"Authorization": `Bearer \${info['access_token']}`
+				}
+			})
+			.then((data) => data.json())
+			.then((info) => {
+				let calendarList = [];
+				info.items.forEach(item => calendarList.push(JSON.stringify(item.id)));
+				/* document.getElementById('calendar_list').innerHTML = calendarList.join('<br>'); */
+				console.log(calendarList);
+				console.log(calendarList[0]);
+			});
+		}
+
+        function logout() {
+            let info = JSON.parse(localStorage.getItem('authInfo'));
+            fetch("https://oauth2.googleapis.com/revoke?token=" + info['access_token'], {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .then((data) => {
+                localStorage.removeItem('authInfo');
+                location.href = "http://localhost:8090/plan/planiverse.do";
+            });
+        }
+
+        checkAuth();
 		
 	</script>
 </body>
