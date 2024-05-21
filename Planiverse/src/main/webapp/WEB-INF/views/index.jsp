@@ -90,8 +90,12 @@ html, body {
 	border: 0;
 }
 
-#exampleModal, #editEventModal, #loginModal, #signupModal,
+<%-- #exampleModal, #editEventModal, #loginModal, #signupModal,
 	#eventProduceModal {
+	background-color: rgba(0, 0, 0, 0.4);
+} --%>
+
+.modal {
 	background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -155,6 +159,13 @@ html, body {
 	width: 50px;
 	display: inline-block;
 	height: 15px;
+}
+
+.pointer {
+	cursor: pointer;
+}
+.pointer:hover {
+	opacity: 0.7;
 }
 </style>
 
@@ -259,20 +270,16 @@ html, body {
 					<nav class="nav-tree mb-0">
 						<ul>
 							<li><a href="#" class="calendarGroup">내 달력</a></i>
-								<ul>
+								<ul id="myCalGroup">
 									<li><a href="#" id="addMyCalendarBtn"
 										class="sidebar button button-rounded px-5 button-border button-text-effect button-text-flip-x">
 											<div class="button-inner">
 												<span><i class="bi-plus-circle"></i>달력추가</span> <span
-													class="white"><i class="bi-plus-circle-fill"></i>달력추가</span>
+													class=""><i class="bi-plus-circle-fill"></i>달력추가</span>
 											</div>
 									</a></li>
-									<li><label class="checkbox-inline"><input
-											class="filter" type="checkbox" value="달력1" checked="">달력1</label></li>
-									<li><label class="checkbox-inline"><input
-											class="filter" type="checkbox" value="달력2" checked="">달력2</label></li>
-									<li><label class="checkbox-inline"><input
-											class="filter" type="checkbox" value="달력3" checked="">달력3</label></li>
+									<li><label class="checkbox-inline pointer"><input
+											class="filter" type="checkbox" value="달력1" checked="">기본</label></li>
 								</ul></li>
 						</ul>
 					</nav>
@@ -285,15 +292,11 @@ html, body {
 										class="sidebar button button-rounded px-5 button-border button-text-effect button-text-flip-x">
 											<div class="button-inner">
 												<span><i class="bi-plus-circle"></i>달력추가</span> <span
-													class="white"><i class="bi-plus-circle-fill"></i>달력추가</span>
+													class=""><i class="bi-plus-circle-fill"></i>달력추가</span>
 											</div>
 									</a></li>
-									<li><label class="checkbox-inline"><input
-											class="filter" type="checkbox" value="달력1" checked="">달력1</label></li>
-									<li><label class="checkbox-inline"><input
-											class="filter" type="checkbox" value="달력2" checked="">달력2</label></li>
-									<li><label class="checkbox-inline"><input
-											class="filter" type="checkbox" value="달력3" checked="">달력3</label></li>
+									<li><label class="checkbox-inline pointer"><input
+											class="filter" type="checkbox" value="달력1" checked="">기본</label></li>
 								</ul></li>
 						</ul>
 					</nav>
@@ -395,7 +398,7 @@ html, body {
 	</div>
 
 
-	<!-- loginSTart -->
+	<!-- loginStart -->
 
 	<div class="modal fade" id="loginModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -613,6 +616,36 @@ html, body {
 		</div>
 	</div>
 
+	<!-- CategoryModal -->
+	<div class="modal fade" id="CategoryModal" tabindex="-1"
+		aria-labelledby="editModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modalBackground">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="addCategoryModalHeader">달력추가</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="mb-3">
+								<label for="recipient-name" class="col-form-label">달력 이름</label> <input
+									type="text" class="form-control" id="CategoryModalTitle">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"	data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary" id="deleteCategoryBtn">달력삭제</button>
+						<button type="button" class="btn btn-primary" id="editCategoryBtn">달력수정</button>
+						<button type="button" class="btn btn-primary" id="addCategoryBtn">달력생성</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- JavaScripts
 	============================================= -->
 
@@ -721,6 +754,9 @@ html, body {
 		var sidebarMain = document.getElementById("sidebarMain");
 		var addSchedule = document.getElementById("addSchedule");
 	    var sidebarFoldingBtn = document.getElementById('sidebarFoldingBtn');
+
+		//카테고리 모달
+		const categoryModal = new bootstrap.Modal(document.getElementById('CategoryModal'));
 
 		// Accordian
 		for (var i = 0; i < coll.length; i++) {
@@ -853,6 +889,52 @@ html, body {
 		        border: "0",
 		        background: "none"
 		    });
+
+			
+			$('#addMyCalendarBtn').click(function () {
+				categoryModal.show();
+			});
+
+			//필터
+			$('.filter').on('change', function () {
+				$('#calendar').fullCalendar('rerenderEvents');
+			});
+		});
+
+		document.getElementById('addCategoryBtn').addEventListener('click', function() {
+			// Get the value from the input field
+			const calendarName = document.getElementById('CategoryModalTitle').value;
+			
+			if (calendarName == '') return;
+
+			// Create a new list item
+			const newListItem = document.createElement('li');
+
+			// Create the label and input elements
+			const newLabel = document.createElement('label');
+			newLabel.classList.add('checkbox-inline', 'pointer');
+			
+			const newCheckbox = document.createElement('input');
+			newCheckbox.classList.add('filter');
+			newCheckbox.type = 'checkbox';
+			newCheckbox.value = calendarName;
+			newCheckbox.checked = true;
+
+			// Set the text content of the label
+			newLabel.appendChild(newCheckbox);
+			newLabel.appendChild(document.createTextNode(calendarName));
+
+			// Append the label to the list item
+			newListItem.appendChild(newLabel);
+
+			// Append the list item to the group
+			document.getElementById('myCalGroup').appendChild(newListItem);
+
+			// Close the modal
+			categoryModal.hide();
+
+			// Clear the input field for future use
+			document.getElementById('CategoryModalTitle').value = '';
 		});
 
 		
@@ -954,6 +1036,10 @@ $("#login-form-submit").on('click', function(event) {
 	});
 	
     calendar = new FullCalendar.Calendar(calendarEl, {
+    	googleCalendarApiKey: '<YOUR API KEY>',
+    	events: {
+    		googleCalendarId: 'abcd1234@group.calendar.google.com'
+    	},
     	//이벤트 클릭시 수정 모달 생성
 		eventClick: function(info) {
 			var container = document.getElementById("editEventModal");
