@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -22,9 +23,13 @@ public class List extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+		HttpSession session = req.getSession();
+		String id = (String)session.getAttribute("id");
+		
 		EventDAO dao = new EventDAO();
 
-		ArrayList<EventDTO> list = dao.list();
+		ArrayList<EventDTO> list = dao.list(id);
+		System.out.println(id);
 
 		JSONArray arr = new JSONArray();
 		for (EventDTO dto : list) {

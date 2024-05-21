@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.planiverse.event.model.EventDTO;
 import com.planiverse.event.repository.EventDAO;
@@ -17,6 +18,11 @@ public class Change extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 			
+		HttpSession session = req.getSession();
+		String id = (String) session.getAttribute("id");
+		int result = 0;
+		if (id != null) {
+		
 		req.setCharacterEncoding("UTF-8");
 		String eventSeq = req.getParameter("eventSeq");
 		String allDay = req.getParameter("allDay");
@@ -57,8 +63,9 @@ public class Change extends HttpServlet {
 		
 		System.out.println(dto);//---------------------나중에 지우기
 		
-		int result = dao.change(dto);
-
+		result = dao.change(dto);
+		}
+		
 		resp.setContentType("application/json");
 		PrintWriter writer = resp.getWriter();
 		writer.print("{");

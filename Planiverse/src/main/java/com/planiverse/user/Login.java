@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import com.planiverse.user.repository.UserDAO;
 
-@WebServlet("/event/login.do")
+@WebServlet("/user/login.do")
 public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
