@@ -923,7 +923,7 @@ html, body {
     console.log("Attempting login with:", loginId, loginPw);
     $.ajax({
         type: "post",
-        url: "/plan/event/login.do",
+        url: "/plan/user/login.do",
         data: {
             loginId: loginId,
             loginPw: loginPw
@@ -983,7 +983,7 @@ $("#login-form-submit").on('click', function(event) {
     	eventSources: [
 
     	{
-    		googleCalendarId: 'en-gb.south_korea#holiday@group.v.calendar.google.com'
+    		googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com'
     	},
     	{
     		googleCalendarId: 'shk19990314@gmail.com'
@@ -1032,7 +1032,9 @@ $("#login-form-submit").on('click', function(event) {
 		   	      		success: function (response) {
 		   	      			if(response.result ==1){
 								info.event.remove();
-		   	      			}
+		   	      			} else if (response.result ==0){
+				   	    		alert('로그인 후 이용 가능합니다.');
+				   	    	}
 		   	      		},
 		   	      		error: function(a,b,c){
 		   					console.log(a,b,c);
@@ -1078,6 +1080,8 @@ $("#login-form-submit").on('click', function(event) {
 				   	    	info.event.setProp('color', $('#editColor').attr("value"));
 				   	    	info.event.setExtendedProp('loc', locValue);
 				   	    	info.event.setExtendedProp('content', contentValue);
+				   	    	} else if (response.result ==0){
+				   	    		alert('로그인 후 이용 가능합니다.');
 				   	    	}
 				   	    },
 				   	    error: function(a,b,c){
@@ -1106,7 +1110,9 @@ $("#login-form-submit").on('click', function(event) {
 	   	      		success: function (response) {
 	   	      			if(response.result ==1){
 	   	        			alert('수정 완료');
-	   	      			}
+	   	      			} else if (response.result ==0){
+			   	    		alert('로그인 후 이용 가능합니다.');
+			   	    	}
 	   	      		},
 	   	      		error: function(a,b,c){
 	   					console.log(a,b,c);
@@ -1176,8 +1182,7 @@ $("#login-form-submit").on('click', function(event) {
       editable: true,
       selectable: true,
       dayMaxEvents: true,
-      
-     /*  events: [
+      events: [
     	  $.ajax({
      			type: 'get',
      			url: '/plan/event/list.do',
@@ -1202,7 +1207,7 @@ $("#login-form-submit").on('click', function(event) {
      				console.log(a,b,c);
      			}
      		 }) 
-      ] */
+      ] 
     });
     calendar.render();
   });

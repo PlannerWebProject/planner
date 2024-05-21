@@ -20,11 +20,11 @@ public class EventDAO {
 		this.conn = DBUtil.open();
 	}
 
-	public ArrayList<EventDTO> list() {
+	public ArrayList<EventDTO> list(String id) {
 		try {
 			String sql = "select * from vwEvent where id = ?";
 			pstat = conn.prepareStatement(sql);
-			pstat.setString(1, "test");  //id 넣을 예정
+			pstat.setString(1, id);  
 			rs = pstat.executeQuery();
 
 			ArrayList<EventDTO> list = new ArrayList<>();
@@ -106,6 +106,7 @@ public class EventDAO {
 			if(rs.next()) {
 				eventSeq = rs.getInt("eventSeq");
 			}
+			stat.close();
 			
 			sql = "insert into tblEvent values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -122,6 +123,7 @@ public class EventDAO {
 			pstat.setString(9, dto.getCalSeq());
 			
 			int result = pstat.executeUpdate();
+			pstat.close();
 			if(result==1) {
 				return eventSeq;
 			}		
