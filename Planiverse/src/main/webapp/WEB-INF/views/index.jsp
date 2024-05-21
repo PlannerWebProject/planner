@@ -465,7 +465,7 @@ html, body {
 									src="https://cdn.cdnlogo.com/logos/g/35/google-icon.svg"
 									alt="Google Logo" class="d-inline-block me-2 square square-xs">Sign
 									In with Google</a> <a href="javascript:loginWithKakao()"
-									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img
+									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center" id="kakaoLoginA"><img
 									id="kakao-login-btn"
 									src="https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Ff5d7b9d3-6faa-4fbd-92fb-abc13883f4ac%2Fkakao.png&blockId=845a0760-d543-46ae-965d-018c4289eb32&width=256"
 									class="d-inline-block me-2 square square-xs">Sign In with
@@ -662,8 +662,6 @@ html, body {
 			},
 		  });
 		}
-
-	// 아래는 데모를 위한 UI 코드입니다.
 	function getInfo() {
         Kakao.API.request({
           url: "/v2/user/me",
@@ -706,12 +704,11 @@ html, body {
         .catch(function (error) {
             console.log(error);
         });
-    
    		 sessionStorage.clear();
     	 localStorage.clear();
-    	 Kakao.Auth.setAccessToken(undefined);
-    	 
-    	 window.location.href = 'http://localhost:8080/plan/planiverse.do';
+    	 //Kakao.Auth.setAccessToken(undefined); 주석풀면 세션스토리지에 자동으로 엑세스토큰 저장됨
+    	  
+    	 window.location.href = 'http://localhost:8081/plan/planiverse.do';
 	
 	}
 	
@@ -911,10 +908,15 @@ html, body {
 		var modal = new bootstrap.Modal(loginModal);
 		modal.show();
 		var signupModal = document.getElementById('signupModal');
+		var kakaoModalClose = document.getElementById('kakaoLoginA');
+		
 		signupBtn.addEventListener('click',function(){
 			modal.hide();
 			var modal1 = new bootstrap.Modal(signupModal);
 			modal1.show();
+		})
+		kakaoModalClose.addEventListener('click', function(){
+			modal.hide();
 		})
 	})
 	function login() {
@@ -1173,7 +1175,7 @@ $("#login-form-submit").on('click', function(event) {
       selectable: true,
       dayMaxEvents: true,
       
-     /*  events: [
+       events: [
     	  $.ajax({
      			type: 'get',
      			url: '/plan/event/list.do',
@@ -1198,7 +1200,7 @@ $("#login-form-submit").on('click', function(event) {
      				console.log(a,b,c);
      			}
      		 }) 
-      ] */
+      ] 
     });
     calendar.render();
   });
