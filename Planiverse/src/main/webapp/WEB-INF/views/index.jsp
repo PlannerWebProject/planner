@@ -635,13 +635,11 @@ html, body {
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.1.0/js/datepicker.min.js"></script>
-		<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-		
-  <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.11/index.global.min.js'></script>
+		<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
 	<script src="${path}/resources/js/plugins.min.js"></script>
 	<script src="${path}/resources/js/functions.bundle.js"></script>
 	<script src='${path}/resources/js/index.global.js'></script>
-
+	<script src='${path}/resources/js/index.global.min.js'></script>
 	<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js"
 		integrity="sha384-kDljxUXHaJ9xAb2AzRd59KxjrFjzHa5TAoFQ6GbYTCAG0bjM55XohjjDT7tDDC01"
 		crossorigin="anonymous"></script>
@@ -979,13 +977,19 @@ $("#login-form-submit").on('click', function(event) {
 		}		
 	});
     calendar = new FullCalendar.Calendar(calendarEl, {
-    	/* googleCalendarApiKey: 'AIzaSyCnKXOd4Inco8WpTWniNKKAktfOrIomwnY',
-    	events: 'en.usa#holiday@group.v.calendar.google.com',
+    	
+    	googleCalendarApiKey: 'AIzaSyCYi2s4BmKlnYWFKvDq1yfl7oUFmXSxiHc',
+
     	eventSources: [
-    	    {
-    	          googleCalendarId: 'shk19990314@gmail.com',
-    	        }
-    	    ], */
+
+    	{
+    		googleCalendarId: 'en-gb.south_korea#holiday@group.v.calendar.google.com'
+    	},
+    	{
+    		googleCalendarId: 'shk19990314@gmail.com'
+    	}
+    	],
+    	
     	//이벤트 클릭시 수정 모달 생성
 		eventClick: function(info) {
 			var container = document.getElementById("editEventModal");
