@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.planiverse.event.repository.CalDAO;
 import com.planiverse.user.model.UserDTO;
 import com.planiverse.user.repository.UserDAO;
 
@@ -42,7 +43,10 @@ public class Register extends HttpServlet {
 			
 			int result = dao.register(dto);
 			
+			
 			if(result ==1) {
+				CalDAO calDao = new CalDAO();
+				calDao.newCal(id, "기본", calDao.newCalList(id));
 				resp.sendRedirect("/plan/planiverse.do");
 			} 
 			
