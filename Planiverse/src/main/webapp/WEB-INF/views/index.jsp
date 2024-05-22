@@ -67,10 +67,17 @@ html, body {
 #addScheduleBtn {
 	position: relative;
 	height: 38.88px;
-	margin-bottom: 19px;
-	display: grid;
-	place-items: center;
+	margin: 0px auto 19px auto;
+    width: 90%;
+    justify-content: center;
+    line-height: inherit;
 }
+
+ .calendarGroup{
+    display: flex;
+    padding-right: 10px;
+	color: #333 !important;
+ }
 
 #datepickerDiv {
 	margin: 0 auto;
@@ -90,10 +97,14 @@ html, body {
 	border: 0;
 }
 
-<%-- #exampleModal, #editEventModal, #loginModal, #signupModal,
+#scheduleAcc {
+	padding: 0px 10px 0px 10px;
+}
+
+/* #exampleModal, #editEventModal, #loginModal, #signupModal,
 	#eventProduceModal {
 	background-color: rgba(0, 0, 0, 0.4);
-} --%>
+} */
 
 .modal {
 	background-color: rgba(0, 0, 0, 0.4);
@@ -118,14 +129,11 @@ html, body {
 	display: flex;
 }
 
-#addMyCalendarBtn {
+#addMyCalendarBtn, #addShCalendarBtn {
 	padding: 0px 48px;
 	margin-bottom: 8px;
-}
-
-#addShCalendarBtn {
-	padding: 0px 48px;
-	margin-bottom: 8px;
+	border: 1px solid #D4E2D4;
+    background: #D4E2D4;
 }
 
 .white {
@@ -221,10 +229,10 @@ html, body {
 									</div>
 								</button>
 							</div>
-
+<!-- 
 							<a href="index.html"><img
 								src="/plan/resources/images/plannerLogo.webp" alt=""></a>
-
+ -->
 						</div>
 						<!-- #logo end -->
 
@@ -465,7 +473,7 @@ html, body {
 
 									<div class="col-12 form-group mb-0">
 										<button
-											class="btn btn-lg text-white bg-black h-bg-color d-block w-100 m-0"
+											class="btn btn-lg text-white bg-primary h-bg-color d-block w-100 m-0"
 											id="login-form-submit" name="login-form-submit" value="login">Continue</button>
 									</div>
 								</div>
@@ -519,7 +527,7 @@ html, body {
 										<label for="register-form-email">Email(ID):</label> <input
 											type="text" id="id" name="id" class="form-control" required>
 										<br>
-										<button class="button button-3d button-black m-0" id="idCheck"
+										<button class="btn text-white bg-primary h-bg-color d-block w-25 m-0" id="idCheck"
 											name="idCheck" disabled>중복 검사</button>
 									</div>
 
@@ -542,7 +550,7 @@ html, body {
 									</div>
 
 									<div class="col-12 form-group">
-										<button class="button button-3d button-black m-0"
+										<button class="btn text-white bg-primary h-bg-color d-block w-50 m-0"
 											type="submit" id="registerBtn" name="registerBtn"
 											value="register" disabled>Register Now</button>
 									</div>
@@ -915,10 +923,10 @@ html, body {
 		        paddingRight: "10px"
 		    }).children().css("marginLeft", "auto");
 		
-		    $('.button-border').css({
+		    /* $('.button-border').css({
 		        border: "0",
 		        background: "none"
-		    });
+		    }); */
 
 			
 			$('#addMyCalendarBtn').click(function () {
@@ -1014,7 +1022,14 @@ html, body {
 	});
 		
 	function login() {
-    
+		var modal = new bootstrap.Modal(loginModal);
+		modal.show();
+		var signupModal = document.getElementById('signupModal');
+		signupBtn.addEventListener('click',function(){
+			modal.hide();
+			var modal1 = new bootstrap.Modal(signupModal);
+			modal1.show();
+		})
 }
 /* $("#login-form-submit").on('click', function() {
      login(); 
@@ -1272,10 +1287,24 @@ html, body {
       },
 	  locale: 'ko',
       headerToolbar: {
-        left: 'prev,next today',
+        left: 'toggleButton prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        right: 'dayGridMonth,timeGridWeek,timeGridDay loginButton'
       },
+      customButtons: {
+    	    loginButton: {
+    	      text: 'Login',
+    	      click: function() {
+    	        login();
+    	      }
+    	    },
+    	    toggleButton: {
+    	      text: 'lll',
+    	      click: function() {
+    	    	toggleSidebar;
+    	      }
+    	    }
+    },
       navLinks: true, // can click day/week names to navigate views
       editable: true,
       selectable: true,

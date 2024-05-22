@@ -29,7 +29,7 @@
 } */
 /*요일 배경색*/
 .fc-col-header-cell {
-	background-color: #eeeeee;
+	background-color: #D4E2D4;
 }
 
 /* 주말 배경색 */
@@ -130,4 +130,9 @@
 .fc .fc-toolbar.fc-header-toolbar {
 	padding: 0 30px;
 	margin-bottom: 1em;
+}
+
+*{
+	--fc-event-bg-color: #FFC7A4 !important;
+    --fc-event-border-color: #FFC7A4 !important;
 }
