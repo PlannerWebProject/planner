@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.planiverse.event.model.EventDTO;
 import com.planiverse.event.repository.EventDAO;
+import com.planiverse.event.repository.EventDAOImpl;
 
 @WebServlet("/event/dropchange.do")
 public class DropChange extends HttpServlet {
@@ -28,7 +29,7 @@ public class DropChange extends HttpServlet {
 			String start = req.getParameter("start");
 			String end = req.getParameter("end");
 
-			EventDAO dao = new EventDAO();
+			EventDAO dao = new EventDAOImpl();
 			EventDTO dto = new EventDTO();
 
 			dto.setEventSeq(eventSeq);
