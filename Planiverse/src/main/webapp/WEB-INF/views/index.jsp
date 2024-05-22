@@ -296,13 +296,13 @@ html, body {
 											</div>
 									</a></li>
 									<c:choose>
-									    <c:when test="${empty userId}">
+									    <c:when test="${empty sessionScope.id}">
 									        <li><label class="checkbox-inline pointer">
 									            <input class="filter" type="checkbox" value="달력1" checked="">기본
 									        </label></li>
 									    </c:when>
 									    <c:otherwise>
-									        <c:forEach items="${calDTO}" var="dto">
+									        <c:forEach items="${sessionScope.calDTO}" var="dto">
 									            <li><label class="checkbox-inline pointer">
 									                <input class="filter" type="checkbox" value="${dto.calSeq}" checked="">${dto.name}
 									            </label></li>
@@ -1278,32 +1278,41 @@ $("#login-form-submit").on('click', function(event) {
       editable: true,
       selectable: true,
       dayMaxEvents: true,
-      events: [
-    	  $.ajax({
-     			type: 'get',
-     			url: '/plan/event/list.do',
-     			dataType: 'json',
-     			success: function(result){
-     				result.forEach(obj =>{
-     					calendar.addEvent({
-     						title: obj.title,
-     						allDay: (obj.allDay == 'y'? true: false),
-     						start: obj.start,
-     						end: obj.end,
-     						color: obj.color,
-     						extendedProps: {
-     							eventSeq: obj.eventSeq,
-  			   				loc: obj.loc,
-  			   				content: obj.content
-     						}
-     					})
-     				})
-    			},
-     			error: function(a,b,c){
-     				console.log(a,b,c);
-     			}
-     		 }) 
-      ] 
+      events: function(fetchInfo, successCallback, failureCallback) {
+          var selectedFilters = [];
+          $('.filter:checked').each(function() {
+              selectedFilters.push($(this).val());
+          });
+          $.ajax({
+              type: 'get',
+              url: '/plan/event/list.do',
+              dataType: 'json',
+              data: {
+                  filters: selectedFilters.join(',')
+              },
+              success: function(result) {
+                  var events = result.map(function(obj) {
+                      return {
+                          title: obj.title,
+                          allDay: (obj.allDay == 'y' ? true : false),
+                          start: obj.start,
+                          end: obj.end,
+                          color: obj.color,
+                          extendedProps: {
+                              eventSeq: obj.eventSeq,
+                              loc: obj.loc,
+                              content: obj.content
+                          }
+                      };
+                  });
+                  successCallback(events);
+              },
+              error: function(a, b, c) {
+                  console.log(a, b, c);
+                  failureCallback();
+              }
+          });
+      }
     });
     calendar.render();
   });

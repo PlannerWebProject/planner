@@ -73,7 +73,7 @@ public class CalDAO {
 	public ArrayList<CalDTO> list(String id) {
 		
 		try {
-			String sql = "select * from tblCal a inner join tblCalList b on a.calListSeq = b.calListSeq where b.id = = ?";
+			String sql = "select * from tblCal a inner join tblCalList b on a.calListSeq = b.calListSeq where b.id = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, id);
 			rs = pstat.executeQuery();
