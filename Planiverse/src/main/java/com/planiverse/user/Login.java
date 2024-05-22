@@ -1,6 +1,7 @@
 package com.planiverse.user;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.planiverse.event.model.CalDTO;
+import com.planiverse.event.repository.CalDAO;
 import com.planiverse.user.repository.UserDAO;
 
 @WebServlet("/user/login.do")
@@ -31,6 +34,10 @@ public class Login extends HttpServlet {
             HttpSession session = req.getSession();
 
             session.setAttribute("id", loginId); // 인증 티켓
+            CalDAO calDao = new CalDAO();
+            ArrayList<CalDTO> list = calDao.list(loginId);
+            session.setAttribute("calDTO", list);
+            
             writer.print("1");
         } else {
             writer.print("0");

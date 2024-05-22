@@ -295,8 +295,20 @@ html, body {
 													class=""><i class="bi-plus-circle-fill"></i>달력추가</span>
 											</div>
 									</a></li>
-									<li><label class="checkbox-inline pointer"><input
-											class="filter" type="checkbox" value="달력1" checked="">기본</label></li>
+									<c:choose>
+									    <c:when test="${empty userId}">
+									        <li><label class="checkbox-inline pointer">
+									            <input class="filter" type="checkbox" value="달력1" checked="">기본
+									        </label></li>
+									    </c:when>
+									    <c:otherwise>
+									        <c:forEach items="${calDTO}" var="dto">
+									            <li><label class="checkbox-inline pointer">
+									                <input class="filter" type="checkbox" value="${dto.calSeq}" checked="">${dto.name}
+									            </label></li>
+									        </c:forEach>
+									    </c:otherwise>
+									</c:choose>
 								</ul></li>
 						</ul>
 					</nav>
@@ -915,7 +927,7 @@ html, body {
 
 			//필터
 			$('.filter').on('change', function () {
-				$('#calendar').fullCalendar('rerenderEvents');
+				calendar.refetchEvents();
 			});
 		});
 
@@ -1015,6 +1027,7 @@ html, body {
             console.log(response);
             if (response == "1") {
                 sessionStorage.setItem("userId", loginId);
+                sessionStorage.setItem("calDTO", calDTO);
                 alert('로그인 성공');
                 window.location.href = "/plan/planiverse.do";
             } else {
