@@ -436,7 +436,7 @@ html, body {
 				<div class="modal-content">
 					<div class="modal-body">
 						<div class="card-body p-5">
-							<form id="login-form" name="login-form" class="mb-0" action="#"
+							<form id="login-form" name="login-form" class="mb-0" action="/plan/user/login.do"
 								method="post">
 								<h1 class="fs-4 fw-semibold text-center mb-0">Sign In to
 									Planiverse Account</h1>
@@ -1011,10 +1011,18 @@ html, body {
 			var modal1 = new bootstrap.Modal(signupModal);
 			modal1.show();
 		})
-	})
+	});
+		
 	function login() {
-    var loginId = $('#login-form-username').val();
+    
+}
+/* $("#login-form-submit").on('click', function() {
+     login(); 
+    
+	var loginId = $('#login-form-username').val();
     var loginPw = $('#login-form-password').val();
+    
+    window.location.href = "/plan/planiverse.do?loginId=";
     console.log("Attempting login with:", loginId, loginPw);
     $.ajax({
         type: "post",
@@ -1024,8 +1032,8 @@ html, body {
             loginPw: loginPw
         },
         success: function(response) {
-            console.log(response);
-            if (response == "1") {
+            console.log(response.result);
+            if (response.result == 1) {
                 sessionStorage.setItem("userId", loginId);
                 sessionStorage.setItem("calDTO", calDTO);
                 alert('로그인 성공');
@@ -1038,10 +1046,7 @@ html, body {
             console.error(a, b, c);
         }
     });
-}
-$("#login-form-submit").on('click', function(event) {
-    login();
-});
+}); */
 
 	//수정 모달 하루종일 버튼 제어
 	$('#editEventModalAllDay').change(()=>{
@@ -1080,9 +1085,6 @@ $("#login-form-submit").on('click', function(event) {
 
     	{
     		googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com'
-    	},
-    	{
-    		googleCalendarId: 'shk19990314@gmail.com'
     	}
     	],
 			

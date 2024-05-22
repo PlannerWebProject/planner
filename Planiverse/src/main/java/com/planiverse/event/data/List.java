@@ -16,6 +16,7 @@ import org.json.simple.JSONObject;
 
 import com.planiverse.event.model.EventDTO;
 import com.planiverse.event.repository.EventDAO;
+import com.planiverse.event.repository.EventDAOImpl;
 
 
 @WebServlet("/event/list.do")
@@ -26,7 +27,7 @@ public class List extends HttpServlet {
 		HttpSession session = req.getSession();
 		String id = (String)session.getAttribute("id");
 		
-		EventDAO dao = new EventDAO();
+		EventDAO dao = new EventDAOImpl();
 
 		ArrayList<EventDTO> list = dao.list(id);
 		System.out.println(id);
