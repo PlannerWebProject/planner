@@ -1,12 +1,17 @@
  /* ----------------------------------------------------------------
 	Canvas: Speaker
 -----------------------------------------------------------------*/
-
+@font-face {
+    font-family: 'SOYOMapleBoldTTF';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/SOYOMapleBoldTTF.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
 :root {
 	--cnvs-themecolor: #BEADFA;
 	--cnvs-themecolor-rgb: 171, 122, 225;
-	--cnvs-primary-font: 'paralucent-text', sans-serif;
-	--cnvs-body-font: 'paralucent', sans-serif;
+	--cnvs-primary-font: 'SOYOMapleBoldTTF', 'paralucent-text', sans-serif;
+	--cnvs-body-font: 'SOYOMapleBoldTTF','paralucent', sans-serif;
 	--bs-bg-opacity: 1;
 }
 
