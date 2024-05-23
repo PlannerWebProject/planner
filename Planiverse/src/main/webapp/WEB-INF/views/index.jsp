@@ -935,7 +935,7 @@ html, body {
             if (response == "1") {
                 sessionStorage.setItem("userId", loginId);
                 alert('로그인 성공');
-                window.location.href = "/plan/planiverse.do";
+                window.location.href = 'http://localhost:8081/plan/planiverse.do';
             } else {
                 alert('로그인 실패');
             }

@@ -29,11 +29,14 @@ public class Login extends HttpServlet {
         if (result == true) {
             System.out.println("로그인 성공");
             HttpSession session = req.getSession();
+            System.out.println(session);
 
             session.setAttribute("id", loginId); // 인증 티켓
-            writer.print("1");
+            System.out.println(session);
+            writer.print(1);
+          
         } else {
-            writer.print("0");
+            writer.print(0);
             System.out.println("로그인 실패");
         }
         writer.close();
