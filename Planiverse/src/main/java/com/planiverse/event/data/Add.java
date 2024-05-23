@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.planiverse.event.model.EventDTO;
 import com.planiverse.event.repository.EventDAO;
+import com.planiverse.event.repository.EventDAOImpl;
 
 @WebServlet("/event/add.do")
 public class Add extends HttpServlet {
@@ -34,7 +35,7 @@ public class Add extends HttpServlet {
 			String content = req.getParameter("content");
 			String calSeq = req.getParameter("calSeq");
 
-			EventDAO dao = new EventDAO();
+			EventDAO dao = new EventDAOImpl();
 			EventDTO dto = new EventDTO();
 
 			dto.setTitle(title);
