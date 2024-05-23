@@ -8,7 +8,7 @@
     font-style: normal;
 }
 :root {
-	--cnvs-themecolor: #BEADFA;
+	--cnvs-themecolor: #AA96DA;
 	--cnvs-themecolor-rgb: 171, 122, 225;
 	--cnvs-primary-font: 'SOYOMapleBoldTTF', 'paralucent-text', sans-serif;
 	--cnvs-body-font: 'SOYOMapleBoldTTF','paralucent', sans-serif;
@@ -16,10 +16,10 @@
 }
 
 #header {
-	--cnvs-primary-menu-font-size:	0.875rem;
-	--cnvs-primary-menu-submenu-font-size:	0.875rem;
-	--cnvs-primary-menu-submenu-font-weight:	500;
-	--cnvs-primary-menu-submenu-hover-font-weight: 600;
+	--cnvs-primary-menu-font-size:	0.8rem;
+	--cnvs-primary-menu-submenu-font-size:	0.8rem;
+	--cnvs-primary-menu-submenu-font-weight:	400;
+	--cnvs-primary-menu-submenu-hover-font-weight: 400;
 	--cnvs-primary-menu-submenu-tt:	none;
 }
 

@@ -36,6 +36,10 @@
 <title>Planiverse</title>
 
 <style>
+.button-inner {
+	color: #333 !important;
+}
+
 html, body {
 	width: 100%;
 	height: 100vh;
@@ -50,9 +54,8 @@ html, body {
 }
 
 #slider {
-	height: calc(100vh - 70px);
-	margin: 0 auto;
-	margin-top: 0;
+	height: calc(100vh - 30px);
+	margin: 20px auto 0 auto;
 	justify-content: center;
 	display: flex;
 }
@@ -71,8 +74,11 @@ html, body {
     width: 90%;
     justify-content: center;
     line-height: inherit;
+	place-items: center;
 }
-
+#addSchedule{
+	height: 52px;
+}
  .calendarGroup{
     display: flex;
     padding-right: 10px;
@@ -190,6 +196,12 @@ html, body {
     }
 }
 
+.fc-toolbar-chunk > button {
+	--fc-button-bg-color: #FFC7A4;
+    --fc-button-border-color: #FFC7A4;
+    --fc-button-hover-bg-color: #FFCACC;
+    --fc-button-hover-border-color: #FFCACC;
+}
 
 
 </style>
@@ -213,33 +225,13 @@ html, body {
 
 		<!-- Header
 		============================================= -->
-		<header id="header" class="header-size-sm" data-sticky-shrink="false">
+		<!-- <header id="header" class="header-size-sm" data-sticky-shrink="false">
 			<div id="header-wrap" class="border-bottom-0">
 				<div class="container">
 					<div class="header-row justify-content-lg-between">
 
-						<!-- Logo
-						============================================= -->
-						<div id="logo" class="me-lg-0">
-							<div id="sidebarFoldingBtnDiv">
-								<button name="sidebarFoldingBtn" id="sidebarFoldingBtn"
-									class="fc-button button button-rounded button-border button-dark button-icon-effect button-icon-flip-x">
-									<div>
-										<i class="bi-list-nested"></i>
-									</div>
-								</button>
-							</div>
-<!-- 
-							<a href="index.html"><img
-								src="/plan/resources/images/plannerLogo.webp" alt=""></a>
- -->
-						</div>
-						<!-- #logo end -->
-
 						<div class="header-misc">
 
-							<!-- Top Account
-							============================================= -->
 							<div class="header-misc-icon top-account">
 								<a href="#" data-bs-toggle="dropdown" data-bs-offset="0,20"
 									data-bs-auto-close="true" aria-haspopup="true"
@@ -262,7 +254,7 @@ html, body {
 				</div>
 			</div>
 			<div class="header-wrap-clone"></div>
-		</header>
+		</header> -->
 
 
 		<!--Hero
@@ -271,10 +263,10 @@ html, body {
 			<div id="sidebarMain" class="sidebar">
 				<div id="addSchedule" class="sidebar">
 					<a href="#" id="addScheduleBtn"
-						class="fc-button sidebar button button-rounded px-5 button-border button-text-effect button-text-flip-x">
+						class="bg-primary sidebar button button-rounded px-5 button-text-effect button-text-flip-x">
 						<div class="button-inner">
-							<span><i class="bi-plus-circle"></i>일정생성</span><span><i
-								class="bi-plus-circle-fill"></i>일정생성</span>
+							<span><i class="bi-plus-circle"></i> 일정생성</span><span><i
+								class="bi-plus-circle-fill"></i> 일정생성</span>
 						</div>
 					</a>
 				</div>
@@ -367,14 +359,14 @@ html, body {
 									<div id="color">
 										<div class="color-circle" style="background-color: #F9B8D1"
 											value="#F9B8D1"></div>
-										<div class="color-circle" style="background-color: #F1932E"
-											value="#F1932E"></div>
-										<div class="color-circle" style="background-color: #FFFFD2"
-											value="#FFFFD2"></div>
+										<div class="color-circle" style="background-color: #FFCF81"
+											value="#FFCF81"></div>
+										<div class="color-circle" style="background-color: #FDFFAB"
+											value="#FDFFAB"></div>
 										<div class="color-circle" style="background-color: #A8D8EA"
 											value="#A8D8EA"></div>
-										<div class="color-circle" style="background-color: #AA96DA"
-											value="#AA96DA"></div>
+										<div class="color-circle" style="background-color: #DBC4F0"
+											value="#DBC4F0"></div>
 									</div>
 									<p>
 										선택한 색: <span id="selected-color"></span>
@@ -446,9 +438,8 @@ html, body {
 						<div class="card-body p-5">
 							<form id="login-form" name="login-form" class="mb-0" action="/plan/user/login.do"
 								method="post">
-								<h1 class="fs-4 fw-semibold text-center mb-0">Sign In to
-									Planiverse Account</h1>
-								<h2 class="fs-5 text-center fw-medium mb-5 mt-1">
+								<h1 class="fs-4 fw-semibold text-center mb-0">Sign In to	Planiverse</h1>
+								<h2 class="fs-5 text-center fw-medium mt-1">
 									<span class="op-06 nocolor">New?</span> <a href="#"
 										id="signup-action">회원가입</a>
 								</h2>
@@ -489,7 +480,7 @@ html, body {
 									src="https://cdn.cdnlogo.com/logos/g/35/google-icon.svg"
 									alt="Google Logo" class="d-inline-block me-2 square square-xs">Sign
 									In with Google</a> <a href="javascript:loginWithKakao()"
-									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img
+									class="btn d-block mx-0 btn-light border d-flex align-items-center justify-content-center"><img
 									id="kakao-login-btn"
 									src="https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Ff5d7b9d3-6faa-4fbd-92fb-abc13883f4ac%2Fkakao.png&blockId=845a0760-d543-46ae-965d-018c4289eb32&width=256"
 									class="d-inline-block me-2 square square-xs">Sign In with
@@ -937,7 +928,7 @@ html, body {
 	});
 
 	var loginModal = document.getElementById('loginModal');
-		loginBtn.addEventListener('click',function(){
+		/* loginBtn.addEventListener('click',function(){
 		var modal = new bootstrap.Modal(loginModal);
 		modal.show();
 		var signupModal = document.getElementById('signupModal');
@@ -946,7 +937,7 @@ html, body {
 			var modal1 = new bootstrap.Modal(signupModal);
 			modal1.show();
 		})
-	});
+	}); */
 		
 	function login() {
 		var modal = new bootstrap.Modal(loginModal);
@@ -966,7 +957,7 @@ html, body {
     	// 사이드바 너비 저장
         var sidebarWidth;
     	// 사이드바 높이 저장
-        const sliderHeight = windowWidth < 1000 ? "auto" : "calc(100vh - 70px)";
+        const sliderHeight = windowWidth < 1000 ? "auto" : "calc(100vh - 30px)";
     	// 사이드바 토글시의 버튼 간격(일정 생성과 이전달버튼) 저장
         const marginLeft = sidebarStatus ? "0" : "100px";
 		
@@ -1286,13 +1277,22 @@ html, body {
       },
       customButtons: {
     	    loginButton: {
+    	    	<c:if test="${empty id}">
     	      text: 'Login',
     	      click: function() {
     	        login();
     	      }
+			</c:if>
+			<c:if test="${not empty id}">
+		      text: 'Logout',
+		      click: function() {
+		        logout();
+		      }
+			</c:if>
     	    },
     	    toggleButton: {
-    	      text: 'lll',
+    	      icon: 'chevrons-left',
+    	      hint: '사이드바 접기',
     	      click: function() {
     	    	toggleSidebar();
     	      }
@@ -1303,6 +1303,7 @@ html, body {
       selectable: true,
       dayMaxEvents: true,
       events: [
+		<c:if test="${not empty id}">
     	  $.ajax({
      			type: 'get',
      			url: '/plan/event/list.do',
@@ -1327,6 +1328,7 @@ html, body {
      				console.log(a,b,c);
      			}
      		 }) 
+		</c:if>
       ] 
     });
     calendar.render();
@@ -1446,7 +1448,7 @@ html, body {
 					id: $('#id').val()
 				},
 				success: function(result){
-					if(result==1){
+					if(result==0){
 						alert('사용 가능한 Email(ID)입니다.');
 						$('#pw').attr("disabled",false); 
 						$('#repw').attr("disabled",false); 
