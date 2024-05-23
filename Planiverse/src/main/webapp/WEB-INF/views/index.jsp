@@ -927,7 +927,7 @@ html, body {
 
 			//필터
 			$('.filter').on('change', function () {
-				calendar.refetchEvents();
+				calendar.render();
 			});
 		});
 
@@ -1282,6 +1282,7 @@ $("#login-form-submit").on('click', function(event) {
           var selectedFilters = [];
           $('.filter:checked').each(function() {
               selectedFilters.push($(this).val());
+              console.log($(this).val());
           });
           $.ajax({
               type: 'get',
