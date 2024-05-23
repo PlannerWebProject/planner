@@ -244,7 +244,7 @@ html, body {
 										class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary"
 										href="#"><i class="bi-person me-2"></i>Your Profile</a> <a
 										class="dropdown-item py-2 fw-medium h-bg-tranparent font-primary api-btn"
-										href="#" onclick="kakaoOut()"><i
+										href="#" onclick="logOut()"><i
 										class="bi-box-arrow-right me-2"></i>Log Out</a>
 								</div>
 							</div>
@@ -739,7 +739,38 @@ html, body {
 	}
 	
 	
-	function kakaoOut(){
+	/* function logOut() {
+	    // Kakao 플랫폼에서 사용자 로그아웃(연결 해제) 요청
+	    Kakao.API.request({
+	        url: '/v1/user/unlink',
+	    })
+	    .then(function (response) {
+	        console.log(response); // 성공 시 응답 출력
+	    })
+	    .catch(function (error) {
+	        console.log(error); // 실패 시 에러 출력
+	    });
+
+	    // 서버에 로그아웃 요청 보내기
+	    $.ajax({
+	        url: '/user/logout.do',
+	        type: 'POST',
+	        success: function() {
+	            sessionStorage.clear(); 
+	            localStorage.clear(); 
+
+	            document.cookie = "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
+
+	           // window.location.href = '/plan/planiverse.do';
+	        },
+	        error: function(xhr, status, error) {
+	            console.error('Error:', status, error); 
+	        }
+	    });
+	} */
+
+	
+	 function logOut(){
     Kakao.API.request({
         url: '/v1/user/unlink',
     })
@@ -750,13 +781,18 @@ html, body {
         .catch(function (error) {
             console.log(error);
         });
-   		 sessionStorage.clear();
-    	 localStorage.clear();
-    	 //Kakao.Auth.setAccessToken(undefined); 주석풀면 세션스토리지에 자동으로 엑세스토큰 저장됨
-    	  
-    	 window.location.href = 'http://localhost:8081/plan/planiverse.do';
+    	 fetch('/user/logout.do')
+        .then(function() {
+            // 세션 스토리지 및 로컬 스토리지 삭제
+            sessionStorage.clear();
+            localStorage.clear();
+
+            document.cookie = "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
+
+           // window.location.href = '/plan/planiverse.do';
+        });
 	
-	}
+	} 
 	
 
 		  function deleteCookie() {
@@ -1529,7 +1565,7 @@ html, body {
 			});
 		}
 
-        function logout() {
+       /*  function logout() {
             let info = JSON.parse(localStorage.getItem('authInfo'));
             fetch("https://oauth2.googleapis.com/revoke?token=" + info['access_token'], {
                 method: 'POST',
@@ -1541,7 +1577,7 @@ html, body {
                 localStorage.removeItem('authInfo');
                 location.href = "http://localhost:8090/plan/planiverse.do";
             });
-        }
+        } */
 
         checkAuth();
 		
