@@ -90,8 +90,12 @@ html, body {
 	border: 0;
 }
 
-#exampleModal, #editEventModal, #loginModal, #signupModal,
+<%-- #exampleModal, #editEventModal, #loginModal, #signupModal,
 	#eventProduceModal {
+	background-color: rgba(0, 0, 0, 0.4);
+} --%>
+
+.modal {
 	background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -157,7 +161,14 @@ html, body {
 	height: 15px;
 }
 
-/* kim0f85 css fix */
+
+.pointer {
+	cursor: pointer;
+}
+.pointer:hover {
+	opacity: 0.7;
+}
+
 
 .bi-person-circle::before {
     font-size: 30px;
@@ -170,6 +181,7 @@ html, body {
 
     }
 }
+
 
 
 </style>
@@ -275,20 +287,28 @@ html, body {
 					<nav class="nav-tree mb-0">
 						<ul>
 							<li><a href="#" class="calendarGroup">내 달력</a></i>
-								<ul>
+								<ul id="myCalGroup">
 									<li><a href="#" id="addMyCalendarBtn"
 										class="sidebar button button-rounded px-5 button-border button-text-effect button-text-flip-x">
 											<div class="button-inner">
 												<span><i class="bi-plus-circle"></i>달력추가</span> <span
-													class="white"><i class="bi-plus-circle-fill"></i>달력추가</span>
+													class=""><i class="bi-plus-circle-fill"></i>달력추가</span>
 											</div>
 									</a></li>
-									<li><label class="checkbox-inline"><input
-											class="filter" type="checkbox" value="달력1" checked="">달력1</label></li>
-									<li><label class="checkbox-inline"><input
-											class="filter" type="checkbox" value="달력2" checked="">달력2</label></li>
-									<li><label class="checkbox-inline"><input
-											class="filter" type="checkbox" value="달력3" checked="">달력3</label></li>
+									<c:choose>
+									    <c:when test="${empty userId}">
+									        <li><label class="checkbox-inline pointer">
+									            <input class="filter" type="checkbox" value="달력1" checked="">기본
+									        </label></li>
+									    </c:when>
+									    <c:otherwise>
+									        <c:forEach items="${calDTO}" var="dto">
+									            <li><label class="checkbox-inline pointer">
+									                <input class="filter" type="checkbox" value="${dto.calSeq}" checked="">${dto.name}
+									            </label></li>
+									        </c:forEach>
+									    </c:otherwise>
+									</c:choose>
 								</ul></li>
 						</ul>
 					</nav>
@@ -301,15 +321,11 @@ html, body {
 										class="sidebar button button-rounded px-5 button-border button-text-effect button-text-flip-x">
 											<div class="button-inner">
 												<span><i class="bi-plus-circle"></i>달력추가</span> <span
-													class="white"><i class="bi-plus-circle-fill"></i>달력추가</span>
+													class=""><i class="bi-plus-circle-fill"></i>달력추가</span>
 											</div>
 									</a></li>
-									<li><label class="checkbox-inline"><input
-											class="filter" type="checkbox" value="달력1" checked="">달력1</label></li>
-									<li><label class="checkbox-inline"><input
-											class="filter" type="checkbox" value="달력2" checked="">달력2</label></li>
-									<li><label class="checkbox-inline"><input
-											class="filter" type="checkbox" value="달력3" checked="">달력3</label></li>
+									<li><label class="checkbox-inline pointer"><input
+											class="filter" type="checkbox" value="달력1" checked="">기본</label></li>
 								</ul></li>
 						</ul>
 					</nav>
@@ -411,7 +427,7 @@ html, body {
 	</div>
 
 
-	<!-- loginSTart -->
+	<!-- loginStart -->
 
 	<div class="modal fade" id="loginModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -420,7 +436,7 @@ html, body {
 				<div class="modal-content">
 					<div class="modal-body">
 						<div class="card-body p-5">
-							<form id="login-form" name="login-form" class="mb-0" action="#"
+							<form id="login-form" name="login-form" class="mb-0" action="/plan/user/login.do"
 								method="post">
 								<h1 class="fs-4 fw-semibold text-center mb-0">Sign In to
 									Planiverse Account</h1>
@@ -629,6 +645,36 @@ html, body {
 		</div>
 	</div>
 
+	<!-- CategoryModal -->
+	<div class="modal fade" id="CategoryModal" tabindex="-1"
+		aria-labelledby="editModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modalBackground">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="addCategoryModalHeader">달력추가</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="mb-3">
+								<label for="recipient-name" class="col-form-label">달력 이름</label> <input
+									type="text" class="form-control" id="CategoryModalTitle">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"	data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary" id="deleteCategoryBtn">달력삭제</button>
+						<button type="button" class="btn btn-primary" id="editCategoryBtn">달력수정</button>
+						<button type="button" class="btn btn-primary" id="addCategoryBtn">달력생성</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- JavaScripts
 	============================================= -->
 
@@ -735,6 +781,9 @@ html, body {
 		var sidebarMain = document.getElementById("sidebarMain");
 		var addSchedule = document.getElementById("addSchedule");
 	    var sidebarFoldingBtn = document.getElementById('sidebarFoldingBtn');
+
+		//카테고리 모달
+		const categoryModal = new bootstrap.Modal(document.getElementById('CategoryModal'));
 
 		// Accordian
 		for (var i = 0; i < coll.length; i++) {
@@ -867,6 +916,52 @@ html, body {
 		        border: "0",
 		        background: "none"
 		    });
+
+			
+			$('#addMyCalendarBtn').click(function () {
+				categoryModal.show();
+			});
+
+			//필터
+			$('.filter').on('change', function () {
+				calendar.refetchEvents();
+			});
+		});
+
+		document.getElementById('addCategoryBtn').addEventListener('click', function() {
+			// Get the value from the input field
+			const calendarName = document.getElementById('CategoryModalTitle').value;
+			
+			if (calendarName == '') return;
+
+			// Create a new list item
+			const newListItem = document.createElement('li');
+
+			// Create the label and input elements
+			const newLabel = document.createElement('label');
+			newLabel.classList.add('checkbox-inline', 'pointer');
+			
+			const newCheckbox = document.createElement('input');
+			newCheckbox.classList.add('filter');
+			newCheckbox.type = 'checkbox';
+			newCheckbox.value = calendarName;
+			newCheckbox.checked = true;
+
+			// Set the text content of the label
+			newLabel.appendChild(newCheckbox);
+			newLabel.appendChild(document.createTextNode(calendarName));
+
+			// Append the label to the list item
+			newListItem.appendChild(newLabel);
+
+			// Append the list item to the group
+			document.getElementById('myCalGroup').appendChild(newListItem);
+
+			// Close the modal
+			categoryModal.hide();
+
+			// Clear the input field for future use
+			document.getElementById('CategoryModalTitle').value = '';
 		});
 
 		
@@ -920,20 +1015,28 @@ html, body {
 		})
 	})
 	function login() {
-    var loginId = $('#login-form-username').val();
+    
+}
+/* $("#login-form-submit").on('click', function() {
+     login(); 
+    
+	var loginId = $('#login-form-username').val();
     var loginPw = $('#login-form-password').val();
+    
+    window.location.href = "/plan/planiverse.do?loginId=";
     console.log("Attempting login with:", loginId, loginPw);
     $.ajax({
         type: "post",
-        url: "/plan/event/login.do",
+        url: "/plan/user/login.do",
         data: {
             loginId: loginId,
             loginPw: loginPw
         },
         success: function(response) {
-            console.log(response);
-            if (response == "1") {
+            console.log(response.result);
+            if (response.result == 1) {
                 sessionStorage.setItem("userId", loginId);
+                sessionStorage.setItem("calDTO", calDTO);
                 alert('로그인 성공');
                 window.location.href = 'http://localhost:8081/plan/planiverse.do';
             } else {
@@ -944,10 +1047,7 @@ html, body {
             console.error(a, b, c);
         }
     });
-}
-$("#login-form-submit").on('click', function(event) {
-    login();
-});
+}); */
 
 	//수정 모달 하루종일 버튼 제어
 	$('#editEventModalAllDay').change(()=>{
@@ -985,13 +1085,10 @@ $("#login-form-submit").on('click', function(event) {
     	eventSources: [
 
     	{
-    		googleCalendarId: 'en-gb.south_korea#holiday@group.v.calendar.google.com'
-    	},
-    	{
-    		googleCalendarId: 'shk19990314@gmail.com'
+    		googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com'
     	}
     	],
-    	
+			
     	//이벤트 클릭시 수정 모달 생성
 		eventClick: function(info) {
 			var container = document.getElementById("editEventModal");
@@ -1034,7 +1131,9 @@ $("#login-form-submit").on('click', function(event) {
 		   	      		success: function (response) {
 		   	      			if(response.result ==1){
 								info.event.remove();
-		   	      			}
+		   	      			} else if (response.result ==0){
+				   	    		alert('로그인 후 이용 가능합니다.');
+				   	    	}
 		   	      		},
 		   	      		error: function(a,b,c){
 		   					console.log(a,b,c);
@@ -1051,7 +1150,10 @@ $("#login-form-submit").on('click', function(event) {
 					if (editRequest !== null) {
 						editRequest.abort();
 					}
-
+					var titleValue =  $('#editEventModalTitle').val();
+					var locValue = $('#editEventModalLoc').val();
+		   			var contentValue = $('#editEventModalContent').val();
+				
 					  // ajax 요청 생성
 					editRequest =  $.ajax({
 				  		type: "post",
@@ -1059,23 +1161,26 @@ $("#login-form-submit").on('click', function(event) {
 				   		data: {
 				   			eventSeq: info.event.extendedProps.eventSeq,
 				   			allDay: $('#editEventModalAllDay').is(':checked'),
-				   			title: $('#editEventModalTitle').val(),
+				   			title: titleValue,
 				   			start: moment($('#editEventModalStart').val()).format('YYYY/MM/DD HH:mm'), 
 				   			end: moment($('#editEventModalEnd').val()).format('YYYY/MM/DD HH:mm'), 
 				   			color: $('#editColor').attr("value"),
-				   			loc: $('#editEventModalLoc').val(),
-				   			content: $('#editEventModalContent').val()
+				   			loc: locValue,
+				   			content: contentValue
 				   	    },
 				   	    dataType: 'json',
 				   	    success: function (response) {
 				   	    	if(response.result ==1){
-				   	    	info.event.setProp('title', $('#editEventModalTitle').val());
+				   	    	console.log(titleValue);
+				   	    	info.event.setProp('title', titleValue);
 				   	    	info.event.setAllDay($('#editEventModalAllDay').is(':checked'));
 				   	    	info.event.setStart($('#editEventModalStart').val());
 				   	    	info.event.setEnd($('#editEventModalEnd').val());
 				   	    	info.event.setProp('color', $('#editColor').attr("value"));
-				   	    	info.event.setExtendedProp('loc', $('#editEventModalLoc').val());
-				   	    	info.event.setExtendedProp('content', $('#editEventModalContent').val());
+				   	    	info.event.setExtendedProp('loc', locValue);
+				   	    	info.event.setExtendedProp('content', contentValue);
+				   	    	} else if (response.result ==0){
+				   	    		alert('로그인 후 이용 가능합니다.');
 				   	    	}
 				   	    },
 				   	    error: function(a,b,c){
@@ -1104,7 +1209,9 @@ $("#login-form-submit").on('click', function(event) {
 	   	      		success: function (response) {
 	   	      			if(response.result ==1){
 	   	        			alert('수정 완료');
-	   	      			}
+	   	      			} else if (response.result ==0){
+			   	    		alert('로그인 후 이용 가능합니다.');
+			   	    	}
 	   	      		},
 	   	      		error: function(a,b,c){
 	   					console.log(a,b,c);
@@ -1174,8 +1281,7 @@ $("#login-form-submit").on('click', function(event) {
       editable: true,
       selectable: true,
       dayMaxEvents: true,
-      
-       events: [
+      events: [
     	  $.ajax({
      			type: 'get',
      			url: '/plan/event/list.do',

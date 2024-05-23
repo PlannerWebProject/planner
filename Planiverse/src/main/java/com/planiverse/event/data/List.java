@@ -9,12 +9,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.planiverse.event.model.EventDTO;
 import com.planiverse.event.repository.EventDAO;
+import com.planiverse.event.repository.EventDAOImpl;
 
 
 @WebServlet("/event/list.do")
@@ -22,9 +24,13 @@ public class List extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		EventDAO dao = new EventDAO();
+		HttpSession session = req.getSession();
+		String id = (String)session.getAttribute("id");
+		
+		EventDAO dao = new EventDAOImpl();
 
-		ArrayList<EventDTO> list = dao.list();
+		ArrayList<EventDTO> list = dao.list(id);
+		System.out.println(id);
 
 		JSONArray arr = new JSONArray();
 		for (EventDTO dto : list) {
