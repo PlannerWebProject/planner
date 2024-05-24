@@ -45,7 +45,7 @@ public class UserDAO {
 			
 			rs = pstat.executeQuery();
 			if(rs.next()) {
-				if(rs.getInt("cnt")==0) return 1;
+				return rs.getInt("cnt");
 			}
 			
 		} catch (Exception e) {
