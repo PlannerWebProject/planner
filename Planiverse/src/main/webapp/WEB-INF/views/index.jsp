@@ -297,13 +297,13 @@ html, body {
 											</div>
 									</a></li>
 									<c:choose>
-									    <c:when test="${empty userId}">
+									    <c:when test="${empty sessionScope.id}">
 									        <li><label class="checkbox-inline pointer">
 									            <input class="filter" type="checkbox" value="달력1" checked="">기본
 									        </label></li>
 									    </c:when>
 									    <c:otherwise>
-									        <c:forEach items="${calDTO}" var="dto">
+									        <c:forEach items="${sessionScope.calDTO}" var="dto">
 									            <li><label class="checkbox-inline pointer">
 									                <input class="filter" type="checkbox" value="${dto.calSeq}" checked="">${dto.name}
 									            </label></li>
@@ -856,8 +856,7 @@ html, body {
 				},
 			});
 		});
-		
-		
+
 		document.getElementById('addCategoryBtn').addEventListener('click', function() {
 			// Get the value from the input field
 			const calendarName = document.getElementById('CategoryModalTitle').value;
@@ -1014,7 +1013,12 @@ html, body {
 
 	//필터
 	$('.filter').on('change', function () {
-		calendar.refetchEvents();
+		var seq = $(this).val();
+		if ($(this).is(':checked')) {
+			$('.' + seq).parent('div').show();
+		} else {
+			$('.' + seq).parent('div').hide();
+		}
 	});
 /* $("#login-form-submit").on('click', function() {
      login(); 
@@ -1315,7 +1319,7 @@ html, body {
      			success: function(result){
      				result.forEach(obj =>{
      					calendar.addEvent({
-     						className: "123test123",
+     						classNames: obj.calSeq,
      						title: obj.title,
      						allDay: (obj.allDay == 'y'? true: false),
      						start: obj.start,
