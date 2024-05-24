@@ -294,13 +294,13 @@ html, body {
 											</div>
 									</a></li>
 									<c:choose>
-									    <c:when test="${empty userId}">
+									    <c:when test="${empty sessionScope.id}">
 									        <li><label class="checkbox-inline pointer">
 									            <input class="filter" type="checkbox" value="달력1" checked="">기본
 									        </label></li>
 									    </c:when>
 									    <c:otherwise>
-									        <c:forEach items="${calDTO}" var="dto">
+									        <c:forEach items="${sessionScope.calDTO}" var="dto">
 									            <li><label class="checkbox-inline pointer">
 									                <input class="filter" type="checkbox" value="${dto.calSeq}" checked="">${dto.name}
 									            </label></li>
@@ -853,8 +853,7 @@ html, body {
 				},
 			});
 		});
-		
-		
+
 		document.getElementById('addCategoryBtn').addEventListener('click', function() {
 			// Get the value from the input field
 			const calendarName = document.getElementById('CategoryModalTitle').value;
@@ -1011,7 +1010,12 @@ html, body {
 
 	//필터
 	$('.filter').on('change', function () {
-		calendar.refetchEvents();
+		var seq = $(this).val();
+		if ($(this).is(':checked')) {
+			$('.' + seq).parent('div').show();
+		} else {
+			$('.' + seq).parent('div').hide();
+		}
 	});
 /* $("#login-form-submit").on('click', function() {
      login(); 
@@ -1087,6 +1091,9 @@ html, body {
 			
     	//이벤트 클릭시 수정 모달 생성
 		eventClick: function(info) {
+			info.jsEvent.cancelBubble = true;
+			info.jsEvent.preventDefault();
+			
 			var container = document.getElementById("editEventModal");
 			var modal = new bootstrap.Modal(container);
 
@@ -1309,6 +1316,7 @@ html, body {
      			success: function(result){
      				result.forEach(obj =>{
      					calendar.addEvent({
+     						classNames: obj.calSeq,
      						title: obj.title,
      						allDay: (obj.allDay == 'y'? true: false),
      						start: obj.start,
@@ -1501,7 +1509,7 @@ html, body {
            
         }
 
-        function checkAuth() {
+		function checkAuth() {
             let params = {};
             let regex = /([^&=]+)=([^&]*)/g, m;
             while (m = regex.exec(location.href)) {
@@ -1520,35 +1528,53 @@ html, body {
             }
         }
 
+        
+        const colors = [
+        	  "#FEBE8C",
+        	  "#B1BD71",
+        	  "#21A796",
+        	  "#8AD7A5",
+        	  "#6DC5D1"
+        	];
+        
+        var colorIndex = 0;
+
+        
         function showProfile() {
-			let info = JSON.parse(localStorage.getItem('authInfo'));
-			console.log(info['access_token']);
-			console.log(info['expires_in'])
-			fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-				headers: {
-					"Authorization": `Bearer \${info['access_token']}`
-				}
-			})
-			.then((data) => data.json())
-			.then((info) => {
-				/* document.getElementById('names').innerHTML += info.name;
-				document.getElementById('image').src = info.picture; */
-			});
-		
-			fetch("https://www.googleapis.com/calendar/v3/users/me/calendarList/", {
-				headers: {
-					"Authorization": `Bearer \${info['access_token']}`
-				}
-			})
-			.then((data) => data.json())
-			.then((info) => {
-				let calendarList = [];
-				info.items.forEach(item => calendarList.push(JSON.stringify(item.id)));
-				/* document.getElementById('calendar_list').innerHTML = calendarList.join('<br>'); */
-				console.log(calendarList);
-				console.log(calendarList[0]);
-			});
-		}
+    		let info = JSON.parse(localStorage.getItem('authInfo'));
+    		console.log(info['access_token']);
+    		console.log(info['expires_in'])
+    		fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+    			headers: {
+    				"Authorization": `Bearer \${info['access_token']}`
+    			}
+    		})
+    		.then((data) => data.json())
+    		.then((info) => {
+    			console.log(info.email)
+    			sendUserInfo(info.name, info.email);
+    		});
+    	
+    		fetch("https://www.googleapis.com/calendar/v3/users/me/calendarList/", {
+    			headers: {
+    				"Authorization": `Bearer \${info['access_token']}`
+    			}
+    		})
+    		.then((data) => data.json())
+    		.then((info) => {
+    			calendarNow = info.items.map(item => {
+    				if(item.id != 'ko.south_korea#holiday@group.v.calendar.google.com'){
+    					calendar.addEventSource({
+        	                googleCalendarId: item.id, color: colors[colorIndex]
+        	            });
+    					 colorIndex = (colorIndex + 1); 
+        	            calendar.render();
+    				}
+    	            
+    	        });
+    			
+    		});
+    	}
 
         function logout() {
             let info = JSON.parse(localStorage.getItem('authInfo'));
@@ -1565,6 +1591,23 @@ html, body {
         }
 
         checkAuth();
+        
+        function sendUserInfo(name, email) {
+      	  $.ajax({
+      	    type: 'POST',
+      	    url: '/plan/user/socialLogin.do', // Change this to your actual server endpoint
+      	    data: ({
+      	      name: name,
+      	      email: email
+      	    }),
+      	    success: function(response) {
+      	      console.log("로그인 성공");
+      	    },
+      	    error: function(xhr, status, error) {
+      	      console.error("Failed to send user info:", error);
+      	    }
+      	  });
+      	}
 		
 	</script>
 </body>
