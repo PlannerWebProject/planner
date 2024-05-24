@@ -76,9 +76,6 @@ html, body {
     line-height: inherit;
 	place-items: center;
 }
-#addSchedule{
-	height: 52px;
-}
  .calendarGroup{
     display: flex;
     padding-right: 10px;
