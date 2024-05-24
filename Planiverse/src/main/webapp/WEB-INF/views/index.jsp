@@ -76,9 +76,6 @@ html, body {
     line-height: inherit;
 	place-items: center;
 }
-#addSchedule{
-	height: 52px;
-}
  .calendarGroup{
     display: flex;
     padding-right: 10px;
@@ -686,92 +683,7 @@ html, body {
 		crossorigin="anonymous"></script>
 	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	<script>
-	Kakao.init('264eac61bfebe8b0add3dd5814946507'); // 사용하려는 앱의 JavaScript 키 입력
-	Kakao.isInitialized();
-	console.log(Kakao.isInitialized());
-  
-
 	
-	function loginWithKakao() {
-		Kakao.Auth.login({
-			success: function (authObj) {
-			  console.log(authObj); //access토큰 값
-			  getInfo();
-			},
-			fail: function (err) {
-			  console.log(err);
-			},
-		  });
-		}
-	function getInfo() {
-        Kakao.API.request({
-          url: "/v2/user/me",
-          success: function (res) {
-            console.log(res);
-            var id = res.id;
-            var name = res.kakao_account.profile.nickname;
-			var email = res.kakao_account.email;
-			
-			sendUserInfo(name, email);
-			
-            localStorage.setItem("name", name);
-            localStorage.setItem("id", id);
-            localStorage.setItem("email", email);
-            console.log(name);
-            console.log(id);
-			console.log(email);
-	
-          },
-          fail: function (error) {
-            alert("카카오 로그인 실패" + JSON.stringify(error));
-          },
-        });
-      }
-	
-
-
-  
-	function getCookie(name) {
-	  var parts = document.cookie.split(name + '=');
-	  if (parts.length === 2) { return parts[1].split(';')[0]; }
-	}
-	
-	
- 	 function logout() {
-	    Kakao.API.request({
-	        url: '/v1/user/unlink',
-	    })
-	    .then(function (response) {
-	        console.log(response); 
-	    })
-	    .catch(function (error) {
-	        console.log(error); 
-	    });
-
-	    $.ajax({
-	        url: '/plan/user/logout.do',
-	        type: 'POST',
-	        success: function() {
-	            sessionStorage.clear(); 
-	            localStorage.clear(); 
-				location.reload(true);
-
-	            //location.href = '/plan/planiverse.do';
-	        },
-	        error: function(xhr, status, error) {
-	            console.error('Error:', status, error); 
-	        }
-	    });
-	}  
-
-	
-	
-		 
-
-		  function deleteCookie() {
-		    document.cookie = 'authorize-access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-		   
-		  }
 		
 		var coll = document.getElementsByClassName("collapsible");
 		var sidebar = document.getElementsByClassName("sidebar");
@@ -782,6 +694,95 @@ html, body {
 		var delRequest = null;
 		var addRequest = null;
 		var editRequest = null;
+		var sendRequest = null;
+		
+		Kakao.init('264eac61bfebe8b0add3dd5814946507'); // 사용하려는 앱의 JavaScript 키 입력
+		Kakao.isInitialized();
+		console.log(Kakao.isInitialized());
+	  
+
+		
+		function loginWithKakao() {
+			Kakao.Auth.login({
+				success: function (authObj) {
+				  console.log(authObj); //access토큰 값
+				  getInfo();
+				},
+				fail: function (err) {
+				  console.log(err);
+				},
+			  });
+			}
+		function getInfo() {
+	        Kakao.API.request({
+	          url: "/v2/user/me",
+	          success: function (res) {
+	            console.log(res);
+	            var id = res.id;
+	            var name = res.kakao_account.profile.nickname;
+				var email = res.kakao_account.email;
+				
+				sendUserInfo(name, email);
+				
+	            localStorage.setItem("name", name);
+	            localStorage.setItem("id", id);
+	            localStorage.setItem("email", email);
+	            console.log(name);
+	            console.log(id);
+				console.log(email);
+		
+	          },
+	          fail: function (error) {
+	            alert("카카오 로그인 실패" + JSON.stringify(error));
+	          },
+	        });
+	      }
+		
+
+
+	  
+		function getCookie(name) {
+		  var parts = document.cookie.split(name + '=');
+		  if (parts.length === 2) { return parts[1].split(';')[0]; }
+		}
+		
+		
+	 	 function logout() {
+		    Kakao.API.request({
+		        url: '/v1/user/unlink',
+		    })
+		    .then(function (response) {
+		        console.log(response); 
+		    })
+		    .catch(function (error) {
+		        console.log(error); 
+		    });
+
+		    $.ajax({
+		        url: '/plan/user/logout.do',
+		        type: 'POST',
+		        success: function() {
+		            sessionStorage.clear(); 
+		            localStorage.clear(); 
+					location.reload(true);
+
+		            //location.href = '/plan/planiverse.do';
+		        },
+		        error: function(xhr, status, error) {
+		            console.error('Error:', status, error); 
+		        }
+		    });
+		}  
+
+		
+		
+			 
+
+			  function deleteCookie() {
+			    document.cookie = 'authorize-access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			   
+			  }
+		
 		
 		//사이드바 토글
 		var sidebarStatus = true;
@@ -1579,7 +1580,14 @@ html, body {
         checkAuth();
          
         function sendUserInfo(name, email) {
-      	  $.ajax({
+        	
+        	// 중복 실행 방지
+			if (sendRequest) {
+				sendRequest.abort();
+			}
+
+			// ajax 요청 생성
+			sendRequest = $.ajax({
       	    type: 'POST',
       	    url: '/plan/user/socialLogin.do', // Change this to your actual server endpoint
       	    data: ({
@@ -1587,8 +1595,11 @@ html, body {
       	      email: email
       	    }),
       	    success: function(response) {
+      	      setTimeout(function() {
       	      console.log("로그인 성공");
-      	      location.reload();
+      	    	  
+      	      }, 3000);
+      	      calendar.render();
       	    },
       	    error: function(xhr, status, error) {
       	      console.error("Failed to send user info:", error);
