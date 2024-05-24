@@ -765,29 +765,31 @@ html, body {
 	} */
 
 	
-	 function logOut(){
-    Kakao.API.request({
-        url: '/v1/user/unlink',
-    })
-        .then(function (response) {
-            console.log(response);
-            
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    	 fetch("/user/logout.do")
-        .then(function() {
-            // 세션 스토리지 및 로컬 스토리지 삭제
-            sessionStorage.clear();
-            localStorage.clear();
+	function logOut() {
+	  
+	    Kakao.Auth.logout(function() {
+	        console.log('Logged out');
+	    });
 
-            document.cookie = "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
+	    
+	    $.ajax({
+	        url: '/user/logout.do',
+	        type: 'POST',
+	        success: function() {
+	   
+	            sessionStorage.clear();
+	            localStorage.clear();
 
-           // window.location.href = '/plan/planiverse.do';
-        });
-	
-	} 
+	            document.cookie = "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
+
+	   
+	            window.location.href = '/plan/planiverse.do';
+	        },
+	        error: function(xhr, status, error) {
+	            console.error('Error:', status, error);
+	        }
+	    });
+	}
 	
 
 		  function deleteCookie() {
