@@ -87,7 +87,7 @@
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --bs-body-font-family: var(--bs-font-sans-serif);
-  --bs-body-font-size: 0.9em;
+  --bs-body-font-size: 1em;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
   --bs-body-color: #212529;
@@ -2173,7 +2173,7 @@ progress {
   display: block;
   width: 100%;
   padding: 0.375rem 0.75rem;
-  font-size: 1rem;
+  font-size: 1em;
   font-weight: 400;
   line-height: 1.5;
   color: var(--bs-body-color);
@@ -28333,7 +28333,7 @@ h3.titular-title, .titular-title.h3 {
 	Divider
 -----------------------------------------------------------------*/
 .divider {
-  --cnvs-divider-margin: 2rem;
+  --cnvs-divider-margin: 3rem;
   --cnvs-divider-gap: 0.5rem;
   --cnvs-divider-color: var(--cnvs-contrast-200);
   --cnvs-divider-hover-color: var(--cnvs-contrast-600);

@@ -173,6 +173,7 @@ html, body {
 	width: 50px;
 	display: inline-block;
 	height: 15px;
+	border-radius: 5px;
 }
 
 
