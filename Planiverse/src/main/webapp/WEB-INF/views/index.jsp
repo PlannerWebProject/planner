@@ -856,56 +856,6 @@ html, body {
 				},
 			});
 		});
-		
-		
-		        $('#sidebarMain').css({
-		            display: (windowWidth < 1000) ? "block" : "",
-		            width: sidebarWidth
-		        });
-		    	// 사이드바 높이 적용
-		        $('#slider').css("height", sliderHeight);
-		    	// 버튼 간격 적용
-		        $('.fc-toolbar-chunk').css("margin-left", marginLeft);
-				
-		    	// 사이드바 토글시 내부 요소들 감추기/보이기
-		        $('#sidebarMain').children().not('#addSchedule').css("display", sidebarStatus ? "" : "none");
-		    }
-			
-		    // 사이드바 토글 함수
-		    function toggleSidebar() {
-		        sidebarStatus = !sidebarStatus;
-		        adjustSidebar();
-		        calendar.render();
-		    }
-			
-		    // 브라우저 크기 변경시 사이드바 조정함수 실행
-		    window.addEventListener('resize', adjustSidebar);
-		    // 사이드바 토글버튼 클릭시 토글 함수 실행
-		    $('#sidebarFoldingBtn').on('click', toggleSidebar);
-			
-		    // 사이트 로딩 직후 사이드바 크기 조정
-		    adjustSidebar();
-		    // 사이트 로딩 후 css 후처리
-		    $('.calendarGroup').css({
-		        display: "flex",
-		        paddingRight: "10px"
-		    }).children().css("marginLeft", "auto");
-		
-		    $('.button-border').css({
-		        border: "0",
-		        background: "none"
-		    });
-
-			
-			$('#addMyCalendarBtn').click(function () {
-				categoryModal.show();
-			});
-
-			//필터
-			$('.filter').on('change', function () {
-				calendar.render();
-			});
-		});
 
 		document.getElementById('addCategoryBtn').addEventListener('click', function() {
 			// Get the value from the input field
@@ -1063,7 +1013,12 @@ html, body {
 
 	//필터
 	$('.filter').on('change', function () {
-		calendar.refetchEvents();
+		var seq = $(this).val();
+		if ($(this).is(':checked')) {
+			$('.' + seq).parent('div').show();
+		} else {
+			$('.' + seq).parent('div').hide();
+		}
 	});
 /* $("#login-form-submit").on('click', function() {
      login(); 
@@ -1364,7 +1319,7 @@ html, body {
      			success: function(result){
      				result.forEach(obj =>{
      					calendar.addEvent({
-     						classNames: ['test'],
+     						classNames: obj.calSeq,
      						title: obj.title,
      						allDay: (obj.allDay == 'y'? true: false),
      						start: obj.start,
