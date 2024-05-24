@@ -1486,7 +1486,7 @@ html, body {
 		function signIn() {
             let oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
             let form = document.createElement('form');
-            form.setAttribute('method', 'GET'); 
+            form.setAttribute('method', 'POST'); 
             form.setAttribute('action', oauth2Endpoint);
 
             let params = {
@@ -1521,7 +1521,7 @@ html, body {
 
             if (Object.keys(params).length > 0) {
                 localStorage.setItem('authInfo', JSON.stringify(params));
-                window.history.pushState({}, document.title, "/" + "profile.html");
+               window.history.pushState({}, document.title, "/" + "plan/planiverse.do");
                 showProfile();
             } else {
                 let storedInfo = localStorage.getItem('authInfo');
@@ -1566,9 +1566,16 @@ html, body {
     		.then((data) => data.json())
     		.then((info) => {
     			calendarNow = info.items.map(item => {
+    				console.log(item.description)
     				if(item.id != 'ko.south_korea#holiday@group.v.calendar.google.com'){
     					calendar.addEventSource({
-        	                googleCalendarId: item.id, color: colors[colorIndex]
+        	                googleCalendarId: item.id, 
+        	                color: colors[colorIndex], 
+        	                /* if(item.description == null){
+        	                	className: item.summary
+        	                }else{
+        	                	className: item.description
+        	                } */
         	            });
     					 colorIndex = (colorIndex + 1); 
         	            calendar.render();
