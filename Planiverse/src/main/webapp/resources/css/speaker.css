@@ -1,20 +1,25 @@
  /* ----------------------------------------------------------------
 	Canvas: Speaker
 -----------------------------------------------------------------*/
-
+@font-face {
+    font-family: 'SOYOMapleBoldTTF';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/SOYOMapleBoldTTF.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
 :root {
-	--cnvs-themecolor: #AB7AE1;
+	--cnvs-themecolor: #AA96DA;
 	--cnvs-themecolor-rgb: 171, 122, 225;
-	--cnvs-primary-font: 'paralucent-text', sans-serif;
-	--cnvs-body-font: 'paralucent', sans-serif;
+	--cnvs-primary-font: 'SOYOMapleBoldTTF', 'paralucent-text', sans-serif;
+	--cnvs-body-font: 'SOYOMapleBoldTTF','paralucent', sans-serif;
 	--bs-bg-opacity: 1;
 }
 
 #header {
-	--cnvs-primary-menu-font-size:	0.875rem;
-	--cnvs-primary-menu-submenu-font-size:	0.875rem;
-	--cnvs-primary-menu-submenu-font-weight:	500;
-	--cnvs-primary-menu-submenu-hover-font-weight: 600;
+	--cnvs-primary-menu-font-size:	0.8rem;
+	--cnvs-primary-menu-submenu-font-size:	0.8rem;
+	--cnvs-primary-menu-submenu-font-weight:	400;
+	--cnvs-primary-menu-submenu-hover-font-weight: 400;
 	--cnvs-primary-menu-submenu-tt:	none;
 }
 

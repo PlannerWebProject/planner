@@ -36,6 +36,10 @@
 <title>Planiverse</title>
 
 <style>
+.button-inner {
+	color: #333 !important;
+}
+
 html, body {
 	width: 100%;
 	height: 100vh;
@@ -50,9 +54,8 @@ html, body {
 }
 
 #slider {
-	height: calc(100vh - 70px);
-	margin: 0 auto;
-	margin-top: 0;
+	height: calc(100vh - 30px);
+	margin: 20px auto 0 auto;
 	justify-content: center;
 	display: flex;
 }
@@ -67,10 +70,20 @@ html, body {
 #addScheduleBtn {
 	position: relative;
 	height: 38.88px;
-	margin-bottom: 19px;
-	display: grid;
+	margin: 0px auto 19px auto;
+    width: 90%;
+    justify-content: center;
+    line-height: inherit;
 	place-items: center;
 }
+#addSchedule{
+	height: 52px;
+}
+ .calendarGroup{
+    display: flex;
+    padding-right: 10px;
+	color: #333 !important;
+ }
 
 #datepickerDiv {
 	margin: 0 auto;
@@ -90,10 +103,14 @@ html, body {
 	border: 0;
 }
 
-<%-- #exampleModal, #editEventModal, #loginModal, #signupModal,
+#scheduleAcc {
+	padding: 0px 10px 0px 10px;
+}
+
+/* #exampleModal, #editEventModal, #loginModal, #signupModal,
 	#eventProduceModal {
 	background-color: rgba(0, 0, 0, 0.4);
-} --%>
+} */
 
 .modal {
 	background-color: rgba(0, 0, 0, 0.4);
@@ -118,14 +135,11 @@ html, body {
 	display: flex;
 }
 
-#addMyCalendarBtn {
+#addMyCalendarBtn, #addShCalendarBtn {
 	padding: 0px 48px;
 	margin-bottom: 8px;
-}
-
-#addShCalendarBtn {
-	padding: 0px 48px;
-	margin-bottom: 8px;
+	border: 1px solid #D4E2D4;
+    background: #D4E2D4;
 }
 
 .white {
@@ -159,6 +173,7 @@ html, body {
 	width: 50px;
 	display: inline-block;
 	height: 15px;
+	border-radius: 5px;
 }
 
 
@@ -182,6 +197,12 @@ html, body {
     }
 }
 
+.fc-toolbar-chunk > button {
+	--fc-button-bg-color: #FFC7A4;
+    --fc-button-border-color: #FFC7A4;
+    --fc-button-hover-bg-color: #FFCACC;
+    --fc-button-hover-border-color: #FFCACC;
+}
 
 
 </style>
@@ -205,33 +226,13 @@ html, body {
 
 		<!-- Header
 		============================================= -->
-		<header id="header" class="header-size-sm" data-sticky-shrink="false">
+		<!-- <header id="header" class="header-size-sm" data-sticky-shrink="false">
 			<div id="header-wrap" class="border-bottom-0">
 				<div class="container">
 					<div class="header-row justify-content-lg-between">
 
-						<!-- Logo
-						============================================= -->
-						<div id="logo" class="me-lg-0">
-							<div id="sidebarFoldingBtnDiv">
-								<button name="sidebarFoldingBtn" id="sidebarFoldingBtn"
-									class="fc-button button button-rounded button-border button-dark button-icon-effect button-icon-flip-x">
-									<div>
-										<i class="bi-list-nested"></i>
-									</div>
-								</button>
-							</div>
-
-							<a href="index.html"><img
-								src="/plan/resources/images/plannerLogo.webp" alt=""></a>
-
-						</div>
-						<!-- #logo end -->
-
 						<div class="header-misc">
 
-							<!-- Top Account
-							============================================= -->
 							<div class="header-misc-icon top-account">
 								<a href="#" data-bs-toggle="dropdown" data-bs-offset="0,20"
 									data-bs-auto-close="true" aria-haspopup="true"
@@ -254,7 +255,7 @@ html, body {
 				</div>
 			</div>
 			<div class="header-wrap-clone"></div>
-		</header>
+		</header> -->
 
 
 		<!--Hero
@@ -263,10 +264,10 @@ html, body {
 			<div id="sidebarMain" class="sidebar">
 				<div id="addSchedule" class="sidebar">
 					<a href="#" id="addScheduleBtn"
-						class="fc-button sidebar button button-rounded px-5 button-border button-text-effect button-text-flip-x">
+						class="bg-primary sidebar button button-rounded px-5 button-text-effect button-text-flip-x">
 						<div class="button-inner">
-							<span><i class="bi-plus-circle"></i>일정생성</span><span><i
-								class="bi-plus-circle-fill"></i>일정생성</span>
+							<span><i class="bi-plus-circle"></i> 일정생성</span><span><i
+								class="bi-plus-circle-fill"></i> 일정생성</span>
 						</div>
 					</a>
 				</div>
@@ -359,14 +360,14 @@ html, body {
 									<div id="color">
 										<div class="color-circle" style="background-color: #F9B8D1"
 											value="#F9B8D1"></div>
-										<div class="color-circle" style="background-color: #F1932E"
-											value="#F1932E"></div>
-										<div class="color-circle" style="background-color: #FFFFD2"
-											value="#FFFFD2"></div>
+										<div class="color-circle" style="background-color: #FFCF81"
+											value="#FFCF81"></div>
+										<div class="color-circle" style="background-color: #FDFFAB"
+											value="#FDFFAB"></div>
 										<div class="color-circle" style="background-color: #A8D8EA"
 											value="#A8D8EA"></div>
-										<div class="color-circle" style="background-color: #AA96DA"
-											value="#AA96DA"></div>
+										<div class="color-circle" style="background-color: #DBC4F0"
+											value="#DBC4F0"></div>
 									</div>
 									<p>
 										선택한 색: <span id="selected-color"></span>
@@ -438,11 +439,10 @@ html, body {
 						<div class="card-body p-5">
 							<form id="login-form" name="login-form" class="mb-0" action="/plan/user/login.do"
 								method="post">
-								<h1 class="fs-4 fw-semibold text-center mb-0">Sign In to
-									Planiverse Account</h1>
-								<h2 class="fs-5 text-center fw-medium mb-5 mt-1">
+								<h1 class="fs-4 fw-semibold text-center mb-0">Sign In to	Planiverse</h1>
+								<h2 class="fs-5 text-center fw-medium mt-1">
 									<span class="op-06 nocolor">New?</span> <a href="#"
-										id="signup-action">Create Account</a>
+										id="signup-action">회원가입</a>
 								</h2>
 
 								<div class="row">
@@ -456,7 +456,7 @@ html, body {
 									<div class="col-12 form-group mb-4">
 										<div class="d-flex justify-content-between">
 											<label for="login-form-password">Password</label> <a href="#"
-												class="fw-semibold text-smaller">Forgot Password?</a>
+												class="fw-semibold text-smaller">아이디/비밀번호 찾기</a>
 										</div>
 										<input type="password" id="login-form-password"
 											name="login-form-password" value=""
@@ -465,8 +465,8 @@ html, body {
 
 									<div class="col-12 form-group mb-0">
 										<button
-											class="btn btn-lg text-white bg-black h-bg-color d-block w-100 m-0"
-											id="login-form-submit" name="login-form-submit" value="login">Continue</button>
+											class="btn btn-lg text-white bg-primary h-bg-color d-block w-100 m-0"
+											id="login-form-submit" name="login-form-submit" value="login">Login</button>
 									</div>
 								</div>
 							</form>
@@ -481,15 +481,11 @@ html, body {
 									src="https://cdn.cdnlogo.com/logos/g/35/google-icon.svg"
 									alt="Google Logo" class="d-inline-block me-2 square square-xs">Sign
 									In with Google</a> <a href="javascript:loginWithKakao()"
-									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img
+									class="btn d-block mx-0 btn-light border d-flex align-items-center justify-content-center"><img
 									id="kakao-login-btn"
 									src="https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Ff5d7b9d3-6faa-4fbd-92fb-abc13883f4ac%2Fkakao.png&blockId=845a0760-d543-46ae-965d-018c4289eb32&width=256"
 									class="d-inline-block me-2 square square-xs">Sign In with
-									Kakao</a> <a href="#"
-									class="btn d-block mx-0 mb-3 btn-light border d-flex align-items-center justify-content-center"><img
-									src="https://cdn.cdnlogo.com/logos/t/39/twitter.svg"
-									alt="Twitter Logo" class="d-inline-block me-2 square square-xs">Sign
-									In with Twitter</a>
+									Kakao</a> 
 							</div>
 						</div>
 					</div>
@@ -510,7 +506,7 @@ html, body {
 						<div class="tab-pane" id="tab-register" role="tabpanel"
 							aria-labelledby="canvas-tab-register-tab" tabindex="0">
 							<div class="card-body" style="padding: 40px;">
-								<h3>Register for an Account</h3>
+								<h3>회원가입</h3>
 
 								<form id="register-form" name="register-form" class="row mb-0"
 									action="/plan/user/register.do" method="post">
@@ -519,32 +515,31 @@ html, body {
 										<label for="register-form-email">Email(ID):</label> <input
 											type="text" id="id" name="id" class="form-control" required>
 										<br>
-										<button class="button button-3d button-black m-0" id="idCheck"
+										<button class="btn text-white bg-primary h-bg-color d-block w-25 m-0" id="idCheck"
 											name="idCheck" disabled>중복 검사</button>
 									</div>
 
 									<div class="col-12 form-group">
-										<label for="register-form-password">Password:</label> <input
+										<label for="register-form-password">비밀번호:</label> <input
 											type="password" id="pw" name="pw" class="form-control"
 											required disabled>
 									</div>
 
 									<div class="col-12 form-group">
-										<label for="register-form-repassword">Re-enter
-											Password:</label> <input type="password" id="repw" name="repw"
+										<label for="register-form-repassword">비밀번호 확인:</label> <input type="password" id="repw" name="repw"
 											class="form-control" required disabled>
 									</div>
 
 									<div class="col-12 form-group">
-										<label for="register-form-name">Name:</label> <input
+										<label for="register-form-name">이름:</label> <input
 											type="text" id="name" name="name" class="form-control"
 											required>
 									</div>
 
 									<div class="col-12 form-group">
-										<button class="button button-3d button-black m-0"
+										<button class="btn text-white bg-secondary h-bg-color d-block w-25 m-0"
 											type="submit" id="registerBtn" name="registerBtn"
-											value="register" disabled>Register Now</button>
+											value="register" disabled>회원가입</button>
 									</div>
 
 								</form>
@@ -757,7 +752,7 @@ html, body {
     	 localStorage.clear();
     	 Kakao.Auth.setAccessToken(undefined);
     	 
-    	 window.location.href = 'http://localhost:8080/plan/planiverse.do';
+    	 window.location.href = '/plan/planiverse.do';
 	
 	}
 	
@@ -862,75 +857,7 @@ html, body {
 			});
 		});
 		
-		// 윈도우 크기 변경, 사이드바 토글 이벤트 리스너 추가
-		document.addEventListener('DOMContentLoaded', function() {
-			// 사이드바 및 내부 요소 조정 함수
-		    function adjustSidebar() {
-		    	// 브라우저 내부 사이즈 저장
-		        const windowWidth = window.innerWidth;
-		    	// 사이드바 너비 저장
-		        var sidebarWidth;
-		    	// 사이드바 높이 저장
-		        const sliderHeight = windowWidth < 1000 ? "auto" : "calc(100vh - 70px)";
-		    	// 사이드바 토글시의 버튼 간격(일정 생성과 이전달버튼) 저장
-		        const marginLeft = sidebarStatus ? "0" : "100px";
-				
-		    	// 사이드바 너비 적용
-		        if (sidebarStatus) {
-		            sidebarWidth = (windowWidth >= 1000) ? "250px" : "100%";
-		        } else {
-		            sidebarWidth = (windowWidth >= 1000) ? "0" : "100%";
-		        }
 		
-		        $('#sidebarMain').css({
-		            display: (windowWidth < 1000) ? "block" : "",
-		            width: sidebarWidth
-		        });
-		    	// 사이드바 높이 적용
-		        $('#slider').css("height", sliderHeight);
-		    	// 버튼 간격 적용
-		        $('.fc-toolbar-chunk').css("margin-left", marginLeft);
-				
-		    	// 사이드바 토글시 내부 요소들 감추기/보이기
-		        $('#sidebarMain').children().not('#addSchedule').css("display", sidebarStatus ? "" : "none");
-		    }
-			
-		    // 사이드바 토글 함수
-		    function toggleSidebar() {
-		        sidebarStatus = !sidebarStatus;
-		        adjustSidebar();
-		        calendar.render();
-		    }
-			
-		    // 브라우저 크기 변경시 사이드바 조정함수 실행
-		    window.addEventListener('resize', adjustSidebar);
-		    // 사이드바 토글버튼 클릭시 토글 함수 실행
-		    $('#sidebarFoldingBtn').on('click', toggleSidebar);
-			
-		    // 사이트 로딩 직후 사이드바 크기 조정
-		    adjustSidebar();
-		    // 사이트 로딩 후 css 후처리
-		    $('.calendarGroup').css({
-		        display: "flex",
-		        paddingRight: "10px"
-		    }).children().css("marginLeft", "auto");
-		
-		    $('.button-border').css({
-		        border: "0",
-		        background: "none"
-		    });
-
-			
-			$('#addMyCalendarBtn').click(function () {
-				categoryModal.show();
-			});
-
-			//필터
-			$('.filter').on('change', function () {
-				calendar.refetchEvents();
-			});
-		});
-
 		document.getElementById('addCategoryBtn').addEventListener('click', function() {
 			// Get the value from the input field
 			const calendarName = document.getElementById('CategoryModalTitle').value;
@@ -1002,7 +929,7 @@ html, body {
 	});
 
 	var loginModal = document.getElementById('loginModal');
-		loginBtn.addEventListener('click',function(){
+		/* loginBtn.addEventListener('click',function(){
 		var modal = new bootstrap.Modal(loginModal);
 		modal.show();
 		var signupModal = document.getElementById('signupModal');
@@ -1011,11 +938,84 @@ html, body {
 			var modal1 = new bootstrap.Modal(signupModal);
 			modal1.show();
 		})
-	});
+	}); */
 		
 	function login() {
-    
-}
+		var modal = new bootstrap.Modal(loginModal);
+		modal.show();
+		var signupModal = document.getElementById('signupModal');
+		signupBtn.addEventListener('click',function(){
+			modal.hide();
+			var modal1 = new bootstrap.Modal(signupModal);
+			modal1.show();
+		})
+	}
+	// 윈도우 크기 변경, 사이드바 토글 이벤트 리스너 추가
+	// 사이드바 및 내부 요소 조정 함수
+    function adjustSidebar() {
+    	// 브라우저 내부 사이즈 저장
+        const windowWidth = window.innerWidth;
+    	// 사이드바 너비 저장
+        var sidebarWidth;
+    	// 사이드바 높이 저장
+        const sliderHeight = windowWidth < 1000 ? "auto" : "calc(100vh - 30px)";
+    	// 사이드바 토글시의 버튼 간격(일정 생성과 이전달버튼) 저장
+        const marginLeft = sidebarStatus ? "0" : "100px";
+		
+    	// 사이드바 너비 적용
+        if (sidebarStatus) {
+            sidebarWidth = (windowWidth >= 1000) ? "250px" : "100%";
+        } else {
+            sidebarWidth = (windowWidth >= 1000) ? "0" : "100%";
+        }
+
+        $('#sidebarMain').css({
+            display: (windowWidth < 1000) ? "block" : "",
+            width: sidebarWidth
+        });
+    	// 사이드바 높이 적용
+        $('#slider').css("height", sliderHeight);
+    	// 버튼 간격 적용
+        $('.fc-toolbar-chunk').css("margin-left", marginLeft);
+		
+    	// 사이드바 토글시 내부 요소들 감추기/보이기
+        $('#sidebarMain').children().not('#addSchedule').css("display", sidebarStatus ? "" : "none");
+    }
+	
+    // 사이드바 토글 함수
+    function toggleSidebar() {
+        sidebarStatus = !sidebarStatus;
+        adjustSidebar();
+        calendar.render();
+    }
+	
+    // 브라우저 크기 변경시 사이드바 조정함수 실행
+    window.addEventListener('resize', adjustSidebar);
+    // 사이드바 토글버튼 클릭시 토글 함수 실행
+    $('#sidebarFoldingBtn').on('click', toggleSidebar);
+	
+    // 사이트 로딩 직후 사이드바 크기 조정
+    adjustSidebar();
+    // 사이트 로딩 후 css 후처리
+    $('.calendarGroup').css({
+        display: "flex",
+        paddingRight: "10px"
+    }).children().css("marginLeft", "auto");
+
+    /* $('.button-border').css({
+        border: "0",
+        background: "none"
+    }); */
+
+	
+	$('#addMyCalendarBtn').click(function () {
+		categoryModal.show();
+	});
+
+	//필터
+	$('.filter').on('change', function () {
+		calendar.refetchEvents();
+	});
 /* $("#login-form-submit").on('click', function() {
      login(); 
     
@@ -1272,15 +1272,39 @@ html, body {
       },
 	  locale: 'ko',
       headerToolbar: {
-        left: 'prev,next today',
+        left: 'toggleButton prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        right: 'dayGridMonth,timeGridWeek,timeGridDay loginButton'
       },
+      customButtons: {
+    	    loginButton: {
+    	    	<c:if test="${empty id}">
+    	      text: 'Login',
+    	      click: function() {
+    	        login();
+    	      }
+			</c:if>
+			<c:if test="${not empty id}">
+		      text: 'Logout',
+		      click: function() {
+		        logout();
+		      }
+			</c:if>
+    	    },
+    	    toggleButton: {
+    	      icon: 'chevrons-left',
+    	      hint: '사이드바 접기',
+    	      click: function() {
+    	    	toggleSidebar();
+    	      }
+    	    }
+    },
       navLinks: true, // can click day/week names to navigate views
       editable: true,
       selectable: true,
       dayMaxEvents: true,
       events: [
+		<c:if test="${not empty id}">
     	  $.ajax({
      			type: 'get',
      			url: '/plan/event/list.do',
@@ -1305,6 +1329,7 @@ html, body {
      				console.log(a,b,c);
      			}
      		 }) 
+		</c:if>
       ] 
     });
     calendar.render();
@@ -1424,7 +1449,7 @@ html, body {
 					id: $('#id').val()
 				},
 				success: function(result){
-					if(result==1){
+					if(result==0){
 						alert('사용 가능한 Email(ID)입니다.');
 						$('#pw').attr("disabled",false); 
 						$('#repw').attr("disabled",false); 
