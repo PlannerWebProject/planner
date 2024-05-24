@@ -781,7 +781,7 @@ html, body {
         .catch(function (error) {
             console.log(error);
         });
-    	 fetch('/user/logout.do')
+    	 fetch("/user/logout.do")
         .then(function() {
             // 세션 스토리지 및 로컬 스토리지 삭제
             sessionStorage.clear();
