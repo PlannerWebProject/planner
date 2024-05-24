@@ -85,8 +85,55 @@ public boolean login(String id, String pw) {
 	    } 
 
 	    return isSuccess;
-			
-		
 		
 	}
+
+public int socialLogin(String email, String name) {
+	
+	String sql = "select * from tblUser where id = ? and name = ?";
+	int indicate = 0;
+	try {
+		pstat = conn.prepareStatement(sql);
+		
+		pstat.setString(1, email);
+		pstat.setString(2, name);
+		
+		rs = pstat.executeQuery();
+		
+		if(rs.next()) {
+			indicate = 1;
+			return indicate;
+		}else {
+			indicate = 0;
+			return indicate;
+		}
+		
+	} catch (Exception e) {
+		System.out.println("UserDAO.socialLogin");
+		e.printStackTrace();
+	}
+	
+	return indicate;
+}
+
+public int addprofile(String email, String name) {
+	
+	try {
+		String sql = "insert into tblUser(ID, PW, NAME) values (?,?,?)";
+		pstat = conn.prepareStatement(sql);
+		pstat.setString(1, email);
+		pstat.setString(2, "socialLogin");
+		pstat.setString(3, name);
+		
+		return pstat.executeUpdate();
+		
+	} catch (Exception e) {
+		System.out.println("UserDAO.register");
+		e.printStackTrace();
+	}
+	
+	return 0;
+}
+
+
 }
