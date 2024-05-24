@@ -45,24 +45,23 @@ public class CalDAO {
 	}
 	
 	//새 달력
-	public String newCal(String id, String name, String listSeq) {
+	public String newCal(String name, String listSeq) {
 		
 		try {
 			String sql = "insert into tblCal (calSeq, shareInfo, name, calListSeq) values (nvl((select max(calSeq) from tblCal)+1,1), 'n', ?, ?)";
 			pstat = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-	        pstat.setString(1, id);
-	        pstat.setString(2, name);
-	        pstat.setString(3, listSeq);
+	        pstat.setString(1, name);
+	        pstat.setInt(2, Integer.parseInt(listSeq));
 			pstat.executeUpdate();
 			rs = pstat.getGeneratedKeys();
 
 			if (rs.next()) {
-                String generatedCalListSeq = rs.getString(1);
-                return generatedCalListSeq;
+                String generatedCalSeq = rs.getString(1);
+                return generatedCalSeq;
             }
 
 		} catch (Exception e) {
-			System.out.println("CalDAO.newCalList");
+			System.out.println("CalDAO.newCal");
 			e.printStackTrace();
 		}
 		
@@ -73,7 +72,7 @@ public class CalDAO {
 	public ArrayList<CalDTO> list(String id) {
 		
 		try {
-			String sql = "select * from tblCal a inner join tblCalList b on a.calListSeq = b.calListSeq where b.id = ?";
+			String sql = "select * from tblCal a inner join tblCalList b on a.calListSeq = b.calListSeq left join tblShare s on b.id = s.id where b.id = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, id);
 			rs = pstat.executeQuery();
@@ -84,9 +83,10 @@ public class CalDAO {
 				
 				CalDTO dto = new CalDTO();
 				dto.setCalSeq(rs.getString("calSeq"));
-				dto.setName(rs.getString("name"));;
-				dto.setShareInfo(rs.getString("shareInfo"));;
-				dto.setCalListSeq(rs.getString("calListSeq"));;
+				dto.setName(rs.getString("name"));
+				dto.setShareInfo(rs.getString("shareInfo"));
+				dto.setCalListSeq(rs.getString("calListSeq"));
+				dto.setToken(rs.getString("shareTK"));
 				
 				list.add(dto);
 			}
@@ -98,6 +98,66 @@ public class CalDAO {
 		}
 		
 		return null;
+	}
+	
+	public int delCal(String calSeq) {
+		
+		try {
+			String sql = "delete from tblShare where calSeq = ?";
+			pstat = conn.prepareStatement(sql);
+	        pstat.setString(1, calSeq);
+	        pstat.executeUpdate();
+	        sql = "delete from tblCal where calSeq = ?";
+	        pstat = conn.prepareStatement(sql);
+	        pstat.setString(1, calSeq);
+	        return pstat.executeUpdate();
+
+		} catch (Exception e) {
+			System.out.println("CalDAO.delCal");
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
+	public int editCal(String calSeq, String name) {
+		
+		try {
+			String sql = "update tblCal set name = ? where calSeq = ?";
+			pstat = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	        pstat.setString(1, name);
+	        pstat.setString(2, calSeq);
+
+	        return pstat.executeUpdate();
+
+		} catch (Exception e) {
+			System.out.println("CalDAO.editCal");
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
+	public int inShare(String id, String calSeq, String token) {
+		
+		try {
+			String sql = "insert into tblShare (id, calSeq, shareTK) values (?, ?, ?)";
+			pstat = conn.prepareStatement(sql);
+	        pstat.setString(1, id);
+	        pstat.setString(2, calSeq);
+	        pstat.setString(3, token);
+
+	        System.out.println("id" + id);
+	        System.out.println("calSeq" + calSeq);
+	        System.out.println("token" + token);
+	        return pstat.executeUpdate();
+
+		} catch (Exception e) {
+			System.out.println("CalDAO.inShareCal");
+			e.printStackTrace();
+		}
+		
+		return 0;
 	}
 	
 }

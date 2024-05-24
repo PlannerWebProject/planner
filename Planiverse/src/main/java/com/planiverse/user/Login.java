@@ -35,10 +35,10 @@ public class Login extends HttpServlet {
 			HttpSession session = req.getSession();
 
 			session.setAttribute("id", loginId); // 인증 티켓
-			//CalDAO calDao = new CalDAO();
+			CalDAO calDao = new CalDAO();
 
-			//ArrayList<CalDTO> list = calDao.list(loginId);
-			//session.setAttribute("calDTO", list);
+			ArrayList<CalDTO> list = calDao.list(loginId);
+			session.setAttribute("calDTO", list);
 
 			resp.sendRedirect("/plan/planiverse.do");
 

@@ -176,6 +176,7 @@ html, body {
 
 .pointer {
 	cursor: pointer;
+	user-select: none;
 }
 .pointer:hover {
 	opacity: 0.7;
@@ -201,6 +202,24 @@ html, body {
     --fc-button-hover-border-color: #FFCACC;
 }
 
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label-container {
+    flex-grow: 1;
+}
+
+.icons-container {
+    display: flex;
+    gap: 10px;
+}
+
+.checkbox-inline.pointer {
+    margin-right: 10px;
+}
 
 </style>
 
@@ -296,14 +315,23 @@ html, body {
 									<c:choose>
 									    <c:when test="${empty sessionScope.id}">
 									        <li><label class="checkbox-inline pointer">
-									            <input class="filter" type="checkbox" value="달력1" checked="">기본
+									            <input class="filter" type="checkbox" value="달력1" checked>기본
 									        </label></li>
 									    </c:when>
 									    <c:otherwise>
 									        <c:forEach items="${sessionScope.calDTO}" var="dto">
-									            <li><label class="checkbox-inline pointer">
-									                <input class="filter" type="checkbox" value="${dto.calSeq}" checked="">${dto.name}
-									            </label></li>
+									            <li class="item">
+									            <div class="label-container">
+										            <label class="checkbox-inline pointer">
+										                <input class="filter" type="checkbox" value="${dto.calSeq}" checked name="${dto.calListSeq}"><span>${dto.name}</span>
+										            </label>
+									            </div>
+									            <div class="icons-container">
+											        <i class="fa-solid fa-pen-to-square pointer editMyCalendar"></i>
+											        <i class="fa-solid fa-trash pointer delMyCalendar"></i>
+											    </div>
+										            <input type="hidden" name="token" value="${dto.token}">
+											    </li>
 									        </c:forEach>
 									    </c:otherwise>
 									</c:choose>
@@ -398,9 +426,16 @@ html, body {
 								<label for="eventModalSelect" class="col-form-label">카테고리</label>
 								<select class="form-select" aria-label="Default select example"
 									id="eventModalSelect">
-									<option selected>카테고리</option>
-									<option value="1">개인일정</option>
-									<option value="2">공유일정</option>
+									<c:choose>
+									    <c:when test="${empty sessionScope.id}">
+									    <option selected>카테고리</option>
+									    	</c:when>
+									    <c:otherwise>
+									        <c:forEach items="${sessionScope.calDTO}" var="dto">
+									        	<option value="${dto.calSeq}">${dto.name}</option>
+									        </c:forEach>
+									    </c:otherwise>
+									</c:choose>
 								</select>
 							</div>
 							<div class="mb-3">
@@ -644,7 +679,7 @@ html, body {
 			<div class="modalBackground">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="addCategoryModalHeader">달력추가</h5>
+						<h5 class="modal-title" id="addCategoryModalHeader">달력</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
@@ -654,6 +689,10 @@ html, body {
 								<label for="recipient-name" class="col-form-label">달력 이름</label> <input
 									type="text" class="form-control" id="CategoryModalTitle">
 							</div>
+							<div class="mb-3" id="ShareTokenDiv">
+								<label for="recipient-name" class="col-form-label">공유용 토큰</label> <input
+									type="text" class="form-control" id="ShareTokenOutput" readonly>
+							</div>
 						</form>
 					</div>
 					<div class="modal-footer">
@@ -661,6 +700,34 @@ html, body {
 						<button type="button" class="btn btn-primary" id="deleteCategoryBtn">달력삭제</button>
 						<button type="button" class="btn btn-primary" id="editCategoryBtn">달력수정</button>
 						<button type="button" class="btn btn-primary" id="addCategoryBtn">달력생성</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- ShareModal -->
+	<div class="modal fade" id="ShareModal" tabindex="-1"
+		aria-labelledby="editModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modalBackground">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="ShareModalHeader">일정 공유받기</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="mb-3">
+								<label for="recipient-name" class="col-form-label">공유용 토큰</label> <input
+									type="text" class="form-control" id="ShareTokenInput" placeholder="토큰을 입력해주세요.">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"	data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary" id="ShareBtn">공유받기</button>
 					</div>
 				</div>
 			</div>
@@ -699,7 +766,24 @@ html, body {
 		Kakao.init('264eac61bfebe8b0add3dd5814946507'); // 사용하려는 앱의 JavaScript 키 입력
 		Kakao.isInitialized();
 		console.log(Kakao.isInitialized());
-	  
+		
+		//필터 함수
+		function checkFilters() {
+		    $('.filter').each(function() {
+		        var seq = $(this).val();
+		        if ($(this).is(':checked')) {
+		            $('.' + seq).parent('div').show();
+		        } else {
+		            $('.' + seq).parent('div').hide();
+		        }
+		    });
+		}
+		$(document).on('change', '.filter', function () {
+		    checkFilters();
+		});
+		$(document).on('click', 'button', function () {
+			checkFilters();
+		});
 
 		
 		function loginWithKakao() {
@@ -793,6 +877,9 @@ html, body {
 		//카테고리 모달
 		const categoryModal = new bootstrap.Modal(document.getElementById('CategoryModal'));
 
+		//공유 모달
+		const shareModal = new bootstrap.Modal(document.getElementById('ShareModal'));
+
 		// Accordian
 		for (var i = 0; i < coll.length; i++) {
 			var initialContent = coll[i].nextElementSibling;
@@ -868,39 +955,76 @@ html, body {
 		});
 
 		document.getElementById('addCategoryBtn').addEventListener('click', function() {
-			// Get the value from the input field
-			const calendarName = document.getElementById('CategoryModalTitle').value;
-			
-			if (calendarName == '') return;
+		    const calendarName = document.getElementById('CategoryModalTitle').value;
+		    if (calendarName == '') return;
+		    const filters = document.getElementsByClassName('filter');
+		    const eventModalSelect = document.getElementById('eventModalSelect');
+		    const option = document.createElement('option');
+		    let listSeq = '';
+		    for (let i = 0; i < filters.length; i++) {
+		        const parentLabel = filters[i].parentElement;
+		        if (filters[i].getAttribute('name') != null) {
+		            listSeq = filters[i].getAttribute('name');
+		        }
+		        if (parentLabel.textContent.trim() == calendarName) {
+		            alert('이미 존재하는 이름입니다.');
+		            event.preventDefault();
+		            return;
+		        }
+		    }
+		    $.ajax({
+		        type: "post",
+		        url: "/plan/calendar/add.do",
+		        data: {
+		            name: calendarName,
+		            listSeq: listSeq
+		        },
+		        dataType: 'json',
+		        success: function (response) {
+		            const newListItem = document.createElement('li');
+		            newListItem.classList.add('item');
+		            const labelContainer = document.createElement('div');
+		            labelContainer.classList.add('label-container');
+		            const newLabel = document.createElement('label');
+		            newLabel.classList.add('checkbox-inline', 'pointer');
+		            const newCheckbox = document.createElement('input');
+		            newCheckbox.classList.add('filter');
+		            const newSpan = document.createElement('span');
+		            newSpan.appendChild(document.createTextNode(calendarName));
+		            newCheckbox.type = 'checkbox';
+		            newCheckbox.value = response.calSeq;
+		            newCheckbox.name = listSeq;
+		            newCheckbox.checked = true;
+		            newLabel.appendChild(newCheckbox);
+		            newLabel.appendChild(newSpan);
+		            labelContainer.appendChild(newLabel);
+		            const iconsContainer = document.createElement('div');
+		            iconsContainer.classList.add('icons-container');
+		            const editIcon = document.createElement('i');
+		            editIcon.classList.add('fa-solid', 'fa-pen-to-square', 'pointer', 'editMyCalendar');
+		            const deleteIcon = document.createElement('i');
+		            deleteIcon.classList.add('fa-solid', 'fa-trash', 'pointer', 'delMyCalendar');
+		            iconsContainer.appendChild(editIcon);
+		            iconsContainer.appendChild(deleteIcon);
+		            newListItem.appendChild(labelContainer);
+		            newListItem.appendChild(iconsContainer);
+		            const token = document.createElement('input');
+		            token.type = 'hidden';
+		            token.name = 'token';
+		            token.value = response.token;
+                    newListItem.appendChild(token);
+		            document.getElementById('myCalGroup').appendChild(newListItem);
+		            option.value = response.calSeq;
+		            option.appendChild(document.createTextNode(calendarName));
+		            eventModalSelect.append(option);
+		        },
+		        error: function(a, b, c) {
+		            console.log(a, b, c);
+		        }
+		    });
 
-			// Create a new list item
-			const newListItem = document.createElement('li');
-
-			// Create the label and input elements
-			const newLabel = document.createElement('label');
-			newLabel.classList.add('checkbox-inline', 'pointer');
-			
-			const newCheckbox = document.createElement('input');
-			newCheckbox.classList.add('filter');
-			newCheckbox.type = 'checkbox';
-			newCheckbox.value = calendarName;
-			newCheckbox.checked = true;
-
-			// Set the text content of the label
-			newLabel.appendChild(newCheckbox);
-			newLabel.appendChild(document.createTextNode(calendarName));
-
-			// Append the label to the list item
-			newListItem.appendChild(newLabel);
-
-			// Append the list item to the group
-			document.getElementById('myCalGroup').appendChild(newListItem);
-
-			// Close the modal
-			categoryModal.hide();
-
-			// Clear the input field for future use
-			document.getElementById('CategoryModalTitle').value = '';
+		    categoryModal.hide();
+		    $('#CategoryModalTitle').val();
 		});
 
 		
@@ -988,7 +1112,7 @@ html, body {
     function toggleSidebar() {
         sidebarStatus = !sidebarStatus;
         adjustSidebar();
-        calendar.render();
+        calendar.render();checkFilters();
     }
 	
     // 브라우저 크기 변경시 사이드바 조정함수 실행
@@ -1008,21 +1132,76 @@ html, body {
         border: "0",
         background: "none"
     }); */
-
+    $('#addShCalendarBtn').click(function () {
+		$('#ShareTokenInput').val('');
+		shareModal.show();
+	});
 	
 	$('#addMyCalendarBtn').click(function () {
+		$('#CategoryModalTitle').val('');
+		$('#addCategoryBtn').show();
+		$('#ShareTokenDiv').hide()
+		$('#deleteCategoryBtn').hide();
+		$('#editCategoryBtn').hide();
 		categoryModal.show();
 	});
-
-	//필터
-	$('.filter').on('change', function () {
-		var seq = $(this).val();
-		if ($(this).is(':checked')) {
-			$('.' + seq).parent('div').show();
-		} else {
-			$('.' + seq).parent('div').hide();
-		}
+	
+	$(document).on('click', '.editMyCalendar', function () {
+		
+		$('#editCategoryBtn').show();
+		$('#addCategoryBtn').hide();
+		$('#deleteCategoryBtn').hide();
+		$('#ShareTokenDiv').show();
+		
+		var item = $(this).closest('.item');
+		var calSeq = item.find('input.filter').val();
+		var name = item.find('span').text().trim();
+		var token = item.find('hidden').val();
+		
+		$('#CategoryModalTitle').val(name);
+		$('#ShareTokenOutput').val(token);
+		categoryModal.show();
+		
+		$('#editCategoryBtn').click(function () {
+			name = $('#CategoryModalTitle').val();
+			$.ajax({
+                url: '/plan/calendar/edit.do',
+                type: 'POST',
+                data: {
+                	calSeq: calSeq,
+                	name: name
+                },
+                success: function(response) {
+                	$('#CategoryModalTitle').val();
+                	$('#eventModalSelect option[value="' + calSeq + '"]').text(name);
+                	item.find('span').text(name);
+					categoryModal.hide();
+                },
+                error: function(xhr, status, error) {
+                }
+            });
+		});
+		
 	});
+	
+	$(document).on('click', '.delMyCalendar', function () {
+		var item = $(this).closest('.item');
+		var calSeq = item.find('input.filter').val();
+		if (confirm('삭제하시겠습니까?')) {
+            $.ajax({
+                url: '/plan/calendar/del.do',
+                type: 'POST',
+                data: { calSeq: calSeq },
+                success: function(response) {
+                    item.remove();
+                    $('#eventModalSelect option[value="' + calSeq + '"]').remove();
+                },
+                error: function(xhr, status, error) {
+                }
+            });
+        }
+	});
+	
  $("#login-form-submit").on('click', function() {
 	 	var modal = new bootstrap.Modal(loginModal);
 
@@ -1317,7 +1496,7 @@ html, body {
 		</c:if>
       ] 
     });
-    calendar.render();
+    calendar.render();checkFilters();
   });
 	
 	function getDisplayEventDate(event) {
@@ -1368,6 +1547,7 @@ html, body {
 			}
 
 			// ajax 요청 생성
+			console.log($('#eventModalSelect').val());
 			addRequest = $.ajax({
 				type: 'post',
 				url: '/plan/event/add.do',
@@ -1379,7 +1559,7 @@ html, body {
 					color: $('#color').attr("value"),
 					loc: $('#eventModalLoc').val(),
 					content: $('#eventModalContent').val(),
-					calSeq: 1
+					calSeq: $('#eventModalSelect').val()
 				},
 				dataType: 'json',
 				success: function(result){
@@ -1395,7 +1575,7 @@ html, body {
 							content: $('#eventModalContent').val()
 						}
 					});
-					calendar.render();
+					calendar.render();checkFilters();
 				},
 				error: function(a, b, c){
 					console.log(a, b, c);
@@ -1555,7 +1735,7 @@ html, body {
         	                } */
         	            });
     					 colorIndex = (colorIndex + 1); 
-        	            calendar.render();
+        	            calendar.render();checkFilters();
     				}
     	            
     	        });
@@ -1599,7 +1779,7 @@ html, body {
       	      console.log("로그인 성공");
       	    	  
       	      }, 3000);
-      	      calendar.render();
+      	      calendar.render();checkFilters();
       	    },
       	    error: function(xhr, status, error) {
       	      console.error("Failed to send user info:", error);

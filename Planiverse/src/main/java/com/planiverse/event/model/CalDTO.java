@@ -9,5 +9,6 @@ public class CalDTO {
 	private String shareInfo;
 	private String name;
 	private String calListSeq;
+	private String token;
 	
 }
