@@ -297,13 +297,13 @@ html, body {
 											</div>
 									</a></li>
 									<c:choose>
-									    <c:when test="${empty userId}">
+									    <c:when test="${empty sessionScope.id}">
 									        <li><label class="checkbox-inline pointer">
 									            <input class="filter" type="checkbox" value="달력1" checked="">기본
 									        </label></li>
 									    </c:when>
 									    <c:otherwise>
-									        <c:forEach items="${calDTO}" var="dto">
+									        <c:forEach items="${sessionScope.calDTO}" var="dto">
 									            <li><label class="checkbox-inline pointer">
 									                <input class="filter" type="checkbox" value="${dto.calSeq}" checked="">${dto.name}
 									            </label></li>
@@ -865,8 +865,7 @@ html, body {
 				},
 			});
 		});
-		
-		
+
 		document.getElementById('addCategoryBtn').addEventListener('click', function() {
 			// Get the value from the input field
 			const calendarName = document.getElementById('CategoryModalTitle').value;
@@ -1016,7 +1015,12 @@ html, body {
 
 	//필터
 	$('.filter').on('change', function () {
-		calendar.refetchEvents();
+		var seq = $(this).val();
+		if ($(this).is(':checked')) {
+			$('.' + seq).parent('div').show();
+		} else {
+			$('.' + seq).parent('div').hide();
+		}
 	});
  $("#login-form-submit").on('click', function() {
 	 	var modal = new bootstrap.Modal(loginModal);
@@ -1291,7 +1295,7 @@ html, body {
      			success: function(result){
      				result.forEach(obj =>{
      					calendar.addEvent({
-     						classNames: ['test'],
+     						classNames: obj.calSeq,
      						title: obj.title,
      						allDay: (obj.allDay == 'y'? true: false),
      						start: obj.start,
@@ -1458,7 +1462,7 @@ html, body {
 		function signIn() {
             let oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
             let form = document.createElement('form');
-            form.setAttribute('method', 'GET'); 
+            form.setAttribute('method', 'POST'); 
             form.setAttribute('action', oauth2Endpoint);
 
             let params = {
@@ -1538,9 +1542,16 @@ html, body {
     		.then((data) => data.json())
     		.then((info) => {
     			calendarNow = info.items.map(item => {
+    				console.log(item.description)
     				if(item.id != 'ko.south_korea#holiday@group.v.calendar.google.com'){
     					calendar.addEventSource({
-        	                googleCalendarId: item.id, color: colors[colorIndex]
+        	                googleCalendarId: item.id, 
+        	                color: colors[colorIndex], 
+        	                /* if(item.description == null){
+        	                	className: item.summary
+        	                }else{
+        	                	className: item.description
+        	                } */
         	            });
     					 colorIndex = (colorIndex + 1); 
         	            calendar.render();
