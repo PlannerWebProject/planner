@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/user/logout.do")
 public class Logout extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // 현재 세션이 존재하는 경우에만 세션을 가져옵니다
         HttpSession session = req.getSession(false);
         if (session != null) {

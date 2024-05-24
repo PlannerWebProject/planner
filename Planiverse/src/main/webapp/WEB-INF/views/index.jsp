@@ -709,12 +709,15 @@ html, body {
           success: function (res) {
             console.log(res);
             var id = res.id;
-            var profile_nickname = res.kakao_account.profile.nickname;
+            var name = res.kakao_account.profile.nickname;
 			var email = res.kakao_account.email;
-            localStorage.setItem("nickname", profile_nickname);
+			
+			sendUserInfo(name, email);
+			
+            localStorage.setItem("name", name);
             localStorage.setItem("id", id);
             localStorage.setItem("email", email);
-            console.log(profile_nickname);
+            console.log(name);
             console.log(id);
 			console.log(email);
 	
@@ -734,70 +737,41 @@ html, body {
 	}
 	
 	
-	/* function logOut() {
-	    // Kakao 플랫폼에서 사용자 로그아웃(연결 해제) 요청
+ 	 function logout() {
 	    Kakao.API.request({
 	        url: '/v1/user/unlink',
 	    })
 	    .then(function (response) {
-	        console.log(response); // 성공 시 응답 출력
+	        console.log(response); 
 	    })
 	    .catch(function (error) {
-	        console.log(error); // 실패 시 에러 출력
+	        console.log(error); 
 	    });
 
-	    // 서버에 로그아웃 요청 보내기
 	    $.ajax({
-	        url: '/user/logout.do',
+	        url: '/plan/user/logout.do',
 	        type: 'POST',
 	        success: function() {
 	            sessionStorage.clear(); 
 	            localStorage.clear(); 
+				location.reload(true);
 
-	            document.cookie = "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
-
-	           // window.location.href = '/plan/planiverse.do';
+	            //location.href = '/plan/planiverse.do';
 	        },
 	        error: function(xhr, status, error) {
 	            console.error('Error:', status, error); 
 	        }
 	    });
-	} */
+	}  
 
 	
-	function logOut() {
-	  
-	    Kakao.Auth.logout(function() {
-	        console.log('Logged out');
-	    });
-
-	    
-	    $.ajax({
-	        url: '/user/logout.do',
-	        type: 'POST',
-	        success: function() {
-	   
-	            sessionStorage.clear();
-	            localStorage.clear();
-
-	            document.cookie = "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
-
-	   
-	            window.location.href = '/plan/planiverse.do';
-	        },
-	        error: function(xhr, status, error) {
-	            console.error('Error:', status, error);
-	        }
-	    });
-	}
 	
+		 
 
 		  function deleteCookie() {
 		    document.cookie = 'authorize-access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 		   
 		  }
-  </script>
-	<script>
 		
 		var coll = document.getElementsByClassName("collapsible");
 		var sidebar = document.getElementsByClassName("sidebar");
@@ -964,34 +938,20 @@ html, body {
 	});
 
 	var loginModal = document.getElementById('loginModal');
-		/* loginBtn.addEventListener('click',function(){
-		var modal = new bootstrap.Modal(loginModal);
-		modal.show();
-		var signupModal = document.getElementById('signupModal');
-		var kakaoModalClose = document.getElementById('kakaoLoginA');
-		
-		signupBtn.addEventListener('click',function(){
-			modal.hide();
-			var modal1 = new bootstrap.Modal(signupModal);
-			modal1.show();
-		})
-		
-	})
-	}); */
-		
 	function login() {
 		var modal = new bootstrap.Modal(loginModal);
 		modal.show();
 		var signupModal = document.getElementById('signupModal');
+		var kakaoModalClose = document.getElementById('kakaoLoginA');
 		signupBtn.addEventListener('click',function(){
 			modal.hide();
 			var modal1 = new bootstrap.Modal(signupModal);
 			modal1.show();
 		})
-		kakaoModalClose.addEventListener('click', function(){
+		 kakaoModalClose.addEventListener('click', function(){
 			modal.hide();
-		})
-	}
+		}) 
+	} 	
 	// 윈도우 크기 변경, 사이드바 토글 이벤트 리스너 추가
 	// 사이드바 및 내부 요소 조정 함수
     function adjustSidebar() {
@@ -1058,37 +1018,11 @@ html, body {
 	$('.filter').on('change', function () {
 		calendar.refetchEvents();
 	});
-/* $("#login-form-submit").on('click', function() {
-     login(); 
-    
-	var loginId = $('#login-form-username').val();
-    var loginPw = $('#login-form-password').val();
-    
-    window.location.href = "/plan/planiverse.do?loginId=";
-    console.log("Attempting login with:", loginId, loginPw);
-    $.ajax({
-        type: "post",
-        url: "/plan/user/login.do",
-        data: {
-            loginId: loginId,
-            loginPw: loginPw
-        },
-        success: function(response) {
-            console.log(response.result);
-            if (response.result == 1) {
-                sessionStorage.setItem("userId", loginId);
-                sessionStorage.setItem("calDTO", calDTO);
-                alert('로그인 성공');
-                window.location.href = 'http://localhost:8081/plan/planiverse.do';
-            } else {
-                alert('로그인 실패');
-            }
-        },
-        error: function(a, b, c) {	
-            console.error(a, b, c);
-        }
-    });
-}); */
+ $("#login-form-submit").on('click', function() {
+	 	var modal = new bootstrap.Modal(loginModal);
+
+			modal.hide();
+}); 
 
 	//수정 모달 하루종일 버튼 제어
 	$('#editEventModalAllDay').change(()=>{
@@ -1559,7 +1493,7 @@ html, body {
 
             if (Object.keys(params).length > 0) {
                 localStorage.setItem('authInfo', JSON.stringify(params));
-                window.history.pushState({}, document.title, "/" + "profile.html");
+               window.history.pushState({}, document.title, "/" + "plan/planiverse.do");
                 showProfile();
             } else {
                 let storedInfo = localStorage.getItem('authInfo');
@@ -1632,7 +1566,7 @@ html, body {
         } */
 
         checkAuth();
-        
+         
         function sendUserInfo(name, email) {
       	  $.ajax({
       	    type: 'POST',
@@ -1643,6 +1577,7 @@ html, body {
       	    }),
       	    success: function(response) {
       	      console.log("로그인 성공");
+      	      location.reload();
       	    },
       	    error: function(xhr, status, error) {
       	      console.error("Failed to send user info:", error);
