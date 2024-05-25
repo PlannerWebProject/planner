@@ -39,6 +39,9 @@ public class Login extends HttpServlet {
 
 			ArrayList<CalDTO> list = calDao.list(loginId);
 			session.setAttribute("calDTO", list);
+			
+			ArrayList<CalDTO> shareList = calDao.shareList(loginId);
+			session.setAttribute("shareCalDTO", shareList);
 
 			resp.sendRedirect("/plan/planiverse.do");
 

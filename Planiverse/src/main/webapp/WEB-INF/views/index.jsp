@@ -340,9 +340,9 @@ html, body {
 					</nav>
 					<div class="WhitespaceBlock">&nbsp;</div>
 					<nav class="nav-tree mb-0">
-						<ul>
+						<ul id="shareCalGroup">
 							<li><a href="#" class="calendarGroup">공유받은 달력</a>
-								<ul>
+								<ul id="shareCalGroup">
 									<li><a href="#" id="addShCalendarBtn"
 										class="sidebar button button-rounded px-5 button-border button-text-effect button-text-flip-x">
 											<div class="button-inner">
@@ -350,8 +350,18 @@ html, body {
 													class=""><i class="bi-plus-circle-fill"></i>달력추가</span>
 											</div>
 									</a></li>
-									<li><label class="checkbox-inline pointer"><input
-											class="filter" type="checkbox" value="달력1" checked="">기본</label></li>
+									<c:forEach items="${sessionScope.shareCalDTO}" var="dto">
+							            <li class="item">
+							            <div class="label-container">
+								            <label class="checkbox-inline pointer">
+								                <input class="filter" type="checkbox" value="${dto.calSeq}" checked name="${dto.calListSeq}"><span>${dto.name}</span>
+								            </label>
+							            </div>
+							            <div class="icons-container">
+									        <i class="fa-solid fa-trash pointer delShareCalendar"></i>
+									    </div>
+									    </li>
+							        </c:forEach>
 								</ul></li>
 						</ul>
 					</nav>
@@ -1026,6 +1036,26 @@ html, body {
 		    categoryModal.hide();
 		    $('#CategoryModalTitle').val();
 		});
+		
+		document.getElementById('ShareBtn').addEventListener('click', function() {
+		    const token = document.getElementById('ShareTokenInput').value;
+		    if (token == '') return;
+		    $.ajax({
+		        type: "post",
+		        url: "/plan/calendar/shareadd.do",
+		        data: {
+		        	token: token
+		        },
+		        dataType: 'json',
+		        success: function (response) {
+		            
+		        },
+		        error: function(a, b, c) {
+		            console.log(a, b, c);
+		        }
+		    });
+		    window.location.href = 'planiverse.do';
+		});
 
 		
 		
@@ -1156,7 +1186,8 @@ html, body {
 		var item = $(this).closest('.item');
 		var calSeq = item.find('input.filter').val();
 		var name = item.find('span').text().trim();
-		var token = item.find('hidden').val();
+		var token = item.find('input[name="token"]').val();
+		console.log(token);
 		
 		$('#CategoryModalTitle').val(name);
 		$('#ShareTokenOutput').val(token);
@@ -1195,6 +1226,24 @@ html, body {
                 success: function(response) {
                     item.remove();
                     $('#eventModalSelect option[value="' + calSeq + '"]').remove();
+                },
+                error: function(xhr, status, error) {
+                }
+            });
+        }
+	});
+	
+	$(document).on('click', '.delShareCalendar', function () {
+		var item = $(this).closest('.item');
+		var calSeq = item.find('input.filter').val();
+		if (confirm('삭제하시겠습니까?')) {
+            $.ajax({
+                url: '/plan/calendar/sharedel.do',
+                type: 'POST',
+                data: { calSeq: calSeq },
+                success: function(response) {
+                    item.remove();
+                    $("."+calSeq).remove();
                 },
                 error: function(xhr, status, error) {
                 }

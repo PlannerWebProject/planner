@@ -25,7 +25,7 @@ public class CalEdit extends HttpServlet {
 			
 			CalDAO dao = new CalDAO();
 			
-			String calSeq = req.getParameter("calSeq");
+			int calSeq = Integer.parseInt(req.getParameter("calSeq"));
 			String name = req.getParameter("name");
 			System.out.println("calSeq : " + calSeq);
 			System.out.println("name : " + name);

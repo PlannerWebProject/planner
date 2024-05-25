@@ -12,8 +12,8 @@ import javax.servlet.http.HttpSession;
 
 import com.planiverse.event.repository.CalDAO;
 
-@WebServlet("/calendar/del.do")
-public class CalDel extends HttpServlet {
+@WebServlet("/calendar/sharedel.do")
+public class CalShareDel extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,7 +27,7 @@ public class CalDel extends HttpServlet {
 			
 			String temp = req.getParameter("calSeq");
 			int calSeq = Integer.parseInt(temp);
-			result = dao.delCal(calSeq);
+			result = dao.delShareCal(id, calSeq);
 			
 		}
 

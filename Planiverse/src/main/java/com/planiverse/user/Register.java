@@ -46,7 +46,7 @@ public class Register extends HttpServlet {
 			
 			if(result ==1) {
 				CalDAO calDao = new CalDAO();
-				calDao.newCal(id, "기본", calDao.newCalList(id));
+				calDao.newCal(id, calDao.newCalList(id));
 				resp.sendRedirect("/plan/planiverse.do");
 			} 
 			

@@ -16,4 +16,6 @@ public interface EventDAO {
 
 	ArrayList<EventDTO> list(String id);
 
+	ArrayList<EventDTO> shareList(String calSeq);
+
 }

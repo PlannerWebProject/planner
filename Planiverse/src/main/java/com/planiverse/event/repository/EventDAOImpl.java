@@ -54,6 +54,40 @@ public class EventDAOImpl implements EventDAO {
 
 		return null;
 	}
+	
+	public ArrayList<EventDTO> shareList(String calSeq) {
+		try {
+			String sql = "select * from vwEvent where calSeq = ?";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, calSeq);  
+			rs = pstat.executeQuery();
+
+			ArrayList<EventDTO> list = new ArrayList<>();
+
+			while (rs.next()) {
+				
+				EventDTO dto = new EventDTO();
+				dto.setEventSeq(rs.getString("eventSeq"));
+				dto.setTitle(rs.getString("title"));
+				dto.setAllDay(rs.getString("allDay"));
+				dto.setStart(rs.getString("start"));
+				dto.setEnd(rs.getString("end"));
+				dto.setLoc(rs.getString("loc"));
+				dto.setContent(rs.getString("content"));
+				dto.setColor(rs.getString("color"));
+				dto.setCalSeq(rs.getString("calSeq"));
+				
+				list.add(dto);
+			}
+			return list;
+
+		} catch (Exception e) {
+			System.out.println("EventDAO.list");
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	public int dropchange(EventDTO dto) {
 		try {

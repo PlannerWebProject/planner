@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.planiverse.event.model.CalDTO;
 import com.planiverse.event.model.EventDTO;
 import com.planiverse.event.repository.EventDAO;
 import com.planiverse.event.repository.EventDAOImpl;
@@ -48,6 +49,28 @@ public class List extends HttpServlet {
 				obj.put("calSeq", dto.getCalSeq());
 
 				arr.add(obj);
+			}
+			
+			ArrayList<CalDTO> sharelist = (ArrayList<CalDTO>) session.getAttribute("shareCalDTO");
+			for (CalDTO calDto : sharelist) {
+				list = dao.shareList(calDto.getCalSeq());
+				for (EventDTO dto : list) {
+					JSONObject obj = new JSONObject();
+					String start = "20" + dto.getStart().replace("/", "-");
+					String end = "20" + dto.getEnd().replace("/", "-");
+
+					obj.put("eventSeq", dto.getEventSeq());
+					obj.put("title", dto.getTitle());
+					obj.put("allDay", dto.getAllDay());
+					obj.put("start", start);
+					obj.put("end", end);
+					obj.put("loc", dto.getLoc());
+					obj.put("content", dto.getContent());
+					obj.put("color", dto.getColor());
+					obj.put("calSeq", dto.getCalSeq());
+
+					arr.add(obj);
+				}
 			}
 
 			resp.setContentType("application/json");
