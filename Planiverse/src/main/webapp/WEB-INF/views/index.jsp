@@ -1786,11 +1786,7 @@ html, body {
     					calendar.addEventSource({
         	                googleCalendarId: item.id, 
         	                color: colors[colorIndex], 
-        	                /* if(item.description == null){
-        	                	className: item.summary
-        	                }else{
-        	                	className: item.description
-        	                } */
+        	                classNames: [item.summary, item.description]
         	            });
     					 colorIndex = (colorIndex + 1); 
         	            calendar.render();checkFilters();
