@@ -965,9 +965,10 @@ html, body {
 		});
 
 		document.getElementById('addCategoryBtn').addEventListener('click', function() {
-		    const calendarName = document.getElementById('CategoryModalTitle').value;
+		    const calendarName = $('#CategoryModalTitle').val();
+		    console.log(calendarName);
 		    if (calendarName == '') return;
-		    const filters = document.getElementsByClassName('filter');
+		    const filters = document.querySelectorAll('#myCalGroup .filter');
 		    const eventModalSelect = document.getElementById('eventModalSelect');
 		    const option = document.createElement('option');
 		    let listSeq = '';

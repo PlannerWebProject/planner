@@ -62,11 +62,13 @@ public class CalDAO {
 				return calSeq;
 			}
 			calSeq = rs.getInt(1) + 1;
-			sql = "insert into tblCal (calSeq, shareInfo, name, calListSeq) values (?, 'n', '기본', ?)";
-			pstat = conn.prepareStatement(sql);
-			pstat.setInt(1, calSeq);
-			pstat.setInt(2, listSeq);
-			pstat.executeUpdate();
+			sql = "insert into tblCal (calSeq, shareInfo, name, calListSeq) values (?, 'n', ?, ?)";
+	        pstat = conn.prepareStatement(sql);
+	        
+	        pstat.setInt(1, calSeq);
+	        pstat.setString(2, name);
+	        pstat.setInt(3, listSeq);
+	        pstat.executeUpdate();
 
 			return calSeq;
 

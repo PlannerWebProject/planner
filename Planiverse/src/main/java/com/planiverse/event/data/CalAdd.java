@@ -34,6 +34,9 @@ public class CalAdd extends HttpServlet {
 			CalDAO dao = new CalDAO();
 
 			try {
+				System.out.println("newCal");
+				System.out.println("name : " + name);
+				System.out.println("listSeq : " + listSeq);
 				calSeq = dao.newCal(name, listSeq);
 
 				if (calSeq != -1) {
