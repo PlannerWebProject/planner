@@ -29,6 +29,8 @@ public class socialLogin extends HttpServlet {
 		UserDAO dao = new UserDAO();
 		int result = dao.socialLogin(email, name);
 		System.out.println("socialLogin: "+result);
+		
+		
 
 		if(result == 1) {
 			HttpSession session = req.getSession();
@@ -39,17 +41,26 @@ public class socialLogin extends HttpServlet {
 			ArrayList<CalDTO> list = calDao.list(email);
 			session.setAttribute("calDTO", list);
 			
+			ArrayList<CalDTO> shareList = calDao.shareList(email);
+			session.setAttribute("shareCalDTO", shareList);
 
 			resp.sendRedirect("/plan/planiverse.do");
 		}else if (result == 0) {
-			
+			HttpSession session = req.getSession();
 			int addprofile = dao.addprofile(email, name);
 			System.out.println("addprofile: "+addprofile);
 			if(addprofile == 1) {
-				HttpSession session = req.getSession();
 
 				session.setAttribute("id", email);
 			}
+			CalDAO calDao = new CalDAO();
+			calDao.newCal(email, calDao.newCalList(email));
+			
+			ArrayList<CalDTO> list = calDao.list(email);
+			session.setAttribute("calDTO", list);
+			
+			ArrayList<CalDTO> shareList = calDao.shareList(email);
+			session.setAttribute("shareCalDTO", shareList);
 			
 			resp.sendRedirect("/plan/planiverse.do");
 		} else {

@@ -37,8 +37,8 @@ public class CalDAO {
 
 			sql = "insert into tblCalList (calListSeq, id) values (?, ?)";
 			pstat = conn.prepareStatement(sql);
-			pstat.setInt(2, calListSeq);
-			pstat.setString(1, id);
+			pstat.setInt(1, calListSeq);
+			pstat.setString(2, id);
 			pstat.executeUpdate();
 
 			return calListSeq;
