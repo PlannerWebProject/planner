@@ -1715,9 +1715,17 @@ html, body {
 
             document.body.appendChild(form);
             form.submit();
-            
-           
+            localStorage.setItem('checkAuthPending', 'true');
         }
+		
+		window.addEventListener('load', function() {
+		    // 로컬 스토리지 값을 체크하여 checkAuth 호출
+		    if (localStorage.getItem('checkAuthPending') === 'true') {
+		    	console.log('예에');
+		        checkAuth();
+		        localStorage.removeItem('checkAuthPending'); // 실행 후 값 제거
+		    }
+		});
 
 		function checkAuth() {
             let params = {};
@@ -1803,10 +1811,9 @@ html, body {
             });
         } */
 
-        checkAuth();
+        
          
         function sendUserInfo(name, email) {
-        	
         	// 중복 실행 방지
 			if (sendRequest) {
 				sendRequest.abort();
@@ -1821,16 +1828,15 @@ html, body {
       	      email: email
       	    }),
       	    success: function(response) {
-      	      setTimeout(function() {
       	      console.log("로그인 성공");
-      	    	  
-      	      }, 3000);
-      	      calendar.render();checkFilters();
+      	    location.reload();
+      	      checkFilters(); 
       	    },
       	    error: function(xhr, status, error) {
       	      console.error("Failed to send user info:", error);
       	    }
       	  });
+			
       	}
 		
 	</script>
