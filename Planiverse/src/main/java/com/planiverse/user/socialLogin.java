@@ -1,10 +1,9 @@
 package com.planiverse.user;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.planiverse.event.data.CalAdd;
 import com.planiverse.event.model.CalDTO;
 import com.planiverse.event.repository.CalDAO;
 import com.planiverse.user.repository.UserDAO;
@@ -54,7 +54,16 @@ public class socialLogin extends HttpServlet {
 				session.setAttribute("id", email);
 			}
 			CalDAO calDao = new CalDAO();
-			calDao.newCal(email, calDao.newCalList(email));
+			int calSeq = calDao.newCal("기본", calDao.newCalList(email));
+			if (calSeq != -1) {
+				String token;
+				try {
+					token = CalAdd.generateUniqueToken(calSeq, name);
+					calDao.inShare(email, calSeq, token);
+				} catch (NoSuchAlgorithmException e) {
+					e.printStackTrace();
+				}
+			}
 			
 			ArrayList<CalDTO> list = calDao.list(email);
 			session.setAttribute("calDTO", list);

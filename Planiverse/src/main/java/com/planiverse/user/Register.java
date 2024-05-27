@@ -2,6 +2,7 @@ package com.planiverse.user;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.planiverse.event.data.CalAdd;
 import com.planiverse.event.repository.CalDAO;
 import com.planiverse.user.model.UserDTO;
 import com.planiverse.user.repository.UserDAO;
@@ -46,7 +48,17 @@ public class Register extends HttpServlet {
 			
 			if(result ==1) {
 				CalDAO calDao = new CalDAO();
-				calDao.newCal(id, calDao.newCalList(id));
+				int calSeq = calDao.newCal("기본" , calDao.newCalList(id));
+				if (calSeq != -1) {
+					String token;
+					try {
+						token = CalAdd.generateUniqueToken(calSeq, name);
+						calDao.inShare(id, calSeq, token);
+					} catch (NoSuchAlgorithmException e) {
+						e.printStackTrace();
+					}
+				}
+				
 				resp.sendRedirect("/plan/planiverse.do");
 			} 
 			
