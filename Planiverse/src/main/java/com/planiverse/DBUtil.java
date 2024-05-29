@@ -15,9 +15,6 @@ public class DBUtil {
 		config.setPassword("java1234");
 		config.setDriverClassName("oracle.jdbc.driver.OracleDriver");
 		config.setMaximumPoolSize(20);
-		config.setIdleTimeout(300000); // 유휴 커넥션 타임아웃 (밀리초)
-		config.setConnectionTimeout(30000); // 커넥션 대기 타임아웃 (밀리초)
-		config.setLeakDetectionThreshold(2000); // 커넥션 누수 감지 시간 (밀리초)
 		dataSource = new HikariDataSource(config);
 	}
 

@@ -14,18 +14,20 @@ import com.planiverse.event.model.EventDTO;
 //CalDAO.java
 public class CalDAO {
 
-	private Connection conn;
+	//private Connection conn;
 	private Statement stat;
 	private PreparedStatement pstat;
 	private ResultSet rs;
 
-	public CalDAO() {
-		this.conn = DBUtil.open();
-	}
+	/*
+	 * public CalDAO() { this.conn = DBUtil.open(); }
+	 */
 
 	// 새 달력리스트
 	public int newCalList(String id) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "select max(calListSeq) from tblCalList";
 			pstat = conn.prepareStatement(sql);
 			rs = pstat.executeQuery();
@@ -53,7 +55,9 @@ public class CalDAO {
 
 	// 새 달력
 	public int newCal(String name, int listSeq) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "select max(calSeq) from tblCal";
 			pstat = conn.prepareStatement(sql);
 			rs = pstat.executeQuery();
@@ -82,7 +86,9 @@ public class CalDAO {
 
 	// 달력 리스트 조회
 	public ArrayList<CalDTO> list(String id) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "select * from tblCal a " + "inner join tblCalList b on a.calListSeq = b.calListSeq "
 					+ "left join tblShare s on a.calseq = s.calseq where b.id = ? and s.id = ?" + "order by a.calSeq";
 			pstat = conn.prepareStatement(sql);
@@ -113,14 +119,19 @@ public class CalDAO {
 	}
 
 	public int delCal(int calSeq) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "delete from tblShare where calSeq = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setInt(1, calSeq);
 			pstat.executeUpdate();
+			pstat.close();
 			sql = "delete from tblEvent where calSeq = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setInt(1, calSeq);
+			pstat.executeUpdate();
+			pstat.close();
 			sql = "delete from tblCal where calSeq = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setInt(1, calSeq);
@@ -135,7 +146,9 @@ public class CalDAO {
 	}
 
 	public int editCal(int calSeq, String name) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "update tblCal set name = ? where calSeq = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, name);
@@ -152,7 +165,9 @@ public class CalDAO {
 	}
 
 	public int inShare(String id, int calSeq, String token) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "insert into tblShare (id, calSeq, shareTK) values (?, ?, ?)";
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, id);
@@ -170,7 +185,9 @@ public class CalDAO {
 	}
 
 	public ArrayList<CalDTO> shareList(String id) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "select * from tblCal a " + "inner join tblCalList b on a.calListSeq = b.calListSeq "
 					+ "where a.calseq in (select calseq from tblshare where id = ?) and b.id != ?";
 			pstat = conn.prepareStatement(sql);
@@ -200,7 +217,9 @@ public class CalDAO {
 	}
 
 	public int delShareCal(String id, int calSeq) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "delete from tblShare where id = ? and calSeq = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, id);
@@ -216,7 +235,9 @@ public class CalDAO {
 	}
 
 	public CalDTO getShare(String id, String token) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			// Get the calSeq based on the token
 			String sql = "select min(calseq) as calseq from tblshare where sharetk = ?";
 			pstat = conn.prepareStatement(sql);
@@ -239,6 +260,7 @@ public class CalDAO {
 			pstat.setString(2, calSeq);
 			pstat.setString(3, token);
 			pstat.executeUpdate();
+			pstat.close();
 
 			// Retrieve the cal data
 			sql = "select * from tblcal where calseq = ?";
