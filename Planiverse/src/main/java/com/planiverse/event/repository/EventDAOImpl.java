@@ -12,17 +12,19 @@ import com.planiverse.event.model.EventDTO;
 
 public class EventDAOImpl implements EventDAO {
 
-	private Connection conn;
+//	private Connection conn;
 	private Statement stat;
 	private PreparedStatement pstat;
 	private ResultSet rs;
 
-	public EventDAOImpl() {
-		this.conn = DBUtil.open();
-	}
+//	public EventDAOImpl() {
+//		this.conn = DBUtil.open();
+//	}
 	
 	public ArrayList<EventDTO> list(String id) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "select * from vwEvent where id = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, id);  
@@ -56,7 +58,9 @@ public class EventDAOImpl implements EventDAO {
 	}
 	
 	public ArrayList<EventDTO> shareList(String calSeq) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "select * from vwEvent where calSeq = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, calSeq);  
@@ -90,7 +94,9 @@ public class EventDAOImpl implements EventDAO {
 	}
 
 	public int dropchange(EventDTO dto) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "update tblEvent set \"start\"=?,\"end\"=? where eventSeq = ?";
 
 			pstat = conn.prepareStatement(sql);
@@ -108,7 +114,9 @@ public class EventDAOImpl implements EventDAO {
 	}
 	
 	public int change(EventDTO dto) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "update tblEvent set title=?,allDay=?,\"start\"=?,\"end\"=?,loc=?,\"content\"=?, color=? where eventSeq = ?";
 
 			pstat = conn.prepareStatement(sql);
@@ -131,7 +139,9 @@ public class EventDAOImpl implements EventDAO {
 	}
 
 	public int add(EventDTO dto) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			
 			String sql = "select seqEvent.nextval as eventSeq from dual";
 			
@@ -171,7 +181,9 @@ public class EventDAOImpl implements EventDAO {
 	}
 
 	public int delete(String eventSeq) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "delete from tblEvent where eventSeq = ?";
 
 			pstat = conn.prepareStatement(sql);

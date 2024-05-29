@@ -10,17 +10,13 @@ import com.planiverse.DBUtil;
 import com.planiverse.user.model.UserDTO;
 
 public class UserDAO {
-	private Connection conn;
 	private Statement stat;
 	private PreparedStatement pstat;
 	private ResultSet rs;
 
-	public UserDAO() {
-		this.conn = DBUtil.open();
-	}
 
 	public int register(UserDTO dto) {
-		try {
+		try(Connection conn = DBUtil.open()) {
 			String sql = "insert into tblUser values (?,?,?)";
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, dto.getId());
@@ -38,7 +34,7 @@ public class UserDAO {
 	}
 
 	public int idcheck(String id) {
-		try {
+		try(Connection conn = DBUtil.open()) {
 			String sql = "select count(*) as cnt from tblUser where id = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, id);
@@ -61,7 +57,7 @@ public boolean login(String id, String pw) {
 		String sql ="select * from tblUser where id = ? and  pw = ?";
 		boolean isSuccess = false;
 		
-		try {
+		try(Connection conn = DBUtil.open()) {
 			
 			pstat = conn.prepareStatement(sql);
 			
@@ -92,7 +88,7 @@ public int socialLogin(String email, String name) {
 	
 	String sql = "select * from tblUser where id = ? and name = ?";
 	int indicate = 0;
-	try {
+	try(Connection conn = DBUtil.open()) {
 		pstat = conn.prepareStatement(sql);
 		
 		pstat.setString(1, email);
@@ -118,7 +114,7 @@ public int socialLogin(String email, String name) {
 
 public int addprofile(String email, String name) {
 	
-	try {
+	try(Connection conn = DBUtil.open()) {
 		String sql = "insert into tblUser(ID, PW, NAME) values (?,?,?)";
 		pstat = conn.prepareStatement(sql);
 		pstat.setString(1, email);

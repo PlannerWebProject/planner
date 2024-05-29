@@ -90,13 +90,13 @@
 /*일정시간*/
 .fc-daygrid-event>.fc-event-time {
 	color: #222;
-	font-size: 0.9em;
+	font-size: 1em;
 }
 
 /*시간제목*/
 .fc-daygrid-dot-event>.fc-event-title {
 	color: #222 !important;
-	font-size: 0.9em;
+	font-size: 1em;
 }
 
 /*가로 줄 - 월달력 종일 or 복수일자*/
