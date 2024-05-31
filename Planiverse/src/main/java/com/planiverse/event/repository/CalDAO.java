@@ -15,15 +15,11 @@ import com.planiverse.event.model.EventDTO;
 //캘린더 관련 DAO 클래스
 public class CalDAO {
 
-	private Connection conn;
+	//private Connection conn;
 	private Statement stat;
 	private PreparedStatement pstat;
 	private ResultSet rs;
-	// 생성자에서 DB 연결 수행
-	public CalDAO() {
-		this.conn = DBUtil.open();
-	}
-
+	
 	// 새 달력리스트
 	  /**
      * 새로운 캘린더 목록을 생성합니다.
@@ -31,7 +27,9 @@ public class CalDAO {
      * @return 생성된 캘린더 목록 시퀀스 번호, 실패 시 -1
      */
 	public int newCalList(String id) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "select max(calListSeq) from tblCalList";
 			pstat = conn.prepareStatement(sql);
 			rs = pstat.executeQuery();
@@ -65,7 +63,9 @@ public class CalDAO {
      * @return 생성된 캘린더 시퀀스 번호, 실패 시 -1
      */
 	public int newCal(String name, int listSeq) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "select max(calSeq) from tblCal";
 			pstat = conn.prepareStatement(sql);
 			rs = pstat.executeQuery();
@@ -99,7 +99,9 @@ public class CalDAO {
      * @return 캘린더 목록을 담은 ArrayList
      */
 	public ArrayList<CalDTO> list(String id) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "select * from tblCal a " + "inner join tblCalList b on a.calListSeq = b.calListSeq "
 					+ "left join tblShare s on a.calseq = s.calseq where b.id = ? and s.id = ?" + "order by a.calSeq";
 			pstat = conn.prepareStatement(sql);
@@ -134,14 +136,19 @@ public class CalDAO {
      * @return 삭제 성공 시 1, 실패 시 0
      */
 	public int delCal(int calSeq) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "delete from tblShare where calSeq = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setInt(1, calSeq);
 			pstat.executeUpdate();
+			pstat.close();
 			sql = "delete from tblEvent where calSeq = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setInt(1, calSeq);
+			pstat.executeUpdate();
+			pstat.close();
 			sql = "delete from tblCal where calSeq = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setInt(1, calSeq);
@@ -161,7 +168,9 @@ public class CalDAO {
      * @return 수정 성공 시 1, 실패 시 0
      */
 	public int editCal(int calSeq, String name) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "update tblCal set name = ? where calSeq = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, name);
@@ -184,7 +193,9 @@ public class CalDAO {
      * @return 추가 성공 시 1, 실패 시 0
      */
 	public int inShare(String id, int calSeq, String token) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "insert into tblShare (id, calSeq, shareTK) values (?, ?, ?)";
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, id);
@@ -206,7 +217,9 @@ public class CalDAO {
      * @return 공유받은 캘린더 목록을 담은 ArrayList
      */
 	public ArrayList<CalDTO> shareList(String id) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "select * from tblCal a " + "inner join tblCalList b on a.calListSeq = b.calListSeq "
 					+ "where a.calseq in (select calseq from tblshare where id = ?) and b.id != ?";
 			pstat = conn.prepareStatement(sql);
@@ -241,7 +254,9 @@ public class CalDAO {
      * @return 삭제 성공 시 1, 실패 시 0
      */
 	public int delShareCal(String id, int calSeq) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "delete from tblShare where id = ? and calSeq = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, id);
@@ -262,7 +277,9 @@ public class CalDAO {
      * @return 공유 캘린더 정보를 담은 CalDTO 객체, 해당 캘린더가 없는 경우 null
      */
 	public CalDTO getShare(String id, String token) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			// Get the calSeq based on the token
 			String sql = "select min(calseq) as calseq from tblshare where sharetk = ?";
 			pstat = conn.prepareStatement(sql);
@@ -285,6 +302,7 @@ public class CalDAO {
 			pstat.setString(2, calSeq);
 			pstat.setString(3, token);
 			pstat.executeUpdate();
+			pstat.close();
 
 			// Retrieve the cal data
 			sql = "select * from tblcal where calseq = ?";

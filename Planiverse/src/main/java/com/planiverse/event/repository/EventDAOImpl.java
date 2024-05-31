@@ -12,14 +12,12 @@ import com.planiverse.event.model.EventDTO;
 //EventDAO 인터페이스의 구현 클래스
 public class EventDAOImpl implements EventDAO {
 
-	private Connection conn;
+//	private Connection conn;
 	private Statement stat;
 	private PreparedStatement pstat;
 	private ResultSet rs;
-	// 생성자에서 DB 연결 수행
-	public EventDAOImpl() {
-		this.conn = DBUtil.open();
-	}
+	
+
 	
 	/**
      * 사용자의 이벤트 목록을 조회합니다.
@@ -27,7 +25,9 @@ public class EventDAOImpl implements EventDAO {
      * @return 이벤트 목록을 담은 ArrayList
      */
 	public ArrayList<EventDTO> list(String id) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "select * from vwEvent where id = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, id);  
@@ -65,7 +65,9 @@ public class EventDAOImpl implements EventDAO {
      * @return 이벤트 목록을 담은 ArrayList
      */
 	public ArrayList<EventDTO> shareList(String calSeq) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "select * from vwEvent where calSeq = ?";
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, calSeq);  
@@ -103,7 +105,9 @@ public class EventDAOImpl implements EventDAO {
      * @return 변경 성공 시 1, 실패 시 0
      */
 	public int dropchange(EventDTO dto) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "update tblEvent set \"start\"=?,\"end\"=? where eventSeq = ?";
 
 			pstat = conn.prepareStatement(sql);
@@ -125,7 +129,9 @@ public class EventDAOImpl implements EventDAO {
      * @return 수정 성공 시 1, 실패 시 0
      */
 	public int change(EventDTO dto) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "update tblEvent set title=?,allDay=?,\"start\"=?,\"end\"=?,loc=?,\"content\"=?, color=? where eventSeq = ?";
 
 			pstat = conn.prepareStatement(sql);
@@ -152,7 +158,9 @@ public class EventDAOImpl implements EventDAO {
      * @return 추가된 이벤트 시퀀스 번호, 실패 시 0
      */
 	public int add(EventDTO dto) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			
 			String sql = "select seqEvent.nextval as eventSeq from dual";
 			
@@ -196,7 +204,9 @@ public class EventDAOImpl implements EventDAO {
      * @return 삭제 성공 시 1, 실패 시 0
      */
 	public int delete(String eventSeq) {
-		try {
+		try(
+				Connection conn = DBUtil.open();
+		) {
 			String sql = "delete from tblEvent where eventSeq = ?";
 
 			pstat = conn.prepareStatement(sql);
