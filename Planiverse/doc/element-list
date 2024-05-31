@@ -1,0 +1,7 @@
+com.planiverse
+com.planiverse.event.data
+com.planiverse.event.model
+com.planiverse.event.repository
+com.planiverse.user
+com.planiverse.user.model
+com.planiverse.user.repository

@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.planiverse"},{"l":"com.planiverse.event.data"},{"l":"com.planiverse.event.model"},{"l":"com.planiverse.event.repository"},{"l":"com.planiverse.user"},{"l":"com.planiverse.user.model"},{"l":"com.planiverse.user.repository"}]

@@ -13,18 +13,25 @@ import javax.servlet.http.HttpSession;
 import com.planiverse.event.model.EventDTO;
 import com.planiverse.event.repository.EventDAO;
 import com.planiverse.event.repository.EventDAOImpl;
-
+//이 서블릿은 "/event/change.do" 경로로 요청이 들어오면 실행됨
 @WebServlet("/event/change.do")
 public class Change extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-			
-		HttpSession session = req.getSession();
-		String id = (String) session.getAttribute("id");
-		int result = 0;
-		if (id != null) {
-		
+		 // 현재 세션을 가져옴
+        HttpSession session = req.getSession();
+        // 세션에서 사용자 ID를 가져옴
+        String id = (String) session.getAttribute("id");
+
+        // 수정 결과를 저장할 변수
+        int result = 0;
+
+        // 사용자 ID가 null이 아닌 경우에만 실행
+        if (id != null) {
+            // 요청 파라미터 인코딩을 UTF-8로 설정
 		req.setCharacterEncoding("UTF-8");
+		
+		// 요청 파라미터에서 값을 가져옴
 		String eventSeq = req.getParameter("eventSeq");
 		String allDay = req.getParameter("allDay");
 		String title = req.getParameter("title");
@@ -34,15 +41,18 @@ public class Change extends HttpServlet {
 		String loc = req.getParameter("loc");
 		String content = req.getParameter("content");
 		
-		EventDAO dao = new EventDAOImpl();
+		// EventDAO 객체 생성
+        EventDAO dao = new EventDAOImpl();
+        // EventDTO 객체 생성
 		EventDTO dto = new EventDTO();
-
+		
+		// EventDTO 객체에 값 설정
 		dto.setEventSeq(eventSeq);
 		dto.setTitle(title);
 		dto.setColor(color);
 		dto.setLoc(loc);
 		dto.setContent(content);
-		
+		// allDay가 true인 경우
 		if(allDay.equals("true")) {
 			dto.setAllDay("y");
 			dto.setStart(start.substring(0,10));
@@ -51,7 +61,7 @@ public class Change extends HttpServlet {
 			} else {
 				dto.setEnd("");
 			}
-		} else {
+		} else { // allDay가 false인 경우
 			dto.setAllDay("n");
 			dto.setStart(start);
 			
@@ -63,15 +73,18 @@ public class Change extends HttpServlet {
 		}
 		
 		System.out.println(dto);//---------------------나중에 지우기
-		
+		// EventDAO를 사용하여 이벤트 정보 수정
 		result = dao.change(dto);
 		}
-		
+        // 응답 컨텐츠 타입을 application/json으로 설정
 		resp.setContentType("application/json");
-		PrintWriter writer = resp.getWriter();
-		writer.print("{");
-		writer.print("\"result\":"+result);
-		writer.print("}");
+		 // 응답 출력 스트림 생성
+        PrintWriter writer = resp.getWriter();
+        // 응답 JSON 데이터 작성
+        writer.print("{");
+        writer.print("\"result\":" + result);
+        writer.print("}");
+        // 출력 스트림 닫기
 		writer.close();
 
 	}
