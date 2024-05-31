@@ -12,18 +12,24 @@ import com.planiverse.event.model.CalDTO;
 import com.planiverse.event.model.EventDTO;
 
 //CalDAO.java
+//캘린더 관련 DAO 클래스
 public class CalDAO {
 
 	private Connection conn;
 	private Statement stat;
 	private PreparedStatement pstat;
 	private ResultSet rs;
-
+	// 생성자에서 DB 연결 수행
 	public CalDAO() {
 		this.conn = DBUtil.open();
 	}
 
 	// 새 달력리스트
+	  /**
+     * 새로운 캘린더 목록을 생성합니다.
+     * @param id 사용자 ID
+     * @return 생성된 캘린더 목록 시퀀스 번호, 실패 시 -1
+     */
 	public int newCalList(String id) {
 		try {
 			String sql = "select max(calListSeq) from tblCalList";
@@ -52,6 +58,12 @@ public class CalDAO {
 	}
 
 	// 새 달력
+	 /**
+     * 새로운 캘린더를 생성합니다.
+     * @param name 캘린더 이름
+     * @param listSeq 캘린더 목록 시퀀스 번호
+     * @return 생성된 캘린더 시퀀스 번호, 실패 시 -1
+     */
 	public int newCal(String name, int listSeq) {
 		try {
 			String sql = "select max(calSeq) from tblCal";
@@ -81,6 +93,11 @@ public class CalDAO {
 	}
 
 	// 달력 리스트 조회
+	/**
+     * 사용자의 캘린더 목록과 공유받은 캘린더 목록을 조회합니다.
+     * @param id 사용자 ID
+     * @return 캘린더 목록을 담은 ArrayList
+     */
 	public ArrayList<CalDTO> list(String id) {
 		try {
 			String sql = "select * from tblCal a " + "inner join tblCalList b on a.calListSeq = b.calListSeq "
@@ -111,7 +128,11 @@ public class CalDAO {
 
 		return null;
 	}
-
+	 /**
+     * 캘린더를 삭제합니다.
+     * @param calSeq 삭제할 캘린더 시퀀스 번호
+     * @return 삭제 성공 시 1, 실패 시 0
+     */
 	public int delCal(int calSeq) {
 		try {
 			String sql = "delete from tblShare where calSeq = ?";
@@ -133,7 +154,12 @@ public class CalDAO {
 
 		return 0;
 	}
-
+	 /**
+     * 캘린더 정보를 수정합니다.
+     * @param calSeq 수정할 캘린더 시퀀스 번호
+     * @param name 수정할 캘린더 이름
+     * @return 수정 성공 시 1, 실패 시 0
+     */
 	public int editCal(int calSeq, String name) {
 		try {
 			String sql = "update tblCal set name = ? where calSeq = ?";
@@ -150,7 +176,13 @@ public class CalDAO {
 
 		return 0;
 	}
-
+	  /**
+     * 캘린더 공유 정보를 추가합니다.
+     * @param id 공유 받는 사용자 ID
+     * @param calSeq 공유할 캘린더 시퀀스 번호
+     * @param token 공유 토큰
+     * @return 추가 성공 시 1, 실패 시 0
+     */
 	public int inShare(String id, int calSeq, String token) {
 		try {
 			String sql = "insert into tblShare (id, calSeq, shareTK) values (?, ?, ?)";
@@ -168,7 +200,11 @@ public class CalDAO {
 
 		return 0;
 	}
-
+	   /**
+     * 공유받은 캘린더 목록을 조회합니다.
+     * @param id 사용자 ID
+     * @return 공유받은 캘린더 목록을 담은 ArrayList
+     */
 	public ArrayList<CalDTO> shareList(String id) {
 		try {
 			String sql = "select * from tblCal a " + "inner join tblCalList b on a.calListSeq = b.calListSeq "
@@ -198,7 +234,12 @@ public class CalDAO {
 
 		return null;
 	}
-
+	 /**
+     * 공유 캘린더를 삭제합니다.
+     * @param id 사용자 ID
+     * @param calSeq 삭제할 캘린더 시퀀스 번호
+     * @return 삭제 성공 시 1, 실패 시 0
+     */
 	public int delShareCal(String id, int calSeq) {
 		try {
 			String sql = "delete from tblShare where id = ? and calSeq = ?";
@@ -214,7 +255,12 @@ public class CalDAO {
 
 		return 0;
 	}
-
+	  /**
+     * 공유 캘린더 정보를 가져옵니다.
+     * @param id 사용자 ID
+     * @param token 공유 토큰
+     * @return 공유 캘린더 정보를 담은 CalDTO 객체, 해당 캘린더가 없는 경우 null
+     */
 	public CalDTO getShare(String id, String token) {
 		try {
 			// Get the calSeq based on the token
