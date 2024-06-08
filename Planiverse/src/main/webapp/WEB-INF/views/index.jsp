@@ -1445,9 +1445,9 @@ html, body {
 				}),
 			content: $('<div />', {
 				class: 'popoverInfoEvent'
-        		}).append('<strong>카테고리:</strong> ' + '<br>')
-        .append('<strong>시간:</strong> ' + getDisplayEventDate(info.event) + '<br>')
-        .append('<strong>내용:</strong> ' + info.event.extendedProps.content),
+        		}).append('<strong>시간:</strong> ' + getDisplayEventDate(info.event) + '<br>')
+        .append('<strong>내용:</strong> ' + info.event.extendedProps.content+ '<br>')
+        .append('<strong>장소:</strong> ' + info.event.extendedProps.loc),
 			trigger: 'hover',
 			placement: 'top',
 			html: true,
@@ -1721,7 +1721,6 @@ html, body {
 		window.addEventListener('load', function() {
 		    // 로컬 스토리지 값을 체크하여 checkAuth 호출
 		    if (localStorage.getItem('checkAuthPending') === 'true') {
-		    	console.log('예에');
 		        checkAuth();
 		        localStorage.removeItem('checkAuthPending'); // 실행 후 값 제거
 		    }
